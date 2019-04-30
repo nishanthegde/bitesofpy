@@ -1,6 +1,5 @@
 from driving import allowed_driving
 
-
 def test_not_allowed_to_drive(capfd):
     allowed_driving('tim', 17)
     output = capfd.readouterr()[0].strip()
