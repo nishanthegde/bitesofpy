@@ -10,8 +10,12 @@ def sum_numbers(numbers=None):
     if numbers:
         s = sum(numbers)
     else:
-        for n in range(1,101)
+        for n in range(1,101):
             s += n
 
     return s
 
+
+
+r = sum_numbers(range(1, 11))
+print(r)
