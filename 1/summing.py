@@ -7,7 +7,7 @@ def sum_numbers(numbers=None):
 
     s = 0
 
-    if numbers:
+    if numbers != None:
         s = sum(numbers)
     else:
         for n in range(1,101):
@@ -18,4 +18,8 @@ def sum_numbers(numbers=None):
 
 
 # r = sum_numbers(range(1, 11))
+# r = sum_numbers([])
+# r = sum_numbers()
+# r = sum_numbers(None)
+# r = sum_numbers(numbers=None)
 # print(r)
