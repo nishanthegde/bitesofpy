@@ -17,5 +17,5 @@ def sum_numbers(numbers=None):
 
 
 
-r = sum_numbers(range(1, 11))
-print(r)
+# r = sum_numbers(range(1, 11))
+# print(r)
