@@ -75,8 +75,9 @@ def shortest_first_name(names):
 
     return shortest_first_name
 
-shortest = shortest_first_name(NAMES)
-print(shortest)
+# test for function
+# shortest = shortest_first_name(NAMES)
+# print(shortest)
 
 
 
