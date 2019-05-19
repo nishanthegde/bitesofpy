@@ -11,10 +11,6 @@ scrabble_scores = [(1, "E A O I N R T L S U"), (2, "D G"), (3, "B C M P"),
 
 LETTER_SCORES = {letter: score for score, letters in scrabble_scores for letter in letters.split()}
 
-# print(curr_path)
-# print(os.listdir(curr_path))
-# print(DICTIONARY)
-# print(os.path.expanduser('~'))
 
 def load_words():
     """load the words dictionary (DICTIONARY constant) into a list and return it"""
@@ -51,27 +47,6 @@ def max_word_value(words=None):
         return words[idx_max]
 
     pass
-
-# words = load_words()
-# print(words[20000:21000])
-# print(len(words))
-# print(words[0])
-# print(words[-1:])
-# print(' ' in ''.join(words))
-
-# print(type(scrabble_scores))
-# print(letter_scores)
-# print(calc_word_value('bob'))
-# print(calc_word_value('PyBites'))
-
-# test_words = ('bob', 'barbeque', 'julian', 'pybites', 'quit')
-# print(max_word_value(test_words))
-# print(max_word_value(words[20000:21000]))
-# print(max_word_value(["a", "B", "Z"]))
-# print(max_word_value(["a", "åäö"]))
-# print(type(test_words))
-# print(max_word_value())
-
 
 
 
