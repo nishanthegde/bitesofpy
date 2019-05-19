@@ -2,8 +2,7 @@ from wordvalue import load_words, calc_word_value, max_word_value
 
 words = load_words()
 
-
-def test_load_words():    
+def test_load_words():
     assert len(words) == 235886
     assert words[0] == 'A'
     assert words[-1] == 'Zyzzogeton'
