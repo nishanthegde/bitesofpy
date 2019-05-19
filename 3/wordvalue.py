@@ -3,7 +3,7 @@ import urllib.request as ur
 
 # PREWORK
 curr_path = os.getcwd()
-DICTIONARY = os.path.join(curr_path, 'dictionary.txt')
+DICTIONARY = os.path.join('/tmp', 'dictionary.txt')
 ur.urlretrieve('http://bit.ly/2iQ3dlZ', DICTIONARY)
 
 scrabble_scores = [(1, "E A O I N R T L S U"), (2, "D G"), (3, "B C M P"),
