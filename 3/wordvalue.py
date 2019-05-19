@@ -9,7 +9,7 @@ ur.urlretrieve('http://bit.ly/2iQ3dlZ', DICTIONARY)
 scrabble_scores = [(1, "E A O I N R T L S U"), (2, "D G"), (3, "B C M P"),
                    (4, "F H V W Y"), (5, "K"), (8, "J X"), (10, "Q Z")]
 
-letter_scores = {letter: score for score, letters in scrabble_scores for letter in letters.split()}
+LETTER_SCORES = {letter: score for score, letters in scrabble_scores for letter in letters.split()}
 
 # print(curr_path)
 # print(os.listdir(curr_path))
@@ -34,7 +34,7 @@ def calc_word_value(word=None):
     """given a word calculate its value using LETTER_SCORES"""
     #list to hold letter score for the word
     if word:
-        letter_score = [letter_scores[l.upper()] if l.upper() in letter_scores else 0 for l in word] #list to hold letter scores for word
+        letter_score = [LETTER_SCORES[l.upper()] if l.upper() in LETTER_SCORES else 0 for l in word] #list to hold letter scores for word
 
         return sum(letter_score)
 
