@@ -16,7 +16,7 @@ def load_words():
     """load the words dictionary (DICTIONARY constant) into a list and return it"""
     words = []
 
-    f = open('dictionary.txt', 'r')
+    f = open(DICTIONARY, 'r')
     words = f.readlines()
     f.close()
 
