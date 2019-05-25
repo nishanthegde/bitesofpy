@@ -14,14 +14,12 @@ def print_colors():
 
         if color == 'quit':
             print('bye')
+            break
         else:
             if color not in [c.lower() for c in VALID_COLORS]:
                 print('Not a valid color')
                 continue
             else:
                 print(f'{color}')
-        break
 
-# print(VALID_COLORS)
-# print_colors(Yellow)
 
