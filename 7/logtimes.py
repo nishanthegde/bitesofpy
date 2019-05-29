@@ -3,14 +3,20 @@ import os
 import urllib.request
 
 SHUTDOWN_EVENT = 'Shutdown initiated'
+CURRENT_PATH = os.getcwd()
 
 # prep: read in the logfile
-logfile = os.path.join('/tmp', 'log')
-urllib.request.urlretrieve('http://bit.ly/2AKSIbf', logfile)
+# logfile = os.path.join('/tmp', 'log')
+LOGFILE = os.path.join(CURRENT_PATH, 'log')
+urllib.request.urlretrieve('http://bit.ly/2AKSIbf', LOGFILE)
 
-with open(logfile) as f:
-    loglines = f.readlines()
+# read log file and create list of lines
+f = open(LOGFILE, 'r')
+loglines = f.readlines()
+f.close
 
+# with open(logfile) as f:
+#     loglines = f.readlines()
 
 # for you to code:
 
@@ -22,7 +28,13 @@ def convert_to_datetime(line):
        returns:
        datetime(2014, 7, 3, 23, 27, 51)
     """
-    pass
+
+    str = "shutdown"
+
+    if str in line.lower():
+      ts_str = line[5:24]
+      print(ts_str)
+
 
 
 def time_between_shutdowns(loglines):
@@ -32,3 +44,6 @@ def time_between_shutdowns(loglines):
        Return this datetime.timedelta object.
     """
     pass
+
+for l in loglines:
+  convert_to_datetime(l)
