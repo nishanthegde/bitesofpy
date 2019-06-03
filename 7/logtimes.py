@@ -7,9 +7,10 @@ SHUTDOWN_EVENT = 'Shutdown initiated'
 CURRENT_PATH = os.getcwd()
 
 # prep: read in the logfile
-# logfile = os.path.join('/tmp', 'log')
-LOGFILE = os.path.join(CURRENT_PATH, 'log')
-urllib.request.urlretrieve('http://bit.ly/2AKSIbf', LOGFILE)
+logfile = os.path.join('/tmp', 'log')
+urllib.request.urlretrieve('http://bit.ly/2AKSIbf', logfile)
+# LOGFILE = os.path.join(CURRENT_PATH, 'log')
+# urllib.request.urlretrieve('http://bit.ly/2AKSIbf', LOGFILE)
 
 # read log file and create list of lines
 f = open(LOGFILE, 'r')
