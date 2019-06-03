@@ -13,7 +13,7 @@ urllib.request.urlretrieve('http://bit.ly/2AKSIbf', logfile)
 # urllib.request.urlretrieve('http://bit.ly/2AKSIbf', LOGFILE)
 
 # read log file and create list of lines
-f = open(LOGFILE, 'r')
+f = open(logfile, 'r')
 loglines = f.readlines()
 f.close
 
