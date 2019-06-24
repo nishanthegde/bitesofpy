@@ -18,8 +18,7 @@ def get_profile(name, age, *args, **kwargs):
                 d['sports'] = l
 
         if kwargs:
-            for k,v in kwargs.items():
-                d[k] = v
+            d['awards'] = kwargs
 
         return d
     else: #age is not valid
