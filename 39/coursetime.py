@@ -1,11 +1,13 @@
-from datetime import datetime, timedelta
+import datetime
 import os
 import re
-import urllib.request
+import urllib.request as ur
 
 # getting the data
-COURSE_TIMES = os.path.join('/tmp', 'course_timings')
-urllib.request.urlretrieve('http://bit.ly/2Eb0iQF', COURSE_TIMES)
+local = os.getcwd()
+# local = '/tmp'
+COURSE_TIMES = os.path.join(local, 'course_timings')
+# ur.urlretrieve('http://bit.ly/2Eb0iQF', COURSE_TIMES)
 
 
 def get_all_timestamps():
@@ -19,10 +21,37 @@ def get_all_timestamps():
 
         Return a list of MM:SS timestamps
     """
-    pass
+    ts = []
+    with open(COURSE_TIMES,'r') as f:
+      lines = [f.lower().strip() for f in f.readlines() if f.lower().strip()]
 
+    p = re.compile(r'([0-5]?\d):([0-5]?\d)')
+
+    for line in lines:
+      match = p.search(line)
+      if match:
+        ts.append(match[0])
+
+    return ts
+
+def get_total_secs(ts_str):
+    """Accept timestamp (MM:SS) and return total seconds
+    """
+    m,s = ts_str.split(":")
+    secs = int(datetime.timedelta(minutes=int(m), seconds=int(s)).total_seconds())
+
+    return secs
 
 def calc_total_course_duration(timestamps):
     """Takes timestamps list as returned by get_all_timestamps
        and calculates the total duration as HH:MM:SS"""
-    pass
+    total_secs = sum(get_total_secs(t) for t in timestamps)
+    return str(datetime.timedelta(seconds=total_secs))
+
+# def main():
+#   timestamps = get_all_timestamps()
+#   ts = calc_total_course_duration(timestamps)
+#   print(ts)
+
+# if __name__ == "__main__":
+#     main()
