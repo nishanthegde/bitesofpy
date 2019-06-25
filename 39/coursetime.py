@@ -7,7 +7,7 @@ import urllib.request as ur
 # local = os.getcwd()
 local = '/tmp'
 COURSE_TIMES = os.path.join(local, 'course_timings')
-# ur.urlretrieve('http://bit.ly/2Eb0iQF', COURSE_TIMES)
+ur.urlretrieve('http://bit.ly/2Eb0iQF', COURSE_TIMES)
 
 
 def get_all_timestamps():
