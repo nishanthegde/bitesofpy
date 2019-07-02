@@ -66,10 +66,9 @@ def get_secret_token(username):
     except UserNoPermission:
         print("User does not have permission!")
 
-
 # def main():
 
-    pass
-
+#     s = get_secret_token('PyBites')
+#     print(s)
 # if __name__ == "__main__":
 #     main()
