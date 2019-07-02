@@ -10,7 +10,6 @@ pybites = User(name='PyBites', role=ADMIN, expired=False)
 USERS = (julian, bob, pybites)
 
 # define exception classes here
-
 class UserDoesNotExist(Exception):
     """Raised when the user is not in USERS"""
     pass
@@ -36,35 +35,26 @@ def get_secret_token(username):
 
         Have fun and keep calm and code in Python!
     """
-    try:
-        secret = False #boolean flag to return SECRET
+    secret = False #boolean flag to return SECRET
 
-        for n in USERS:
-            if n.name == username:
-                #user found in tuple of users
-                if n.expired == True:
-                    raise UserAccessExpired
+    for n in USERS:
+        if n.name == username:
+            #user found in tuple of users
+            if n.expired == True:
+                raise UserAccessExpired("user access expired")
+            else:
+                #user not expired
+                if n.role.lower() != 'admin':
+                    raise UserNoPermission("user does not have permission")
                 else:
-                    #user not expired
-                    if n.role.lower() != 'admin':
-                        raise UserNoPermission
-                    else:
-                         #user is an admin
-                        secret = True
+                     #user is an admin
+                    secret = True
 
-        if not secret:
-            raise UserDoesNotExist
-        else:
-            return SECRET
+    if not secret:
+        raise UserDoesNotExist("user does not exist")
+    else:
+        return SECRET
 
-    except UserDoesNotExist:
-        print("User does not exist!")
-
-    except UserAccessExpired:
-        print("User access expired!")
-
-    except UserNoPermission:
-        print("User does not have permission!")
 
 # def main():
 
