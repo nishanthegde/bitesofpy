@@ -4,6 +4,7 @@ from scrabble import get_possible_dict_words
 
 scrabble_scores = [(1, "E A O I N R T L S U"), (2, "D G"), (3, "B C M P"),
                    (4, "F H V W Y"), (5, "K"), (8, "J X"), (10, "Q Z")]
+
 LETTER_SCORES = {letter: score for score, letters in scrabble_scores
                  for letter in letters.split()}
 
@@ -15,7 +16,11 @@ def calc_word_value(word):
 
 def max_word_value(words):
     """Calc the max value of a collection of words"""
-    return max(words, key=calc_word_value)
+    # return max(words, key=calc_word_value)
+    max_score = max([calc_word_score(w) for w in words])
+    high = [w for w in words if calc_word_score(w)==max_score]
+
+    return high
 
 
 @pytest.mark.parametrize("draw, expected", [
