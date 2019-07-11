@@ -3,9 +3,9 @@ import os
 import urllib.request
 
 # PREWORK
-local = os.getcwd()
+# local = os.getcwd()
 local = '/tmp'
-# DICTIONARY = os.path.join(local, 'dictionary.txt')
+DICTIONARY = os.path.join(local, 'dictionary.txt')
 urllib.request.urlretrieve('http://bit.ly/2iQ3dlZ', DICTIONARY)
 
 with open(DICTIONARY, 'r') as f:
