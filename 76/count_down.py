@@ -44,21 +44,21 @@ def _(data):
         print('{}'.format(''.join(data[:-i])))
 
 
-def main():
+# def main():
 
-    # count_down('nishant')
-    # count_down(9)
-    # count_down(['a','b'])
-    # count_down('1234')
-    # count_down([1, 2, 3, 4])
-    # count_down(['1', '2', '3', '4'])
-    # count_down((1, 2, 3, 4))
-    # count_down(('1', '2', '3', '4'))
-    # count_down({1, 2, 3, 4})
-    # count_down({1: 'one', 2: 'two', 3:'three', 4:'four'} )
-    # count_down({'1': 'one', '2': 'two', '3':'three', '4':'four'})
-    # count_down(12.34)
-    count_down(range(1, 5))
+#     # count_down('nishant')
+#     # count_down(9)
+#     # count_down(['a','b'])
+#     # count_down('1234')
+#     # count_down([1, 2, 3, 4])
+#     # count_down(['1', '2', '3', '4'])
+#     # count_down((1, 2, 3, 4))
+#     # count_down(('1', '2', '3', '4'))
+#     # count_down({1, 2, 3, 4})
+#     # count_down({1: 'one', 2: 'two', 3:'three', 4:'four'} )
+#     # count_down({'1': 'one', '2': 'two', '3':'three', '4':'four'})
+#     # count_down(12.34)
+#     count_down(range(1, 5))
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
