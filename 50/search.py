@@ -93,11 +93,11 @@ def filter_entries_by_tag(search, entry):
        3. Else: match if search is in tags
     """
     if "&" in search:
-      return all(x in getattr(entry, "tags") for x in search.split('&'))
+      return all(x.lower() in getattr(entry, "tags") for x in search.split('&'))
     elif "|" in search:
-      return any(x in getattr(entry, "tags") for x in search.split('|'))
+      return any(x.lower() in getattr(entry, "tags") for x in search.split('|'))
     else:
-      return search in getattr(entry, "tags")
+      return search.lower() in getattr(entry, "tags")
 
     return False
 
@@ -134,6 +134,15 @@ def main():
           print("{} | {} | {}".format(h[0], h[1], h[2]))
 
         print('\n{} entries matched "{}"\n'.format(len(hits),term))
+
+    # entry = Entry(date=date(2016, 12, 22),
+    #               title='2016 py articles and useful books',
+    #               link='https://pybit.es/py-articles-books2016.html',
+    #               tags={'pythonic', 'data science',
+    #                     'tips', 'tricks', 'matplotlib',
+    #                     'pandas', 'books', 'collections'})
+    # arg = 'TRICKS'
+    # print(filter_entries_by_tag(arg, entry))
 
 if __name__ == '__main__':
     main()
