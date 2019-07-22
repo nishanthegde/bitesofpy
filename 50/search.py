@@ -135,7 +135,10 @@ def main():
         for h in hits:
           print("{} | {} | {}".format(h[0], h[1], h[2]))
 
-        print('\n{} entries matched "{}"\n'.format(len(hits),term))
+        if len(hits) == 1:
+          print('\n{} entry matched "{}"\n'.format(len(hits),term))
+        else:
+          print('\n{} entries matched "{}"\n'.format(len(hits),term))
 
     # entry = Entry(date=date(2016, 12, 22),
     #               title='2016 py articles and useful books',
