@@ -9,8 +9,7 @@ import feedparser
 # local = os.getcwd()
 # file = os.path.join(local, 'py_feed.txt')
 
-FEED = feedparser.parse('http://projects.bobbelderbos.com/pcc/all.rss.xml')
-
+FEED = 'http://projects.bobbelderbos.com/pcc/all.rss.xml'
 Entry = namedtuple('Entry', 'date title link tags')
 
 class AttrDict(dict):
@@ -63,6 +62,9 @@ def get_feed_entries(feed=FEED):
     """Use feedparser to parse PyBites RSS feed.
         Return a list of Entry namedtuples (date = date, drop time part)
     """
+
+    feed = feedparser.parse(feed)
+
     #initiate list to return Entry = namedtuple('Entry', 'date title link tags') namedtuples
     entries = []
 
