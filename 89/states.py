@@ -35,7 +35,7 @@ NOT_FOUND = 'N/A'
 def get_every_nth_state(states=states, n=10):
     """Return a list with every nth item (default argument n=10, so every
        10th item) of the states list above (remember: lists keep order)"""
-    pass
+    return (states[i] for i in range(n-1, len(states), n))
 
 
 def get_state_abbrev(state_name, us_state_abbrev=us_state_abbrev):
@@ -44,14 +44,22 @@ def get_state_abbrev(state_name, us_state_abbrev=us_state_abbrev):
        'Illinois' returns 'IL'.
        If the state is not in the dict, return 'N/A' which we stored
        in the NOT_FOUND constant (takeaway: dicts are great for lookups)"""
-    pass
+    ret =  NOT_FOUND
 
+    if state_name in us_state_abbrev.keys():
+      ret =  us_state_abbrev[state_name]
+
+    return ret
 
 def get_longest_state(data):
     """Receives data, which can be the us_state_abbrev dict or the states
        list (see above). It returns the longest state measured by the length
        of the string"""
-    pass
+    if isinstance(data, list):
+      return max(data, key=len)
+
+    if isinstance(data, dict):
+      return max(data.keys(), key=len)
 
 
 def combine_state_names_and_abbreviations(us_state_abbrev=us_state_abbrev,
@@ -60,4 +68,31 @@ def combine_state_names_and_abbreviations(us_state_abbrev=us_state_abbrev,
        the us_state_abbrev dict, and the last 10 states from the states
        list (see above) and combine them into a new list without losing
        alphabetical order"""
-    pass
+
+    l1 = sorted([us_state_abbrev[k] for k in us_state_abbrev.keys()])[:10]
+    l2 = sorted(states)[-10:]
+
+    return l1+l2
+
+
+# def main():
+  # expected = ['Missouri', 'Vermont']
+  # assert list(get_every_nth_state(n=20)) == expected
+
+  # assert get_state_abbrev('Illinois') == 'IL'
+  # assert get_state_abbrev('North Dakota') == 'ND'
+  # assert get_state_abbrev('bogus') == NOT_FOUND
+
+  # print(get_longest_state(states))
+
+  # expected = ['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+  #               'South Dakota', 'Tennessee', 'Texas', 'Utah',
+  #               'Vermont', 'Virginia', 'Washington', 'West Virginia',
+  #               'Wisconsin', 'Wyoming']
+
+  # assert combine_state_names_and_abbreviations() == expected
+
+# if __name__ == "__main__":
+#   main()
+
+
