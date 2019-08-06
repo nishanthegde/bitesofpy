@@ -39,7 +39,7 @@ class Game:
     guess = input("Guess a number between 1 and 20: ")
     # guess = guess.replace("'", "").replace('"', '')
 
-    if guess == "" or guess == "None":  # no input
+    if guess == "" or guess == "None" or guess == None:  # no input
       print('Please enter a number')
       raise ValueError
     elif not isInt_try(guess):
