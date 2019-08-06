@@ -37,7 +37,7 @@ class Game:
        If all good, return the int"""
 
     guess = input("Guess a number between 1 and 20: ")
-    guess = guess.replace("'", "").replace('"', '')
+    # guess = guess.replace("'", "").replace('"', '')
 
     if guess == "":  # no input
       print('Please enter a number')
@@ -98,51 +98,50 @@ class Game:
       print('Guessed 5 times, answer was {}'.format(self._answer))
 
 
-# def main():
-#   """
-#     In this Bite you implement a Game class to perform a number guessing game.
-#     It lets a user do a max of 5 guesses of a secret number between 1 and 20 randomly defined by the class.
+def main():
+  """
+    In this Bite you implement a Game class to perform a number guessing game.
+    It lets a user do a max of 5 guesses of a secret number between 1 and 20 randomly defined by the class.
 
-#     Note you have to account for invalid inputs: raise a ValueError if a user hits Enter (nothing entered)
-#     , a non-numeric value, a number that is not in the 1-20 range, or guesses the same number again.
+    Note you have to account for invalid inputs: raise a ValueError if a user hits Enter (nothing entered)
+    , a non-numeric value, a number that is not in the 1-20 range, or guesses the same number again.
 
-#     See the template code below ... (Advanced Bite, not giving away too much!)
+    See the template code below ... (Advanced Bite, not giving away too much!)
 
-#     The tests run through a lose scenario as well. Note they mock out the input builtin to test this. And you will be tested on stdout too so use print statements in addition to return values. Here is how the program would work from the command line.
-#   """
+    The tests run through a lose scenario as well. Note they mock out the input builtin to test this. And you will be tested on stdout too so use print statements in addition to return values. Here is how the program would work from the command line.
+  """
 
-#   # guesses = []
+  # guesses = []
 
-#   # while len(guesses) < 5:
+  # while len(guesses) < 5:
 
-#   #   try:
-#   #     guess = input("Guess a number between 1 and 20: ")
+  #   try:
+  #     guess = input("Guess a number between 1 and 20: ")
 
-#   #     guess = guess.replace("'", "").replace('"', '')
+  #     guess = guess.replace("'", "").replace('"', '')
 
-#   #     if guess == "":  # no input
-#   #       raise ValueError
-#   #     elif not isInt_try(guess):
-#   #       raise ValueError
-#   #     else:
-#   #       guesses.append(int(guess))
-#   #       print(guesses)
+  #     if guess == "":  # no input
+  #       raise ValueError
+  #     elif not isInt_try(guess):
+  #       raise ValueError
+  #     else:
+  #       guesses.append(int(guess))
+  #       print(guesses)
 
-#   #   except ValueError:
-#   #     if guess == "":
-#   #       print("Please enter a number")
-#   #     elif not isInt_try(guess):
-#   #       print("Should be a number")
-#   #     continue
+  #   except ValueError:
+  #     if guess == "":
+  #       print("Please enter a number")
+  #     elif not isInt_try(guess):
+  #       print("Should be a number")
+  #     continue
 
-#   # print("Guesses are {}".format(guesses))
-
-#   pass
+  # print("Guesses are {}".format(guesses))
+  pass
 
 
 if __name__ == '__main__':
   game = Game()
   game()
   # main()
-
+  # game.guess()
   # game.guess()
