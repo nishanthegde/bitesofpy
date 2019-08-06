@@ -24,7 +24,7 @@ class Game:
     """Init _guesses, _answer, _win to set(), get_random_number(), False"""
     self._guesses = []
     self._answer = get_random_number()
-    # self._answer = 2
+    # self._answer = 13
     self._win = False
 
   def guess(self):
@@ -39,7 +39,7 @@ class Game:
     guess = input("Guess a number between 1 and 20: ")
     # guess = guess.replace("'", "").replace('"', '')
 
-    if guess == "":  # no input
+    if guess == "" or guess == "None":  # no input
       print('Please enter a number')
       raise ValueError
     elif not isInt_try(guess):
