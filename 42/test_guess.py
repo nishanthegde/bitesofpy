@@ -90,5 +90,6 @@ def test_game_lose(inp, capfd):
                 'Guessed 5 times, answer was 13']
 
     output = [line.strip() for line in out.split('\n') if line.strip()]
+    print(output)
     for line, exp in zip(output, expected):
         assert line == exp
