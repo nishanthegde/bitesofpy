@@ -68,9 +68,21 @@ class Groceries:
 def create_parser():
     """TODO 1
        Create an ArgumentParser object giving it the required options,
-       note that the options are mutually exclusive. 
+       note that the options are mutually exclusive.
        Returns a argparse.ArgumentParser object"""
-    pass
+
+    parser = argparse.ArgumentParser(description='Grocery Cart')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-a', '--add', nargs=3, help='add item providing name (str), price (int), and craving (bool)', required=False)
+    group.add_argument('-d', '--delete', nargs=1, help='delete a product by name (str)', required=False)
+    group.add_argument('-l', '--list', action='store_true', help='show items in cart', required=False)
+    group.add_argument('-s', '--search', nargs=1, help='search items by name', required=False)
+
+    return parser
+
+
+def str2bool(v):
+    return v.lower() in ("yes", "true", "t", "1")
 
 
 def handle_args(args=None, cart=None):
@@ -87,5 +99,33 @@ def handle_args(args=None, cart=None):
     if cart is None:
         cart = Groceries()
 
-    # different crud operations - please complete ...
-    #
+    if args.list:
+        cart.show()
+
+    if args.search:
+        cart.search(args.search[0])
+
+    if args.add:
+        cart.add(Item(args.add[0], int(args.add[1]), str2bool(args.add[2])))
+
+    if args.delete:
+        cart.delete(args.delete[0])
+
+
+# def main():
+
+#     products = 'celery apples water coffee chicken pizza'.split()
+#     prices = [1, 4, 2, 5, 6, 4]
+#     cravings = False, False, False, False, False, True
+
+#     items = []
+#     for item in zip(products, prices, cravings):
+#         items.append(Item(*item))
+
+#     cart = Groceries(items)
+
+#     handle_args(cart=cart)
+
+
+# if __name__ == "__main__":
+#     main()
