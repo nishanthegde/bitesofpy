@@ -84,7 +84,10 @@ def create_paw_deck(n=8):
         return deck
 
     except ValueError:
-        print('Invalid arg!')
+        raise
+    # except ValueError:
+    #     # print('Invalid arg!')
+    #     pass
 
 
 # def main():
@@ -93,14 +96,14 @@ def create_paw_deck(n=8):
 
 #         To make it a bit more challenging it will receive an input argument n which determines the letters used in the deck:
 
-#         the default is 8 letters (card range A1-H4),
+#         the default is 8 l`etters (card range A1-H4),
 #         n=16 would give you card range A1..P4,
 #         n=26 gives you card range A1..Z4,
 #         if n > 26 raise a ValueError.
 #         as you see the number part of the card is always 1..4 (NUMBERS).
 #         The function returns a list of PawCard namedtuple objects. Make sure that the right amount of actions get assigned to the cards (again the ratio = 1/4) and that they are randomly distributed. The tests check for this.
 # """
-#     # small_deck = create_paw_deck(4)
+#     small_deck = create_paw_deck(26)
 #     # print(len(ret))
 
 #     # assert sum(1 for card in deck if card.action is not None) == 8
@@ -109,11 +112,11 @@ def create_paw_deck(n=8):
 #     # cards = [card.action for card in small_deck if card.action is not None]
 #     # assert sum(Counter(cards).values()) == 4
 
-#     for i in range(1, 3):
-#         deck = list(create_paw_deck(i))
-#         # assert sum(1 for card in deck if int(card.card[1:]) == 1) == i
+#     # for i in range(1, 3):
+#     #     deck = list(create_paw_deck(i))
+#     #     # assert sum(1 for card in deck if int(card.card[1:]) == 1) == i
 
-#     print(deck)
+#     # print(deck)
 
 
 # if __name__ == "__main__":
