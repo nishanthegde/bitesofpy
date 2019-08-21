@@ -51,7 +51,7 @@ mock_html = """
 </table>
 """
 
-# out_dir = os.getcwd()
+out_dir = os.getcwd()
 out_dir = "/tmp"
 html_file = f"{out_dir}/enchantment_list_pc.html"
 
@@ -94,6 +94,7 @@ class Item:
     str1 = "{}: \n".format(self.name.replace('_', ' ').title())
 
     str2 = ''
+    self.enchantments.sort(key=lambda x: x.id_name)
     for e in self.enchantments:
       str2 += "  [{}] {}\n".format(e.max_level, e.id_name)
 
@@ -140,7 +141,7 @@ def generate_enchantments(soup):
 
       enchantments[id_name] = Enchantment(id_name, name, max_level, description, items)
 
-  return dict(sorted(enchantments.items()))
+  return enchantments  # dict(sorted(enchantments.items()))
 
 
 def generate_items(data):
@@ -160,6 +161,11 @@ def generate_items(data):
         items[i.name] = i  # create Item object
       else:  # in dict
         items[i].enchantments.append(data[e])
+
+  # for i in items:
+  #   # for e in items[i].enchantments:
+  #   #   print(e.id_name)
+  #   items[i].enchantments.sort(key=lambda x: x.id_name)
 
   return dict(sorted(items.items()))
 
@@ -264,6 +270,7 @@ def main():
 
   for item in minecraft_items:
     print(minecraft_items[item], "\n")
+
   """
   # validate test file below this
   assert enchantment_mock().name == "Python Developer"
@@ -348,10 +355,10 @@ def main():
 
   # print(items)
 
-  # print([enc.id_name for enc in items["sword"].enchantments])
+  print([enc.id_name for enc in items["armor"].enchantments])
 
-  print(items["trident"])
-  """
+  print(items["armor"])
+"""
 
 
 if __name__ == "__main__":
