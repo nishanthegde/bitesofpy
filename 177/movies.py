@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from pandas import DataFrame
+from pandas.core.frame import DataFrame
 
 movie_excel_file = "https://bit.ly/2BVUyrO"
 
@@ -53,7 +53,7 @@ def group_by_genre(data=movie_excel_file):
      Return the new df of shape (rows, cols) = (19, 1) sorted by movie count
      descending (example output: https://bit.ly/2ILODva)
   """
-  df = pd.read_excel(data, skiprows=7, usecols="C,D")
+  df = pd.read_excel(data, skiprows=7, usecols="C:D")
   df['genres'] = df['genres'].str.split('|')
   df_explod = explode(df, 'genres')
 
@@ -68,6 +68,7 @@ def group_by_genre(data=movie_excel_file):
 # def main():
 
 #   df = group_by_genre()
+#   # print(type(df))
 #   assert type(df) == DataFrame
 #   assert df.shape == (19, 1)
 #   assert df.index[0] == 'Drama'
