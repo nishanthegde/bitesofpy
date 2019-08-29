@@ -6,16 +6,39 @@ DEFAULT_TEXT = ('Subscribe to our blog (sidebar) to periodically get '
 DOT = '.'
 
 
+TEXTS = ['Hello world', 'Welcome to PyBites',
+         'Decorators for fun and profit']
+
+
 def strip_range(start, end):
-    """Decorator that replaces characters of a text by dots, from 'start'
-       (inclusive) to 'end' (exclusive) = like range.
 
-        So applying this decorator on a function like this and 'text'
-        being 'Hello world' it would convert it into 'Hel.. world' when
-        applied like this:
+    if start < 0:
+        start = 0
 
-        @strip_range(3, 5)
-        def gen_output(text):
-            return text
-    """
-    pass
+    def rep_decorator(func):
+        def func_wrapper(text):
+            replacement = min((end - start), (len(text) - len(text[:start]))) * DOT
+            if len(text) <= start:
+                s = text
+            else:
+                s = text[:start] + replacement + text[start + len(replacement):]
+            return s
+        return func_wrapper
+    return rep_decorator
+
+
+# @strip_range(0, -1)
+# def gen_output(text):
+#     return text
+
+
+# def main():
+
+#     # print(get_text("John"))
+
+#     for arg in TEXTS:
+#         print(gen_output(text=arg))
+
+
+# if __name__ == '__main__':
+#     main()
