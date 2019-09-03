@@ -2,8 +2,8 @@ from datetime import date, timedelta
 
 from itertools import islice
 
-# TODAY = date.today()
-TODAY = date(2019, 8, 25)
+TODAY = date.today()
+# TODAY = date(2019, 8, 25)
 
 
 def gen_bite_planning(num_bites=1, num_days=1, start_date=TODAY):
