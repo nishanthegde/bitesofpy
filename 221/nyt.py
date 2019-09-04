@@ -26,7 +26,7 @@ def get_best_seller_titles(url=URL_NON_FICTION):
 
      Dev docs: https://developer.nytimes.com/docs/books-product/1/overview
   """
-  r = requests.get(url=URL_NON_FICTION)
+  r = requests.get(url)
 
   d = r.json()
   # return len(d['results']['books'])
@@ -35,10 +35,11 @@ def get_best_seller_titles(url=URL_NON_FICTION):
   titles = [book['title'].upper() for book in books]
   weeks = [book['weeks_on_list'] for book in books]
 
-s  return sorted(list(zip(titles, weeks)), key=lambda x: (x[1], x[0]), reverse=True)
+  return sorted(list(zip(titles, weeks)), key=lambda x: (x[1], x[0]), reverse=True)
 
 
 if __name__ == '__main__':
   ret = get_best_seller_titles()
   print(ret)
   # print(type(ret))s
+  # print(URL_FICTION)
