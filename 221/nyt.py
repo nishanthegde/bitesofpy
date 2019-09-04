@@ -35,7 +35,7 @@ def get_best_seller_titles(url=URL_NON_FICTION):
   titles = [book['title'].upper() for book in books]
   weeks = [book['weeks_on_list'] for book in books]
 
-  return sorted(list(zip(titles, weeks)), key=lambda x: (x[1], x[0]), reverse=True)
+  return sorted(list(zip(titles, weeks)), key=lambda x: x[1], reverse=True)
 
 
 if __name__ == '__main__':
