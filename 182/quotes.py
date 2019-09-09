@@ -11,7 +11,7 @@ HTML = """<!DOCTYPE html>
   <div class="content">
     <p>I’m striving this year to maintain my fitness and to always be learning new things. The new theme on Virgin.com is Live Life Better – a series shining a spotlight on how we can all lead happier, healthier and more fulfilled lives. Virgin has always wanted to make things better for our team and customers and to improve their experiences.</p>
     <p>Here are my top 10 quotes on living life better for some New Year inspiration:</p>
-    <p>10. "The beautiful thingsng about learning is nobody can take it away from you." - B.B King</p>
+    <p>10. "The beautiful thing about learning is nobody can take it away from you." - B.B King</p>
     <p>9. "Inexperience is an asset. Embrace it." - Wendy Kopp</p>
     <p>8. "Change will not come if we wait for some other person, or if we wait for some other time. We are the ones we’ve been waiting for. We are the change that we seek." - Barack Obama</p>
     <p>7. "The sky is not my limit… I am." - T.F. Hodge</p>
