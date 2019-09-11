@@ -51,23 +51,90 @@ operas = [
 
 
 def _get_date(date_str):
-    return datetime.date(datetime.strptime(date_str, "%d %B %Y"))
+  return datetime.date(datetime.strptime(date_str, "%d %B %Y"))
+
+
+def _is_date_bet_start_end(date, start, end):
+  return date >= start and date <= end
 
 
 def operas_both_at_premiere(guest, composer):
-    """Retrieves a list of titles of operas, where the guest and the composer
-       could have been together at premiere.
+  """Retrieves a list of titles of operas, where the guest and the composer
+     could have been together at premiere.
 
-       That is the Opera.author matches the composer passed in, and both guest
-       and composer are alive at the time of Opera.date.
+     That is the Opera.author matches the composer passed in, and both guest
+     and composer are alive at the time of Opera.date.
 
-       If guest and/or composer are not in the composers dict, raise a
-       ValueError
+     If guest and/or composer are not in the composers dict, raise a
+     ValueError
 
-       Args:
-       guest (str): one of the composers but not the author of an opera
-       composer (str): the author of an opera
+     Args:
+     guest (str): one of the composers but not the author of an opera
+     composer (str): the author of an opera
 
-       Returns a list (or generator) of titles of operas.
-    """
-    pass
+     Returns a list (or generator) of titles of operas.
+  """
+
+  # check is both args are in composers dict
+
+  if guest not in composers:
+    raise ValueError('Guest not in list of composers')
+
+  if composer not in composers:
+    raise ValueError('Composer not in list of composers')
+
+  # get birth date guest
+  birth_date_guest = _get_date(composers[guest].born)
+  # print(birth_date_guest)
+
+  # get death date guest
+  death_date_guest = _get_date(composers[guest].died)
+  # print(death_date_guest)
+
+  # get birth date author
+  birth_date_author = _get_date(composers[composer].born)
+  # print(birth_date_author)
+
+  # get death date author
+  death_date_author = _get_date(composers[composer].died)
+  # print(death_date_author)
+
+  # get list of operas where composer arg is the author
+  return (o for o in operas if o.author == composer
+          and _is_date_bet_start_end(_get_date(o.date), birth_date_author, death_date_author)
+          and _is_date_bet_start_end(_get_date(o.date), birth_date_guest, death_date_guest))
+
+
+# def main():
+#   # dt = _get_date('9 February 1893')
+#   # start = _get_date('9 February 1893')
+#   # end = _get_date('1 December 1893')
+
+#   # print(_is_date_bet_start_end(dt, start, end))
+
+#   wagner_verdi = list(operas_both_at_premiere("wagner", "verdi"))
+#   assert len(wagner_verdi) == 10
+#   assert "Otello" not in wagner_verdi
+
+#   verdi_wagner = list(operas_both_at_premiere("verdi", "wagner"))
+#   assert len(verdi_wagner) == 11
+
+#   # premiere after Wagner's death (composed in 1833)
+#   assert "The Fairies" not in verdi_wagner
+
+#   beethoven_wagner = list(operas_both_at_premiere("beethoven", "wagner"))
+#   assert len(beethoven_wagner) == 0
+
+#   wagner_beethoven = list(operas_both_at_premiere("wagner", "beethoven"))
+#   assert len(wagner_beethoven) == 0
+
+#   beethoven_mozart = list(operas_both_at_premiere("beethoven", "mozart"))
+#   assert len(beethoven_mozart) == 5
+#   assert "Apollo and Hyacinth" not in beethoven_mozart
+
+#   operas_both_at_premiere("dvorak", "verdi")
+#   operas_both_at_premiere("verdi", "dvorak")
+
+
+# if __name__ == '__main__':
+#   main()
