@@ -12,4 +12,41 @@ def sandwich(func):
     """
     @wraps(func)
     def wrapped(*args, **kwargs):
-        pass
+        print(UPPER_SLICE)
+        result = func(*args, **kwargs)
+        print(LOWER_SLICE)
+        return result
+
+    return wrapped
+
+
+@sandwich
+def add_ingredients(ingredients):
+    print(' / '.join(ingredients))
+
+
+# def main():
+#     """
+#         >>> from sandwich import sandwich
+#         >>> @sandwich
+#         ... def add_ingredients(ingredients):
+#         ...     print(' / '.join(ingredients))
+#         ...
+#         >>> ingredients = ['bacon', 'lettuce', 'tomato']
+#         >>> add_ingredients(ingredients)
+#         === Upper bread slice ===
+#         bacon / lettuce / tomato
+#         === Lower bread slice ===
+#     """
+
+#     print('here...')
+
+#     ingredients = ['bacon', 'lettuce', 'tomato']
+#     add_ingredients(ingredients)
+
+#     ingredients = ['fried egg', 'tomato', 'cucumber']
+#     add_ingredients(ingredients)
+
+
+# if __name__ == '__main__':
+#     main()
