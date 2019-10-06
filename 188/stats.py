@@ -4,7 +4,7 @@ from urllib.request import urlretrieve
 import os
 
 # local = os.getcwd()
-local = 'tmp'
+local = '/tmp'
 STATS = path.join(local, 'testfiles_number_loc.txt')
 
 if not path.isfile(STATS):
