@@ -45,7 +45,9 @@ class Promo:
             return random.choice([k for k in list(BITES.keys()) if k not in self.bites_done])
 
     def new_bite(self):
-        self.bites_done.add(self._pick_random_bite())
+        nb = self._pick_random_bite()
+        self.bites_done.add(nb)
+        return nb
 
 
 def grab_bites(promo, amount=BITES_AVAILABLE):
@@ -54,62 +56,62 @@ def grab_bites(promo, amount=BITES_AVAILABLE):
         promo.new_bite()
 
 
-# def main():
-#     print('here ...')
-#     # print(type(BITES))
+def main():
+    print('here ...')
+    # print(type(BITES))
 
-#     promo = Promo(bites_done=bites_done.copy())
+    promo = Promo(bites_done=bites_done.copy())
 
-#     assert len(BITES) == 15
-#     assert len(promo.bites_done) == 5
+    assert len(BITES) == 15
+    assert len(promo.bites_done) == 5
 
-#     for _ in range(10):
-#         bite = promo._pick_random_bite()
-#         # print(bite)
-#         assert type(bite) == int
-#         assert bite in BITES
-#         assert bite not in promo.bites_done
+    for _ in range(10):
+        bite = promo._pick_random_bite()
+        # print(bite)
+        assert type(bite) == int
+        assert bite in BITES
+        assert bite not in promo.bites_done
 
-#     # assert len(promo.bites_done) == 5
-#     # grab_bites(promo, amount=7)
-#     # # bites_done incremented with 7
-#     # assert len(promo.bites_done) == 12
-#     # print(promo.bites_done)
+    # assert len(promo.bites_done) == 5
+    # grab_bites(promo, amount=7)
+    # # bites_done incremented with 7
+    # assert len(promo.bites_done) == 12
+    # # print(promo.bites_done)
 
-#     assert len(promo.bites_done) == 5
-#     grab_bites(promo)
+    assert len(promo.bites_done) == 5
+    grab_bites(promo)
+    # promo._pick_random_bite()
+    # exhausted bites
+    # with pytest.raises(NoBitesAvailable):
+    #     promo._pick_random_bite()
 
-#     # exhausted bites
-#     with pytest.raises(NoBitesAvailable):
-#         promo._pick_random_bite()
+    # grab_bites(promo)
+    # exhausted bites
+    # with pytest.raises(NoBitesAvailable):
+    #     promo._pick_random_bite()
 
-#     # grab_bites(promo)
-#     # exhausted bites
-#     # with pytest.raises(NoBitesAvailable):
-#     #     promo._pick_random_bite()
-
-#     # print(p.bites_done)
-#     # p.new_bite()
-#     # print(p.bites_done)
-#     # p.new_bite()
-#     # print(p.bites_done)
-#     # p.new_bite()
-#     # print(p.bites_done)
-#     # p.new_bite()
-#     # print(p.bites_done)
-#     # p.new_bite()
-#     # print(p.bites_done)
-#     # p.new_bite()
-#     # print(p.bites_done)
-#     # p.new_bite()
-#     # print(p.bites_done)
-#     # p.new_bite()
-#     # print(p.bites_done)
-#     # p.new_bite()
-#     # print(p.bites_done)
-#     # p.new_bite()
-#     # print(p.bites_done)
+    # print(p.bites_done)
+    # p.new_bite()
+    # print(p.bites_done)
+    # p.new_bite()
+    # print(p.bites_done)
+    # p.new_bite()
+    # print(p.bites_done)
+    # p.new_bite()
+    # print(p.bites_done)
+    # p.new_bite()
+    # print(p.bites_done)
+    # p.new_bite()
+    # print(p.bites_done)
+    # p.new_bite()
+    # print(p.bites_done)
+    # p.new_bite()
+    # print(p.bites_done)
+    # p.new_bite()
+    # print(p.bites_done)
+    # p.new_bite()
+    # print(p.bites_done)
 
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
