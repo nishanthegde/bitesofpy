@@ -10,7 +10,7 @@ class Employee:
     """
 
     def __init__(self, first_name: str, last_name: str, days_per_week: int,
-                 hours_per_day: int, wage: float) -> None:
+                 hours_per_day: float, wage: float) -> None:
         self.first_name = first_name
         self.last_name = last_name
         self.days_per_week = days_per_week
