@@ -1,3 +1,5 @@
+from datetime import date
+
 MSG = 'Hey {}, there are more people with your birthday!'
 
 
@@ -9,4 +11,30 @@ class BirthdayDict(dict):
         self.update(*args, **kwargs)
 
     def __setitem__(self, name, birthday):
-        pass
+        # print('here ...')
+
+        for v in self.values():
+            if birthday.day == v.day and birthday.month == v.month:
+                print(MSG.format(name))
+
+        super(BirthdayDict, self).__setitem__(str(name), birthday)
+
+
+# def main():
+
+#     # print('here ...')
+#     # print(MSG.format(2))
+
+#     bd = BirthdayDict()
+#     bd['bob'] = date(1987, 6, 15)
+#     bd['tim'] = date(1984, 7, 15)
+#     # print(bd)
+#     # bd.update({'sara': date(1978, 6, 14)})
+#     bd['mary'] = date(1987, 6, 15)
+#     # bd['sara'] = date(1987, 6, 14)
+#     bd['mike'] = date(1981, 7, 15)
+#     print(bd)
+
+
+# if __name__ == '__main__':
+#     main()
