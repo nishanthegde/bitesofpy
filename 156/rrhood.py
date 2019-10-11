@@ -83,7 +83,7 @@ def make_character_index(text=text, characters=CHARACTERS):
       for t in c:
         index = [i + 1 for i, e in enumerate(lines) if t.lower() in e]
         ind.extend(index)
-      char_index[c[0].lower()] = sorted(ind)
+      char_index[c[0].lower()] = sorted(list(set(ind)))
     else:
         # get list of line numbers that contains character
       index = [i + 1 for i, e in enumerate(lines) if c.lower() in e]
@@ -95,13 +95,13 @@ def make_character_index(text=text, characters=CHARACTERS):
 # def main():
 
 #   print('here...')
-#   # print(make_character_index())
+#   print(make_character_index())
 #   # [1, 2, 3, 6, 7, 8, 11, 18, 19, 21, 24, 26, 28, 30, 33, 36],
 
-#   characters = ('elder brother', 'younger brother', ('the tree', 'magical tree'))
-#   actual = make_character_index(text=the_neetle_tree, characters=characters)
+#   # characters = ('elder brother', 'younger brother', ('the tree', 'magical tree'))
+#   # actual = make_character_index(text=the_neetle_tree, characters=characters)
 
-#   print(actual)
+#   # print(actual)
 
 
 # if __name__ == '__main__':
