@@ -43,13 +43,66 @@ The woodsman knocked out the wolf and carried him deep into the forest where he 
 Little Red Riding Hood and her Grandmother had a nice lunch and a long chat.
 """
 
+the_neetle_tree = """
+There were once two brothers who lived on the edge of a forest.
+The elder brother was very mean to his younger brother and ate up all the food and took all his good clothes.
+One day, the elder brother went into the forest to find some firewood to sell in the market.
+As he went around chopping the branches of a tree after tree, he came upon a magical tree.
+The tree said to him, ‘Oh kind sir, please do not cut my branches.
+If you spare me, I will give you my golden apples’.
+The elder brother agreed but was disappointed with the number apples the tree gave him.
+Greed overcame him, and he threatened to cut the entire trunk if the tree didn’t give him more apples.
+The magical tree instead showered upon the elder brother hundreds upon hundreds of tiny needles.
+The elder brother lay on the ground crying in pain as the sun began to lower down the horizon.
+The younger brother grew worried and went in search of his elder brother.
+He found him with hundreds of needles on his skin.
+He rushed to his brother and removed each needle with painstaking love.
+After he finished, the elder brother apologised for treating him badly and promised to be better.
+The tree saw the change in the elder brother’s heart and gave them all the golden apples they could ever need.
+"""
+
 
 def make_character_index(text=text, characters=CHARACTERS):
-    """Return a dict with keys are characters (lowercased) and values
-       the lines they appear in sorted order.
-       Matches should be case insensitive.
-       If a character has multiple synonyms
-       - e.g. ('Grandmother', 'Grandma', 'Granny') -
-       then return the former as key.
-    """
-    pass
+  """Return a dict with keys are characters (lowercased) and values
+     the lines they appear in sorted order.
+     Matches should be case insensitive.
+     If a character has multiple synonyms
+     - e.g. ('Grandmother', 'Grandma', 'Granny') -
+     then return the former as key.
+  """
+
+  char_index = {}  # dict to return
+
+  # split lines of input text and store in a list
+  lines = [line.lower() for line in text.split('\n') if line]
+
+  # go through characters, account for cases where synonyms are in tuple
+  for c in characters:
+    if isinstance(c, tuple):
+      ind = []  # list to hold all line numbers
+      for t in c:
+        index = [i + 1 for i, e in enumerate(lines) if t.lower() in e]
+        ind.extend(index)
+      char_index[c[0].lower()] = sorted(ind)
+    else:
+        # get list of line numbers that contains character
+      index = [i + 1 for i, e in enumerate(lines) if c.lower() in e]
+      char_index[c.lower()] = sorted(index)
+
+  return char_index
+
+
+# def main():
+
+#   print('here...')
+#   # print(make_character_index())
+#   # [1, 2, 3, 6, 7, 8, 11, 18, 19, 21, 24, 26, 28, 30, 33, 36],
+
+#   characters = ('elder brother', 'younger brother', ('the tree', 'magical tree'))
+#   actual = make_character_index(text=the_neetle_tree, characters=characters)
+
+#   print(actual)
+
+
+# if __name__ == '__main__':
+#   main()
