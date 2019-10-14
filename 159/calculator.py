@@ -24,14 +24,14 @@ def simple_calculator(calculation: str) -> int:
     ip2 = int(match.group(3))
 
     if match.group(2).strip() == '+':
-      return rip1 + ip2
+      return ip1 + ip2
     elif match.group(2).strip() == '*':
       return ip1 * ip2
     elif match.group(2).strip() == '-':
       return ip1 - ip2
     elif match.group(2).strip() == '/':
       try:
-        round(ip1 / ip2, 2)
+        return round(ip1 / ip2, 2)
       except ZeroDivisionError:
         raise ValueError('bad robot!')
     else:
@@ -42,7 +42,7 @@ def simple_calculator(calculation: str) -> int:
 
 # def main():
 #   print('here ...')
-#   actual = simple_calculator('1 x 2')
+#   actual = simple_calculator('-2 / 175')
 #   print(actual)
 
 
