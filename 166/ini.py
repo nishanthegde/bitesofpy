@@ -311,7 +311,7 @@ class ToxIniParser:
     def __init__(self, ini_file):
         """Use configparser to load ini_file into self.config"""
         c = configparser.ConfigParser()
-        c.read_string(str(ini_file))
+        c.read(ini_file)
         self.config = c
 
     @property
