@@ -311,7 +311,7 @@ class ToxIniParser:
     def __init__(self, ini_file):
         """Use configparser to load ini_file into self.config"""
         c = configparser.ConfigParser()
-        c.read_string(ini_file)
+        c.read_string(str(ini_file))
         self.config = c
 
     @property
@@ -333,14 +333,14 @@ class ToxIniParser:
         return list(set([self.config[s]['basepython'] for s in self.config.sections() if self.config.has_option(s, 'basepython')]))
 
 
-# def main():
-#     print('here ...')
+def main():
+    # print('here ...')
 
-#     tox = ToxIniParser(cookiecutter)
-#     print(tox.number_of_sections)
-#     print(sorted(tox.environments))
-#     print(sorted(tox.base_python_versions))
+    tox = ToxIniParser(cookiecutter)
+    print(tox.number_of_sections)
+    print(sorted(tox.environments))
+    print(sorted(tox.base_python_versions))
 
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
