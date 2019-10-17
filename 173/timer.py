@@ -22,6 +22,8 @@ def add_todo(delay_time: str, task: str,
     >>> "Wash my car @ 2019-02-06 23:10:00"
     """
 
+    # parse days
+
     days = 0
     days_pattern = re.compile(r'(\d+)d')
     days_match = days_pattern.search(delay_time)
