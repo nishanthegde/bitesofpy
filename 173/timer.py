@@ -21,4 +21,47 @@ def add_todo(delay_time: str, task: str,
     >>> add_todo("1h 10m", "Wash my car")
     >>> "Wash my car @ 2019-02-06 23:10:00"
     """
-    pass
+
+    days = 0
+    days_pattern = re.compile(r'(\d+)d')
+    days_match = days_pattern.search(delay_time)
+    if days_match:
+        days = int(days_match.group(1))
+
+    hrs = 0
+    hrs_pattern = re.compile(r'(\d+)h')
+    hrs_match = hrs_pattern.search(delay_time)
+    if hrs_match:
+        hrs = int(hrs_match.group(1))
+    mins = 0
+    mins_pattern = re.compile(r'(\d+)m')
+    mins_match = mins_pattern.search(delay_time)
+    if mins_match:
+        mins = int(mins_match.group(1))
+
+    secs = 0
+    secs_pattern = re.compile(r'(\d+)[\s|s]')
+    secs_match = secs_pattern.search(delay_time)
+    if secs_match:
+        secs = int(secs_match.group(1))
+
+    secs_pattern2 = re.compile(r'(\d+)$')
+    secs_match = secs_pattern2.search(delay_time)
+    if secs_match:
+        secs = int(secs_match.group(1))
+
+    at_time = str(start_time + timedelta(days=days, hours=hrs, minutes=mins, seconds=secs))
+    return '{} @ {}'.format(task, at_time)
+
+
+# def main():
+#     print('here')
+#     print(add_todo("11h 10m", "Wash my car"))
+#     print(add_todo("45", "Finish this Test"))
+#     print(add_todo("5m 3s", "Go to Bed"))
+#     print(add_todo("1d 10h 47m 17s", "Study some Python"))
+#     print(add_todo("30d", "Code a Bites"))
+
+
+# if __name__ == '__main__':
+#     main()
