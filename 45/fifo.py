@@ -1,5 +1,9 @@
+from collections import deque
+
+
 def my_queue(n=5):
-    pass
+    q = deque(maxlen=n)
+    return q
 
 
 if __name__ == '__main__':
