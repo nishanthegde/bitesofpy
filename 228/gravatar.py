@@ -14,4 +14,18 @@ def create_gravatar_url(email, size=200):
        For Python check hashlib check out (md5 / hexdigest):
        https://docs.python.org/3/library/hashlib.html#hashlib.hash.hexdigest
     """
-    pass
+    hash_object = hashlib.md5(email.replace(' ', '').strip().lower().encode())
+    hex_eq = hash_object.hexdigest()
+
+    return GRAVATAR_URL.format(hashed_email=hex_eq, size=size)
+
+
+# def main():
+
+#     print('paddle to the buoy... and then waves!')
+#     what = create_gravatar_url(' support@pybit.es', 1000)
+#     print(what)
+
+
+# if __name__ == '__main__':
+#     main()
