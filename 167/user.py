@@ -14,7 +14,7 @@ class User:
            and using title case for both.
         """
         # TODO 1: you code
-        pass
+        return '{} {}'.format(self.first_name.title(), self.last_name.title())
 
     @property
     def username(self):
@@ -26,7 +26,7 @@ class User:
            https://pybit.es/property-decorator.html
         """
         # TODO 2: you code
-        pass
+        return '{}{}'.format(str(self.first_name.lower())[:1], str(self.last_name.lower())[:7])
 
     # TODO 3: you code
     #
@@ -37,10 +37,46 @@ class User:
     # see also TESTS for required output
 
     def __str__(self):
-        pass
+        return '{} ({})'.format(self.get_full_name, self.username)
 
     def __repr__(self):
         """Don't hardcode the class name, hint: use a
            special attribute of self.__class__ ...
         """
-        pass
+        return '{}("{}", "{}")'.format(self.__class__.__name__, self.first_name, self.last_name)
+
+
+class SpecialUser(User):
+    pass
+
+
+# def main():
+#     print('thank you...')
+#     bob = User('bob', 'belderbos')
+#     assert bob.get_full_name == 'Bob Belderbos'
+#     assert bob.username == 'bbelderb'  # lowercase!
+#     assert str(bob) == 'Bob Belderbos (bbelderb)'
+#     repr(bob) == 'User("bob", "belderbos")'
+
+#     bob = User('julian', 'Sequeira')
+#     assert bob.get_full_name == 'Julian Sequeira'
+#     assert bob.username == 'jsequeir'  # lowercase!
+#     assert str(bob) == 'Julian Sequeira (jsequeir)'
+#     assert repr(bob) == 'User("julian", "Sequeira")'
+
+#     bob = User('Tania', 'Courageous')
+#     assert bob.get_full_name == 'Tania Courageous'  # aka PyBites Ninja
+#     assert bob.username == 'tcourage'  # lowercase!
+#     assert str(bob) == 'Tania Courageous (tcourage)'
+#     assert repr(bob) == 'User("Tania", "Courageous")'
+
+#     noah = SpecialUser('Noah', 'Kagan')
+#     assert noah.get_full_name == 'Noah Kagan'
+#     assert noah.username == 'nkagan'  # lowercase!
+#     assert str(noah) == 'Noah Kagan (nkagan)'
+
+#     assert repr(noah) == 'SpecialUser("Noah", "Kagan")'
+
+
+# if __name__ == '__main__':
+#     main()
