@@ -8,6 +8,7 @@ items = [{'id': 1, 'name': 'laptop', 'value': 1000},
 def duplicate_items(items: dict) -> dict:
     return copy.deepcopy(items)
 
+#time to dial up
 
 # def main():
 #     print('thank you ...')
