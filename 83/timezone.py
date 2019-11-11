@@ -12,7 +12,7 @@ def what_time_lives_pybites(naive_utc_dt: datetime) -> tuple:
     utc_dt = timezone('UTC').localize(naive_utc_dt)
     return (utc_dt.astimezone(timezone('Australia/Sydney')), utc_dt.astimezone(timezone('Europe/Madrid')))
 
-
+#thank you
 # def main():
 #     print('thank you for everything ...')
 #     naive_utc_dt = datetime(2018, 4, 27, 22, 55, 0)
