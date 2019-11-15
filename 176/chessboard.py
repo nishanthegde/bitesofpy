@@ -9,14 +9,14 @@ def create_chessboard(size: int=8):
 
     for i in range(0, num_lines):
         if i % 2 == 0:
-            print('{}{}'.format(WHITE, num_pieces * BLACK))
+            print(num_pieces * '{}{}'.format(WHITE, BLACK))
         else:
-            print('{}'.format(num_pieces * BLACK))
+            print(num_pieces * '{}{}'.format(BLACK, WHITE))
 
 
 # def main():
 #     print('thank you for the poeple that you have given me in my life ...')
-#     create_chessboard(8)
+#     create_chessboard(16)
 
 
 # if __name__ == '__main__':
