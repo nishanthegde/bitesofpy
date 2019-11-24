@@ -4,7 +4,7 @@ import os
 import re
 # from collections import defaultdict
 
-local = os.getcwd()
+# local = os.getcwd()
 tmp = Path('/tmp')
 # tmp = Path(local)
 timings_log = tmp / 'pytest_timings.out'
@@ -42,14 +42,15 @@ def get_bite_with_fastest_avg_test(timings: list) -> str:
             min_times.append(key)
 
     if len(min_times) == 1:
-        return min_times[0]
+        return str(min_times[0])
     else:
-        return tuple(sorted(min_times))
+        return str(tuple(sorted(min_times)))
 
 
 # def main():
 #     print('thank you for the waves and the ocean...')
-#     print(get_bite_with_fastest_avg_test(loglines[:200]))
+#     print(type(get_bite_with_fastest_avg_test(loglines[:250])))
+#     # assert "('60', '87')" in ('60', '87')
 
 
 # if __name__ == '__main__':
