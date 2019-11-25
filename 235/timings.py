@@ -6,7 +6,7 @@ import re
 
 # local = os.getcwd()
 tmp = Path('/tmp')
-# tmp = Path(local)
+tmp = Path(local)
 timings_log = tmp / 'pytest_timings.out'
 
 if not timings_log.exists():
@@ -41,16 +41,25 @@ def get_bite_with_fastest_avg_test(timings: list) -> str:
         if value == min_avg_time[1]:
             min_times.append(key)
 
-    if len(min_times) == 1:
-        return str(min_times[0])
-    else:
-        return str(tuple(sorted(min_times)))
+    # if len(min_times) == 1:
+    #     return min_times[0]
+    # else:
+    #     return min_times[0]
 
+    return min_times[0]
 
 # def main():
 #     print('thank you for the waves and the ocean...')
-#     print(type(get_bite_with_fastest_avg_test(loglines[:250])))
-#     # assert "('60', '87')" in ('60', '87')
+#     actual = str(get_bite_with_fastest_avg_test(loglines[:50]))
+#     # print(type(actual))
+#     # print(type(actual))
+#     # print(type(('60', '87')))
+#     expected_bites = ('60', '87')
+
+#     if type(expected_bites) == tuple:
+#         assert actual in expected_bites
+#     else:
+#         assert actual == expected_bites
 
 
 # if __name__ == '__main__':
