@@ -6,7 +6,7 @@ import re
 
 # local = os.getcwd()
 tmp = Path('/tmp')
-tmp = Path(local)
+# tmp = Path(local)
 timings_log = tmp / 'pytest_timings.out'
 
 if not timings_log.exists():
