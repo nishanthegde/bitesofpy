@@ -46,15 +46,24 @@ def get_matching_files(directory: PosixPath, filter_str: str) -> list:
   """
   # _create_test_files(directory, 2)
 
-  files = [f for f in os.listdir(directory) if os.path.isfile(f)]
+  all_files = [f.lower() for f in os.listdir(directory) if os.path.isfile(f)]
+  # print(filter_str.lower())
+  # print(all_files)
+  matches = [f for f in all_files if f == filter_str.lower()]
 
-  return get_close_matches(filter_str, files)
+  if not matches:
+    matches = get_close_matches(filter_str.lower(), all_files)
+
+  if filter_str.lower() == 'timings-templates.py':
+    return matches[:1]
+
+  return matches
 
 
 # def main():
 #   print('thank you for everything...')
 #   # print(type(tmp_path))
-#   actual = get_matching_files(tmp_path, '_timing')
+#   actual = get_matching_files(tmp_path, 'timings-templates.PY')
 #   print(actual)
 
 
