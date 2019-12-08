@@ -21,4 +21,38 @@ def years_gold_value_decreased(gold_prices: str = gold_prices) -> (int, int):
     """Analyze gold_prices returning a tuple of the year the gold price
        decreased the most and the year the gold price increased the most.
     """
-    pass
+    year_price = {}
+    for line in gold_prices.strip().splitlines():
+        for e in line.split(' '):
+            year_price[int(e.split(',')[0][:4])] = float(e.split(',')[1])
+
+    most_dec = 0
+    most_inc = 0
+    yrs = list(year_price.keys())
+    for i in range(0, len(yrs)):
+        if i < len(yrs) - 1:
+            if (year_price[yrs[i]] - year_price[yrs[i + 1]]) > most_dec:
+                most_dec_yr = yrs[i + 1]
+                most_dec = (year_price[yrs[i]] - year_price[yrs[i + 1]])
+
+            if (year_price[yrs[i + 1]] - year_price[yrs[i]]) > most_inc:
+                most_inc_yr = yrs[i + 1]
+                most_inc = (year_price[yrs[i + 1]] - year_price[yrs[i]])
+
+    return (most_dec_yr, most_inc_yr)
+
+
+# def main():
+#     print('thank you for everything...')
+#     print(years_gold_value_decreased())
+#     data = '\n'.join(gold_prices.strip().splitlines()[:10])
+#     actual = years_gold_value_decreased(data)
+#     print(actual)
+#     data = '\n'.join(gold_prices.strip().splitlines()[-8:-6])
+#     actual = years_gold_value_decreased(data)
+#     print(actual)
+#     # print(len(years_gold_value_decreased()))
+
+
+# if __name__ == '__main__':
+#     main()
