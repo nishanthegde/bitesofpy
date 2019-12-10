@@ -7,7 +7,6 @@ from validate import int_args
 def sum_numbers(*numbers):
     return sum(numbers)
 
-
 def test_valid_args():
     assert sum_numbers(1, 2, 3) == 6
 

@@ -10,6 +10,7 @@ def hello_world():
     # A simple comment preceding a simple print statement
     print("Hello World")
 '''
+
 single_comment_after_strip = '''
 def hello_world():
     print("Hello World")
@@ -20,6 +21,7 @@ def say_hello(name):
     """A simple function that says hello... Richie style"""
     print(f"Hello {name}, is it me you're looking for?")
 '''
+
 single_docstring_after_strip = '''
 def say_hello(name):
     print(f"Hello {name}, is it me you're looking for?")

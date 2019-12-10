@@ -28,7 +28,7 @@ class Employee:
         return f"${amount:0.2f}"
 
     @property
-    def weekly_pay(self):
+    def weekly_pay(self) -> str:
         """Returns amount of weekly pay in US currency
 
         For instance: $250.75

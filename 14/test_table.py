@@ -9,7 +9,6 @@ table2 = list(generate_table(names, aliases))
 table3 = list(generate_table(names, aliases, points))
 table4 = list(generate_table(names, aliases, points, awake))
 
-
 def test_generate_table():
     assert len(table1) == len(table2) == len(table3) == len(table4) == 6
 

@@ -1,4 +1,4 @@
-from poem import print_hanging_indents
+  from poem import print_hanging_indents
 
 # part of William Shakespeare's play Hamlet
 shakespeare_unformatted = """

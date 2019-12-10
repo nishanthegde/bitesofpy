@@ -18,3 +18,11 @@ def test_slice_and_dice_default_text():
 def test_slice_and_dice_other_text():
     expected = ['word', 'list', 'list']
     assert slice_and_dice(another_text) == expected
+
+
+def main():
+    print('here ..')
+
+
+if __name__ == '__main__':
+    main()

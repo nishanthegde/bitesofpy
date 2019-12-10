@@ -3,7 +3,7 @@ from collections import namedtuple
 from bs4 import BeautifulSoup as Soup
 import requests
 
-CONTENT = requests.get('http://bit.ly/2EN2Ntv').text
+CONTENT = requests.get('https://www.packtpub.com/free-learning').text
 
 Book = namedtuple('Book', 'title description image link')
 
@@ -40,11 +40,11 @@ def get_book():
 
     return book
 
-# def main():
+def main():
 
-#     book = get_book()
-#     # print(type(book))
-#     print(book)
+    # book = get_book()
+    # print(type(book))
+    # print(book)
 
 #     # get text of first h2 tag. this is the title of the free e book
 #     # print(book.find_all('h2')[0].text.strip())
@@ -71,9 +71,9 @@ def get_book():
 
 #     # for s in book.find('div', {'class': 'dotd-main-book-summary float-left'}).stripped_strings:
 #     #     print(s)
-#     # write contents of the html file for checking
-#     # with open("packt.html", "w") as file:
-#     #     file.write(str(book))
+    # write contents of the html file for checking
+    with open("packt.html", "w") as file:
+        file.write(CONTENT)
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()

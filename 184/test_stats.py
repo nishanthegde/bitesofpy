@@ -2,7 +2,6 @@ import pytest
 
 from stats import BiteStats
 
-
 @pytest.fixture(scope="module")
 def bite_stats():
     return BiteStats()

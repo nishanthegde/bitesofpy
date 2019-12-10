@@ -24,7 +24,7 @@ def test_validate_username_wrong_validator():
 def test_validate_username_twitter_range():
     assert validate_username('Twitter', 'a')
     assert not validate_username('Twitter', '')
-    assert not validate_username('Twitter', 'a'*16)
+    assert not validate_username('Twitter', 'a' * 16)
 
 
 def test_validate_username_twitter_regex():
@@ -39,7 +39,7 @@ def test_validate_username_twitter_regex():
 def test_validate_username_facebook_range():
     assert validate_username('Facebook', 'abc123')
     assert not validate_username('Facebook', 'bob')
-    assert not validate_username('Facebook', 'a'*51)
+    assert not validate_username('Facebook', 'a' * 51)
 
 
 def test_validate_username_facebook_regex():
@@ -54,7 +54,7 @@ def test_validate_username_facebook_regex():
 def test_validate_username_reddit_range():
     assert validate_username('Reddit', 'abc')
     assert not validate_username('Reddit', 'ab')
-    assert not validate_username('Reddit', 'a'*21)
+    assert not validate_username('Reddit', 'a' * 21)
 
 
 def test_validate_username_reddit_regex():

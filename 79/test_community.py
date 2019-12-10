@@ -51,3 +51,7 @@ def test_output(capfd):
     for line in expected_output:
         assert line.strip().replace(' ', '') in actual_output, \
                f'{line} not in {actual_output}'
+
+
+
+

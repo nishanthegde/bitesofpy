@@ -103,35 +103,35 @@ def get_emoji_byte_strings(soup=get_soup()):
   return emoji_byte_strings
 
 
-# def main():
-#   # print('dance!')
+def main():
+  # print('dance!')
 
-#   what_means_emoji('🐶').lower() == 'dog face'
-#   what_means_emoji('🏋').lower() == 'weight lifter'
-#   what_means_emoji('🌇').lower() == 'sunset over buildings'
+  what_means_emoji('🐶').lower() == 'dog face'
+  what_means_emoji('🏋').lower() == 'weight lifter'
+  what_means_emoji('🌇').lower() == 'sunset over buildings'
 
-#   assert what_means_emoji('aaa').lower() == 'not found'
+  assert what_means_emoji('aaa').lower() == 'not found'
 
-#   # emoji_mapping = _make_emoji_mapping()
-#   # print(emoji_mapping)
+  # emoji_mapping = _make_emoji_mapping()
+  # print(emoji_mapping)
 
-#   # ret = find_emoji('sun')
-#   # print(ret)
+  ret = find_emoji('test')
+  print(ret)
 
-#   output = """sunrise over mountains           | 🌄
-#             sunrise                          | 🌅
-#             sunset over buildings            | 🌇
-#             sun with face                    | 🌞
-#             sunflower                        | 🌻
-#             smiling face with sunglasses     | 😎"""
+  # output = """sunrise over mountains           | 🌄
+  #           sunrise                          | 🌅
+  #           sunset over buildings            | 🌇
+  #           sun with face                    | 🌞
+  #           sunflower                        | 🌻
+  #           smiling face with sunglasses     | 😎"""
 
-#   assert 'sunrise' in output
-#   assert '🌅' in output
-#   assert 'sunset over buildings' in output
-#   assert '🌇' in output
-#   assert 'sun with face' in output
-#   assert '🌻' in output
+  # assert 'sunrise' in output
+  # assert '🌅' in output
+  # assert 'sunset over buildings' in output
+  # assert '🌇' in output
+  # assert 'sun with face' in output
+  # assert '🌻' in output
 
 
-# if __name__ == '__main__':
-#   main()
+if __name__ == '__main__':
+  main()

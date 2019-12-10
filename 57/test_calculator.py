@@ -2,7 +2,6 @@ import pytest
 
 from calculator import create_parser, call_calculator
 
-
 @pytest.fixture
 def parser():
     return create_parser()

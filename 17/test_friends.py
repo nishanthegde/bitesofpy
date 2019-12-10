@@ -4,7 +4,6 @@ from friends import friends_teams
 
 friends = 'Bob Dante Julian Martin'.split()
 
-
 @pytest.mark.parametrize('test_input,expected', [
     (('Bob', 'Dante'), True),
     (('Bob', 'Julian'), True),
@@ -30,7 +29,6 @@ def test_team_of_two_order_does_not_matter(test_input, expected):
         assert test_input in combos
     else:
         assert test_input not in combos
-
 
 @pytest.mark.parametrize('test_input,expected', [
     (('Bob', 'Dante'), True),
