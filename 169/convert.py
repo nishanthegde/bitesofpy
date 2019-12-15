@@ -14,7 +14,7 @@ def convert(value: float, fmt: str) -> float:
     if fmt.lower() == 'cm':
         return round(value * 2.54, 4)
     else:
-        return round(value * 0.39370, 4)
+        return round(value * 0.39370079, 4)
 
 
 def main():
@@ -25,6 +25,7 @@ def main():
     print(convert(83, "CM"))
     print(convert(91, "IN"))
     print(convert(55, "in"))
+    print(convert(90, "in"))
 
 
 if __name__ == '__main__':
