@@ -1,5 +1,5 @@
 def _is_teen(n: int) -> bool:
-  if n // 10 == 1:
+  if n // 10 == 1 and n % 10 != 0:
     return True
   elif n // 10 == 0:
     return False
@@ -40,8 +40,8 @@ def get_ordinal_suffix(number: int) -> str:
 #   print(get_ordinal_suffix(55))
 #   print(get_ordinal_suffix(56))
 #   print(get_ordinal_suffix(3001))
-#   print(get_ordinal_suffix(2002))
-#   # print(_is_teen(3000))
+#   print(get_ordinal_suffix(101))
+#   # print(_is_teen(201))
 
 
 # if __name__ == '__main__':
