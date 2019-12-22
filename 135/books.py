@@ -30,12 +30,12 @@ books = [
 
 # all functions return books sorted in ascending order.
 
-def sort_books_by_len_of_title(books=books):
+def sort_books_by_len_of_title(books: list = books) -> Book:
     """
     Expected last book in list:
     Automate the Boring Stuff with Python
     """
-    pass
+    return sorted(books, key=lambda x: len(x.title))
 
 
 def sort_books_by_first_authors_last_name(books=books):
@@ -43,7 +43,7 @@ def sort_books_by_first_authors_last_name(books=books):
     Expected last book in list:
     Automate the Boring Stuff with Python
     """
-    pass
+    return sorted(books, key=lambda x: [x.split()[-1].strip() for x in x.authors.split(',')])
 
 
 def sort_books_by_number_of_page(books=books):
@@ -51,7 +51,7 @@ def sort_books_by_number_of_page(books=books):
     Expected last book in list:
     Fluent Python
     """
-    pass
+    return sorted(books, key=lambda x: x.pages)
 
 
 def sort_books_by_published_date(books=books):
@@ -59,4 +59,26 @@ def sort_books_by_published_date(books=books):
     Expected last book in list:
     Python Interviews
     """
-    pass
+    return sorted(books, key=lambda x: datetime.strptime(x.published, '%Y-%m-%d').date())
+
+
+# def main():
+#     print('thank you for my family and the love that you have given me...')
+
+#     last_book = sort_books_by_len_of_title()[-1]
+#     assert last_book.title == 'Automate the Boring Stuff with Python'
+
+#     last_book = sort_books_by_first_authors_last_name()[-1]
+#     assert last_book.title == 'Automate the Boring Stuff with Python'
+
+#     last_book = sort_books_by_number_of_page()[-1]
+#     assert last_book.title == 'Fluent Python'
+
+#     last_book = sort_books_by_published_date()[-1]
+#     assert last_book.title == 'Python Interviews'
+
+#     # print(sort_books_by_published_date())
+
+
+# if __name__ == '__main__':
+#     main()
