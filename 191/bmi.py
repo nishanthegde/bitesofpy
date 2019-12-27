@@ -21,7 +21,29 @@ data = """Luke Skywalker,172,77
 """
 
 
-def person_max_bmi(data=data):
-    """Return (name, BMI float) of the character in data that
-       has the highest BMI (rounded on 2 decimals)"""
-    pass
+def person_max_bmi(data: str=data) -> tuple:
+  """Return (name, BMI float) of the character in data that
+     has the highest BMI (rounded on 2 decimals)"""
+  characters = [tuple(c.strip().split(',')) for c in data.splitlines()]
+
+  bmis = [(t[0], round(float(t[2]) / ((int(t[1]) / 100) ** 2), 2)) for t in characters]
+
+  # print(bmis)
+  return sorted(bmis, key=lambda x: x[1], reverse=True)[0]
+
+
+# def main():
+#   print('thank you for everything... ')
+#   print(person_max_bmi())
+#   assert person_max_bmi() == ('Yoda', 39.03)
+
+#   newdata = '\n'.join(data.splitlines()[:10])
+#   newdata = '\n'.join([row for row in data.splitlines()
+#                        if row.lstrip()[:4] not in ('Owen', 'Yoda')])
+#   print(newdata)
+#   # assert person_max_bmi(newdata) == ('Owen Lars', 37.87)
+#   assert person_max_bmi(newdata) == ('IG-88', 35.0)
+
+
+# if __name__ == '__main__':
+#   main()
