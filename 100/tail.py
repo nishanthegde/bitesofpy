@@ -7,10 +7,10 @@ Have fun with our Bites of Py.
 Keep calm and code in Python!
 Become a PyBites ninja!"""
 
-local = os.getcwd()
+# local = os.getcwd()
 
-f = Path("{}/some_file.txt".format(local))
-f.write_bytes(content)
+# f = Path("{}/some_file.txt".format(local))
+# f.write_bytes(content)
 
 
 def tail(filepath: str, n: int) -> str:
@@ -25,17 +25,17 @@ def tail(filepath: str, n: int) -> str:
     return lines[-n:]
 
 
-def main():
-    print('thank you for mama...')
-    # print(tail(f.resolve(), 1))
-    assert tail(f.resolve(), 1) == ['Become a PyBites ninja!']
-    assert tail(f.resolve(), 2) == ['Keep calm and code in Python!',
-                                    'Become a PyBites ninja!']
-    actual = tail(f.resolve(), 10)
-    expected = [line.decode("utf-8")
-                for line in content.splitlines()]
-    assert actual == expected
+# def main():
+#     print('thank you for mama...')
+#     # print(tail(f.resolve(), 1))
+#     assert tail(f.resolve(), 1) == ['Become a PyBites ninja!']
+#     assert tail(f.resolve(), 2) == ['Keep calm and code in Python!',
+#                                     'Become a PyBites ninja!']
+#     actual = tail(f.resolve(), 10)
+#     expected = [line.decode("utf-8")
+#                 for line in content.splitlines()]
+#     assert actual == expected
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
