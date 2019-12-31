@@ -1,3 +1,5 @@
+import pytest
+
 from fibonacci import fib
 
 
@@ -12,3 +14,13 @@ def test_two():
 
 def test_thirteen():
     assert fib(13) == 233
+
+
+def test_negative():
+    with pytest.raises(ValueError):
+        assert fib(-1)
+
+
+# if __name__ == '__main__':
+#     test_thirteen()
+#     test_negative()
