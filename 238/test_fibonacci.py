@@ -1,3 +1,6 @@
 from fibonacci import fib
 
-# write one or more pytest functions below, they need to start with test_
+
+def test_first_two():
+    assert fib(0) == 0
+    assert fib(1) == 1
