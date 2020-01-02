@@ -9,6 +9,18 @@ def test_print_workout_days(capfd):
     captured = capfd.readouterr()
     assert captured.out == 'Mon, Thu\n'
 
+    print_workout_days('LOWEr')
+    captured = capfd.readouterr()
+    assert captured.out == 'Tue, Fri\n'
+
+    print_workout_days('cardio')
+    captured = capfd.readouterr()
+    assert captured.out == 'Wed\n'
+
+    print_workout_days('nishant')
+    captured = capfd.readouterr()
+    assert captured.out == 'No matching workout\n'
+
 
 # def main():
 #     print('thank you for this life... help me find a way to give back, do seva...')
