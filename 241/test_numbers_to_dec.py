@@ -32,6 +32,10 @@ def test_value2():
         list_to_decimal([2, 3, -1])
 
 
+def test_value3():
+    with pytest.raises(ValueError):
+        list_to_decimal([2, 3, 10])
+
 # def main():
 #     print('thank you for everything you have given me...')
 
