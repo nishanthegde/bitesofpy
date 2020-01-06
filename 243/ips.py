@@ -78,6 +78,9 @@ def main():
     c = [r.cidr for r in aws_service_ranges]
     print(IPv4Network('54.244.0.0/16') in c)
 
+    for r in aws_service_ranges:
+        print(r)
+
 
 if __name__ == "__main__":
     main()

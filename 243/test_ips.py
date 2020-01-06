@@ -9,7 +9,7 @@ from ips import (ServiceIPRange, parse_ipv4_service_ranges,
                  get_aws_service_range)
 
 URL = "https://bites-data.s3.us-east-2.amazonaws.com/ip-ranges.json"
-# local = os.getcwd()
+local = os.getcwd()
 local = '/tmp'
 # TMP = os.getenv("TMP", "/tmp")
 TMP = os.getenv("TMP", local)
@@ -50,9 +50,10 @@ def test_aws_service_range(json_file):
 def test_val(json_file):
     source_path = json_file
     ranges = parse_ipv4_service_ranges(source_path)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError) as exc:
         address = 'nishant'
         get_aws_service_range(address, ranges)
+        assert 'Address must be a valid IPv4 address' in str(exc)
 
 
 def test_no_address(json_file):
