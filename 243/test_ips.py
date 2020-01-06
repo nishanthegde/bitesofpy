@@ -4,6 +4,7 @@ from ipaddress import IPv4Network
 from urllib.request import urlretrieve
 
 import pytest
+import sys
 
 from ips import (ServiceIPRange, parse_ipv4_service_ranges,
                  get_aws_service_range)
@@ -16,8 +17,8 @@ TMP = os.getenv("TMP", local)
 PATH = Path(TMP, "ip-ranges.json")
 IP = IPv4Network('192.0.2.8/29')
 
-print(PATH)
-print(IP)
+# print(PATH)
+# print(IP)
 
 
 @pytest.fixture(scope='module')
@@ -62,3 +63,14 @@ def test_no_address(json_file):
     address = '192.0.2.8'
     aws_service_ranges = get_aws_service_range(address, ranges)
     assert len(aws_service_ranges) == 0
+
+
+def test_out(json_file, capsys):
+    source_path = json_file
+    ranges = parse_ipv4_service_ranges(source_path)
+    address = '54.244.46.0'
+    aws_service_ranges = get_aws_service_range(address, ranges)
+
+    print(aws_service_ranges[0])
+    captured = capsys.readouterr()
+    assert captured.out == "54.244.0.0/16 is allocated to the AMAZON service in the us-west-2 region\n"
