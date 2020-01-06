@@ -44,3 +44,20 @@ def test_aws_service_range(json_file):
     assert len(aws_service_ranges) == 3
     c = [r.cidr for r in aws_service_ranges]
     assert IPv4Network('54.244.0.0/16') in c
+    assert IP not in c
+
+
+def test_val(json_file):
+    source_path = json_file
+    ranges = parse_ipv4_service_ranges(source_path)
+    with pytest.raises(ValueError):
+        address = 'nishant'
+        get_aws_service_range(address, ranges)
+
+
+def test_no_address(json_file):
+    source_path = json_file
+    ranges = parse_ipv4_service_ranges(source_path)
+    address = '192.0.2.8'
+    aws_service_ranges = get_aws_service_range(address, ranges)
+    assert len(aws_service_ranges) == 0
