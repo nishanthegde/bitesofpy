@@ -1,4 +1,6 @@
 import pandas as pd
+import string
+import numpy as np
 
 
 def series_simple_math(
@@ -21,7 +23,14 @@ def series_simple_math(
     :param function: The operation to perform
     :param number: The number to apply the operation to
     """
-    pass
+    if function == 'add':
+        return ser + number
+    elif function == 'sub':
+        return ser - number
+    elif function == 'mul':
+        return ser * number
+    elif function == 'div':
+        return ser / number
 
 
 def complex_series_maths(
@@ -60,7 +69,14 @@ def complex_series_maths(
     Don't worry about None's and NaN and divide by zero.
         Let pandas do the work for you.
     """
-    pass
+    if function == 'add':
+        return ser_01 + ser_02
+    elif function == 'sub':
+        return ser_01 - ser_02
+    elif function == 'mul':
+        return ser_01 * ser_02
+    elif function == 'div':
+        return ser_01 / ser_02
 
 
 def create_series_mask(ser: pd.Series, mask: list) -> pd.core.series.Series:
@@ -94,7 +110,7 @@ def create_series_mask(ser: pd.Series, mask: list) -> pd.core.series.Series:
         dtype: int64
 
     Of course for simpler masks you can just do this:
-    >>> x[x %2 == 0]
+    >>> x[x % 2 == 0]
         0    0
         2    2
         4    4
@@ -103,7 +119,7 @@ def create_series_mask(ser: pd.Series, mask: list) -> pd.core.series.Series:
     :param ser: Series to perform operation on
     :param mask: The list of letters to be masked
     """
-    pass
+    return ser.isin(mask)
 
 
 def custom_series_function(ser: pd.Series,
@@ -127,4 +143,124 @@ def custom_series_function(ser: pd.Series,
     :param ser: Series to perform operation on
     :param within: The value to calculate the range of number within
     """
-    pass
+    start_min = ser.min() - within
+    end_min = ser.min() + within
+
+    start_lower = np.percentile(ser, 25) - within
+    end_lower = np.percentile(ser, 25) + within
+
+    start_med = np.percentile(ser, 50) - within
+    end_med = np.percentile(ser, 50) + within
+
+    start_mean = ser.mean() - within
+    end_mean = ser.mean() + within
+
+    start_upper = np.percentile(ser, 75) - within
+    end_upper = np.percentile(ser, 75) + within
+
+    start_max = ser.max() - within
+    end_max = ser.max() + within
+
+    return ser[ser.between(start_min, end_min, inclusive=True)
+               | ser.between(start_lower, end_lower, inclusive=True)
+               | ser.between(start_med, end_med, inclusive=True)
+               | ser.between(start_mean, end_mean, inclusive=True)
+               | ser.between(start_upper, end_upper, inclusive=True)
+               | ser.between(start_max, end_max, inclusive=True)]
+
+
+# def main():
+#     print('thank you for everything you have given me...')
+
+#     file_name = "https://bites-data.s3.us-east-2.amazonaws.com/iris.csv"
+#     df = pd.read_csv(file_name)
+#     # print(df.head(2))
+#     # print(df.shape)
+#     sepal_length_series = df.sepal_length.sort_values().reset_index(drop=True)
+#     int_series_vsmall = pd.Series(range(1, 6))
+#     int_series_small = pd.Series(range(10))
+#     int_series_vsmall_offset_index = pd.Series(range(0, 10, 2), index=range(0, 10, 2))
+#     letters_series = pd.Series(list(string.ascii_lowercase))
+
+#     # print(series_simple_math(int_series_small, 'add', 2))
+#     # print(complex_series_maths(int_series_vsmall, int_series_vsmall_offset_index, 'add'))
+#     # print(create_series_mask(letters_series, ["a", "e", "i", "o", "u"]))
+#     # print(letters_series.isin(["a", "e", "i", "o", "u"]))
+#     # print(sepal_length_series)
+
+#     print(sepal_length_series.min())
+#     print(np.percentile(sepal_length_series, 25))
+#     print(np.percentile(sepal_length_series, 50))
+#     print(sepal_length_series.mean())
+#     print(np.percentile(sepal_length_series, 75))
+#     print(sepal_length_series.max())
+
+#     start_min = sepal_length_series.min() - .1
+#     end_min = sepal_length_series.min() + .1
+#     # print(start, end)
+#     ser1 = sepal_length_series[sepal_length_series.between(start_min, end_min, inclusive=True)]
+#     # print(ser1)
+#     # print(len(ser1))
+
+#     start_lower = np.percentile(sepal_length_series, 25) - .1
+#     end_lower = np.percentile(sepal_length_series, 25) + .1
+#     # print(start, end)
+#     ser2 = sepal_length_series[sepal_length_series.between(start_lower, end_lower, inclusive=True)]
+#     # print(ser2)
+#     # print(len(ser2))
+
+#     start_med = np.percentile(sepal_length_series, 50) - .1
+#     end_med = np.percentile(sepal_length_series, 50) + .1
+#     # print(start, end)
+#     ser3 = sepal_length_series[sepal_length_series.between(start_med, end_med, inclusive=True)]
+#     # print(ser3)
+#     # print(len(ser3))
+
+#     start_mean = sepal_length_series.mean() - .1
+#     end_mean = sepal_length_series.mean() + .1
+#     # print(start, end)
+#     ser4 = sepal_length_series[sepal_length_series.between(start_mean, end_mean, inclusive=True)]
+#     # print(ser4)
+#     # print(len(ser4))
+
+#     start_upper = np.percentile(sepal_length_series, 75) - .1
+#     end_upper = np.percentile(sepal_length_series, 75) + .1
+#     # print(start, end)
+#     ser5 = sepal_length_series[sepal_length_series.between(start_upper, end_upper, inclusive=True)]
+#     # print(ser5)
+#     # print(len(ser5))
+
+#     start_max = sepal_length_series.max() - .1
+#     end_max = sepal_length_series.max() + .1
+#     # print(start, end)
+#     ser6 = sepal_length_series[sepal_length_series.between(start_max, end_max, inclusive=True)]
+#     # print(ser6)
+#     # print(len(ser6))
+#     # print(ser3.append(ser4, ignore_index=False))
+#     # print(len(ser3.append(ser4, ignore_index=False)))
+
+#     # result = sepal_length_series[sepal_length_series.between(start_min, end_min, inclusive=True)
+#     #                              | sepal_length_series.between(start_lower, end_lower, inclusive=True)
+#     #                              | sepal_length_series.between(start_med, end_med, inclusive=True)
+#     #                              | sepal_length_series.between(start_mean, end_mean, inclusive=True)
+#     #                              | sepal_length_series.between(start_upper, end_upper, inclusive=True)
+#     #                              | sepal_length_series.between(start_max, end_max, inclusive=True)]
+#     result = custom_series_function(sepal_length_series, 0.1)
+
+#     print('----------')
+#     print(len(result))
+#     print(round(result.mean(), 4))
+#     print(max(result.index))
+#     print(max(result.values))
+#     print(min(result.index))
+#     print(min(result.values))
+#     print(result[82])
+#     print(result.iloc[10])
+#     print(result.iloc[11])
+#     print(result.iloc[20])
+#     print(result.iloc[37])
+#     print(result.iloc[38])
+
+
+# if __name__ == '__main__':
+#     main()
