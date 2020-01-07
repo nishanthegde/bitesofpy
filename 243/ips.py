@@ -72,14 +72,18 @@ def main():
     service_ranges = parse_ipv4_service_ranges(path)
     # print(service_ranges)
     address = '54.244.46.0'
+    # address = -100
     aws_service_ranges = get_aws_service_range(address, service_ranges)
     print(aws_service_ranges)
-    print(len(aws_service_ranges))
-    c = [r.cidr for r in aws_service_ranges]
-    print(IPv4Network('54.244.0.0/16') in c)
+    # print(len(aws_service_ranges))
+    # c = [r.cidr for r in aws_service_ranges]
+    # print(IPv4Network('54.244.0.0/16') in c)
 
-    for r in aws_service_ranges:
-        print(r)
+    # for r in aws_service_ranges:
+    # assert
+    # print(r)
+
+    # print(aws_service_ranges[0])
 
 
 if __name__ == "__main__":
