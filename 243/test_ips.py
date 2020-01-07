@@ -48,13 +48,13 @@ def test_aws_service_range(json_file):
     assert IP not in c
 
 
-# def test_val1(json_file):
-#     source_path = json_file
-#     ranges = parse_ipv4_service_ranges(source_path)
-#     with pytest.raises(ValueError) as exc:
-#         address = 'nishant'
-#         get_aws_service_range(address, ranges)
-#         assert 'Address must be a valid IPv4 address' in str(exc)
+def test_val1(json_file):
+    source_path = json_file
+    ranges = parse_ipv4_service_ranges(source_path)
+    with pytest.raises(ValueError) as exc:
+        address = IP
+        get_aws_service_range(address, ranges)
+        assert 'Address must be a valid IPv4 address' in str(exc)
 
 
 def test_val2(json_file):
