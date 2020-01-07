@@ -71,7 +71,7 @@ def main():
 
     service_ranges = parse_ipv4_service_ranges(path)
     # print(service_ranges)
-    address = '54.244.0.0'
+    address = 90.0
     # address = -100
     aws_service_ranges = get_aws_service_range(address, service_ranges)
     print(aws_service_ranges)
