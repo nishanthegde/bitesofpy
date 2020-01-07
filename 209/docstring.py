@@ -3,9 +3,9 @@ def sum_numbers(numbers):
 
         :param numbers: a list of numbers
         :type numbers: list
-        :raises: TypeError: if not all numeric values passed in
         :return: sum of numbers
-        :rtype: int"""
+        :rtype: int
+        """
     pass
 
 
@@ -15,3 +15,9 @@ def sum_numbers(numbers):
 
 # if __name__ == '__main__':
 #     main()
+# ('Sums numbers',
+#  '    :param numbers: \S.*?\n',
+#  '    :type numbers: list',
+#  '    :raises TypeError: \S.*?\n',
+#  '    :return: \S.*?\n',
+#  '    :rtype: int')
