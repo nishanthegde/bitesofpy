@@ -9,9 +9,9 @@ def sum_numbers(numbers):
     pass
 
 
-def main():
-    print('thank you for everything...')
+# def main():
+#     print('thank you for everything...')
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
