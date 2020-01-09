@@ -1,4 +1,7 @@
-def sum_numbers(numbers):
+from typing import List
+
+
+def sum_numbers(numbers: List) -> int:
     """Sums numbers
 
     :param numbers: a list of numbers
@@ -8,3 +11,11 @@ def sum_numbers(numbers):
     :rtype: int
     """
     pass
+
+
+def main():
+    print('thank you for everything...')
+
+
+if __name__ == '__main__':
+    main()
