@@ -28,12 +28,29 @@ earnings_mln = [
 
 
 def get_largest_number(numbers, n=3):
-    pass
+    heapq.heapify(numbers)
+    return heapq.nlargest(n, numbers)
 
 
 def get_latest_dates(dates, n=3):
-    pass
+    heapq.heapify(dates)
+    return heapq.nlargest(n, dates)
 
 
 def get_highest_earnings(earnings_mln, n=3):
-    pass
+    # heapq.heapify(earnings_mln)
+    # for e in enumerate(earnings_mln):
+        # print(e)
+    res = heapq.nlargest(n, enumerate(earnings_mln), key=lambda x: x[1]['earnings'])
+    return [r[1] for r in res]
+
+
+def main():
+    print('thank you for everything you have given me...')
+    print(get_largest_number(numbers))
+    print(get_latest_dates(dates))
+    print(get_highest_earnings(earnings_mln))
+
+
+if __name__ == '__main__':
+    main()
