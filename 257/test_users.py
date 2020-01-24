@@ -63,4 +63,4 @@ artagnon:x:1005:1005:Ramkumar R,,,,Git GSOC:/home/artagnon:/bin/bash
            'ssh-rsa': 'unknown', 'artagnon': 'Ramkumar R Git GSOC'}),
 ])
 def test_users(input_, expected):
-    assert get_users(input_) == expected
+  assert get_users(input_) == expected

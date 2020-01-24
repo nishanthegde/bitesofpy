@@ -2,8 +2,8 @@ from pathlib import Path
 import re
 from time import sleep
 from zipfile import ZipFile
-
 from files import zip_last_n_files, ZIP_FILE
+
 
 TMP = Path('/tmp')
 LOG_DIR = TMP / 'logs'
