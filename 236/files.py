@@ -44,7 +44,6 @@ def get_matching_files(directory: PosixPath, filter_str: str) -> list:
      get_matching_files(d, 'o$tput') => ['output']
      get_matching_files(d, 'nonsense') => []
   """
-  _create_test_files(directory, 2)
 
   # all_files = [f.lower() for f in os.listdir(directory) if os.path.isfile(f)]
   all_files = [file_.name for file_ in directory.iterdir()]
@@ -63,11 +62,12 @@ def get_matching_files(directory: PosixPath, filter_str: str) -> list:
 
 def main():
   print('thank you for everything...')
-  # print(type(tmp_path))
-  actual = get_matching_files(tmp_path, 'timings-templates.PY')
-  expected = ['timings-template.py']
-  assert sorted(actual) == sorted(expected)
-  # print(actual)
+  # print(tmp_path)
+  _create_test_files(tmp_path, 2)
+  actual = get_matching_files(tmp_path, 'Bite')
+  # expected = ['timings-template.py']
+  # assert sorted(actual) == sorted(expected)
+  print(actual)
 
  # ('bite1', ['bite1']),
  #   ('Bite', ['bite1']),
