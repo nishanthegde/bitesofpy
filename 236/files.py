@@ -46,7 +46,8 @@ def get_matching_files(directory: PosixPath, filter_str: str) -> list:
   """
   _create_test_files(directory, 2)
 
-  all_files = [f.lower() for f in os.listdir(directory) if os.path.isfile(f)]
+  # all_files = [f.lower() for f in os.listdir(directory) if os.path.isfile(f)]
+  all_files = [file_.name for file_ in directory.iterdir()]
   # print(filter_str.lower())
   # print(all_files)
   matches = [f for f in all_files if f == filter_str.lower()]
