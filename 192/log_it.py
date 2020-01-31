@@ -1,77 +1,38 @@
 import logging
 from typing import Callable
-
-# DEBUG = logging.DEBUG
-# INFO = logging.INFO
-# WARNING = logging.WARNING
-# ERROR = logging.ERROR
-# CRITICAL = logging.CRITICAL
+# import pytest
+# import test_log_it
 
 
-def test_func():
-    return True
-
-
-logger = logging.getLogger('simple_example')
-
-DEBUG = logger.setLevel(logging.DEBUG)
-INFO = logging.INFO
-WARNING = logging.WARNING
-ERROR = logging.ERROR
-CRITICAL = logging.CRITICAL
-
-
-LOG_LEVEL = {
-    "debug": DEBUG,
-    "info": INFO,
-    "warning": WARNING,
-    "error": ERROR,
-    "critical": CRITICAL,
-}
+DEBUG = ""logger.setLevel(logging.DEBUG)""
+INFO = logger.setLevel(logging.INFO)
+WARNING = logger.setLevel(logging.WARNING)
+ERROR = logger.setLevel(logging.ERROR)
+CRITICAL = logger.setLevel(logging.CRITICAL)
 
 
 def log_it(level: Callable, msg: str) -> None:
 
-    # create logger
-    logger = logging.getLogger('simple_example')
-
-    if logging.getLogger().level == 10:
-        logging.debug(msg)
-    elif logging.getLogger().level == 20:
-        logging.info(msg)
-    elif logging.getLogger().level == 30:
-        logging.warning(msg)
-    elif logging.getLogger().level == 40:
-        logging.error(msg)
-    elif logging.getLogger().level == 50:
-        logging.critical(msg)
-
-
-def Geek():
-    return 5
+    logger.debug(msg)
+    # if level == 'debug':
 
 
 def main():
     print('thank you for everything ...')
-    # logger = logging.getLogger(__name__)
-    # logging.getLogger('test')
-    # print(logger)
-    for level in LOG_LEVEL:
-        print(callable(LOG_LEVEL[level]))
 
-    # # an object is created of Geek()
-    # let = Geek
-    # print(callable(let))
+    # for level in test_log_it.LOG_LEVEL:
+    #     print(type(test_log_it.LOG_LEVEL[level]))
+    # assert callable(test_log_it.LOG_LEVEL[level])
+    # assert callable(DEBUG)
+    # print(type(DEBUG))
+    # log_it("debug", "This is a debug message")
+    # caplog.set_level(logging.DEBUG)
 
-    # # a test variable
-    # num = 5 * 5
-    # print(callable(num))
+    logger = logging.getLogger('pybites_logger')
+    logging.basicConfig(format='%(name)s-%(levelname)s-%(message)s')
+    logger.setLevel(logging.DEBUG)
+    print(type(logger.error('This is a debug message')))
 
 
 if __name__ == "__main__":
-    # log_it(DEBUG, "This is a debug message.")
-    # log_it(INFO, "This is an info message.")
-    # log_it(WARNING, "This is a warning message.")
-    # log_it(ERROR, "This is an error message.")
-    # log_it(CRITICAL, "This is a critical message.")
     main()
