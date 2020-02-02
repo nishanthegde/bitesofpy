@@ -8,30 +8,26 @@ CSV_URL = 'https://raw.githubusercontent.com/pybites/SouthParkData/master/by-sea
 
 test = ("""
 Season,Episode,Character,Line
-2,1,Announcer 1,"Since the last South Park, you've waited four long weeks to find out who the father of Eric Cartman is. Now, finally, the shocking truth about Cartman's lineage... will not be seen tonight, so that we can bring you the following special presentation.
+1,12,Anthropologist,"How's it going, boys?
 "
-2,1,Announcer 2,"Now, get ready for Canada's hottest action stars,  Terrance and Phillip in HBC's Movie of the Week:  Not Without My Anus. Based on a true story.
+1,12,Anthropologist,"Hm, let me see that.  Why, this is Anasazi writing! My God, this must be thousands of years old!
 "
-2,1,Scott,"Ladies and gentlemen, the case before you today is of a murderer. On the night in question, this monster entered the home of Dr. Jeffrey O'Dwyer and struck him repeatedly on the head with his hammer.  That monster is sitting right over there, and his name is Terrance!
+1,12,Anthropologist,"...And so, these ancient arrowheads are buried deep down in the earth's crust. We dig them up, polish them off, and find over twelve new arrowheads every month.
 "
-2,1,Phillip,"Oh, Terrance! You farted in court!
+1,12,Anthropologist,"Now, can anybody tell me, who left these arrowheads here?
 "
-2,1,Terrance,"Yes, Phillip. I'm making a case for our defense.
+1,12,Anthropologist,"Well... yes, but I want to see if you're learning anything.
 "
-2,1,Scott,"All of these things link Terrance to the murder: hair fibers, blood samples, nail clippings, a piece of his shirt,  a watch with his initials on it, a day planner with the murder scheduled, a haiku called, Time to Kill Dr. Jeffrey O'Dwyer.
-""Dr. O'Dwyer
-Time to have your head smashed in
-with my new hammer""
-Terrance, you may be a famous surgeon, but you're not God! J'accuse, Terrance!
-"
-2,1,Terrance,"Would you like a monkey claw, Phillip?
+1,12,Anthropologist,"Okay, I tell you what. Why don't we all grab our little anthropology pickaxes - that were handed out and we wuh dig for our very own Indian arrowheads.
 "
     """)
 
 
 def _count_words(line: str) -> int:
-
+    # print(line)
+    # line = line.replace("\'re", " are")
     line = re.sub(r'[^A-Za-z0-9 ]+', '', line)
+    # print(len(re.findall(r'\w+', line)))
 
     return len(re.findall(r'\w+', line))
 
@@ -107,40 +103,15 @@ def main():
 
     print("thank you for the waves...")
 
-    # content = get_season_csv_file(season=1)
-    content = test
-    words_spoken_test = get_num_words_spoken_by_character_per_episode(content)
-
-    print(words_spoken_test)
-    # for l in words_spoken_test:
-    #     print(l)
-
-    # print(words_spoken_test['Agent 1'].most_common()[:2])
-    # name_count = [
-    #     ("Lucy", '2', 10),
-    #     ("Bob", '3', 5),
-    #     ("Jim", '9', 40),
-    #     ("Susan", '2', 6),
-    #     ("Lucy", '1', 2),
-    #     ("Bob", '3', 30),
-    #     ("Harold", '10', 6)
-    # ]
-
-    # ret = dict()
-    # d = defaultdict(list)
-
-    # for name, *v in name_count:
-    #     d[name].append(v)
-
-    # new_list = list(d.items())
-    # # print(new_list)
-
-    # for e in new_list:
-    #     c_list = [tuple(l) for l in e[1]]
-    #     ret[e[0]] = Counter(key for key, num in c_list for idx in range(num))
-
-    # test_str = "Hm, let me see that.  Why, this is Anasazi writing! My God, this must be thousands of years old"
-    # print(_count_words(test_str))
+    content = get_season_csv_file(season=1)
+    # content = test
+    # words_spoken_test = get_num_words_spoken_by_character_per_episode(content)
+    # print(words_spoken_test)
+    words_spoken_s1 = get_num_words_spoken_by_character_per_episode(content)
+    print(words_spoken_s1['Stan'].most_common()[:3])
+    print(words_spoken_s1['Cartman'].most_common()[:3])
+    # print(words_spoken_s1['Anthropologist'].most_common()[:3])
+    # print(words_spoken_s1['Cartman'].most_common()[-3:])
 
 
 if __name__ == "__main__":
