@@ -6,72 +6,25 @@ import requests
 import re
 CSV_URL = 'https://raw.githubusercontent.com/pybites/SouthParkData/master/by-season/Season-{}.csv'  # noqa E501
 
-test = ("""Season,Episode,Character,Line
-1,1,Boys,"School day, school day, teacher's golden ru...
+test = ("""
+Season,Episode,Character,Line
+2,1,Announcer 1,"Since the last South Park, you've waited four long weeks to find out who the father of Eric Cartman is. Now, finally, the shocking truth about Cartman's lineage... will not be seen tonight, so that we can bring you the following special presentation.
 "
-1,1,Kyle,"Ah, damn it! My little brother's trying to follow me to school again.
+2,1,Announcer 2,"Now, get ready for Canada's hottest action stars,  Terrance and Phillip in HBC's Movie of the Week:  Not Without My Anus. Based on a true story.
 "
-1,1,Ike,"Zeeponanner.
+2,1,Scott,"Ladies and gentlemen, the case before you today is of a murderer. On the night in question, this monster entered the home of Dr. Jeffrey O'Dwyer and struck him repeatedly on the head with his hammer.  That monster is sitting right over there, and his name is Terrance!
 "
-1,1,Kyle,"Ike, you can't come to school with me.
+2,1,Phillip,"Oh, Terrance! You farted in court!
 "
-1,1,Cartman,"Yeah, go home you little dildo.
+2,1,Terrance,"Yes, Phillip. I'm making a case for our defense.
 "
-1,1,Kyle,"Dude, don't call my brother a dildo!
+2,1,Scott,"All of these things link Terrance to the murder: hair fibers, blood samples, nail clippings, a piece of his shirt,  a watch with his initials on it, a day planner with the murder scheduled, a haiku called, Time to Kill Dr. Jeffrey O'Dwyer.
+""Dr. O'Dwyer
+Time to have your head smashed in
+with my new hammer""
+Terrance, you may be a famous surgeon, but you're not God! J'accuse, Terrance!
 "
-1,1,Stan,"What's a dildo?
-"
-1,1,Kyle,"Well, I don't know...  and I'll bet Cartman doesn't know either!
-"
-1,1,Cartman,"I know what it means!
-"
-1,1,Kyle,"Well, what?
-"
-1,1,Cartman,"I'm not telling you.
-"
-1,1,Stan,"What's a dildo, Kenny?
-"
-1,1,Kenny,"(It's a giant stick that goes inside the mom's vagina)
-"
-1,1,Cartman,"He-yeah, that's what Kyle's little brother is all right!  Ow!
-"
-1,1,Stan,"Dude, that kicks ass!
-"
-1,1,Kyle,"Yeah, check this one out. Ready, Ike? Kick the baby!
-"
-1,1,Ike,"Don't kick the baby.
-"
-1,1,Kyle,"Kick the baby.
-"
-1,1,Stan,"Whoa, Cartman! Looks like you didn't get much sleep last night.
-"
-1,1,Cartman,"That's 'cause I was having these... bogus nightmares.
-"
-1,1,Kyle,"Really? What about?
-"
-1,1,Cartman,"Well, I dreamt that I was lying in my bed...  in the dark, when all of a sudden this bright blue light filled the room.  Then slowly my bedroom door begin to open,  and the next thing I remember, I was being drug through a hallway.  Then I was lying on a table,  and these scary hands wanted to operate on me. And they had big heads and big black eyes...
-"
-1,2,Agent 1,"Gun!
-"
-1,8,Agent 1,"Hello there little boy, we're looking for a starving African child who was accidentally sent here instead of a Teiko sports watch.
-"
-1,8,Agent 1,"Here's your sports watch son, sorry for the mix-up.
-"
-1,8,Agent 1,"Have you seen anyone fitting this description.
-"
-1,8,Agent 1,"There you are. Are you ready to go home now?
-"
-1,12,Anthropologist,"How's it going, boys?
-"
-1,12,Anthropologist,"Hm, let me see that.  Why, this is Anasazi writing! My God, this must be thousands of years old!
-"
-1,12,Anthropologist,"...And so, these ancient arrowheads are buried deep down in the earth's crust. We dig them up, polish them off, and find over twelve new arrowheads every month.
-"
-1,12,Anthropologist,"Now, can anybody tell me, who left these arrowheads here?
-"
-1,12,Anthropologist,"Well... yes, but I want to see if you're learning anything.
-"
-1,12,Anthropologist,"Okay, I tell you what. Why don't we all grab our little anthropology pickaxes - that were handed out and we wuh dig for our very own Indian arrowheads.
+2,1,Terrance,"Would you like a monkey claw, Phillip?
 "
     """)
 
@@ -81,6 +34,14 @@ def _count_words(line: str) -> int:
     line = re.sub(r'[^A-Za-z0-9 ]+', '', line)
 
     return len(re.findall(r'\w+', line))
+
+
+def _check_int(s):
+    try:
+        int(s)
+        return True
+    except:
+        return False
 
 
 def get_season_csv_file(season):
@@ -106,6 +67,14 @@ def get_num_words_spoken_by_character_per_episode(content: str) -> defaultdict()
         if lines[i] == '"':
             lines[i - 1] = lines[i - 1] + lines[i]
             lines.pop(i)
+
+    # lines that are wrapped
+    for i in range(len(lines) - 1, 0, -1):
+        if not _check_int(lines[i].split(',', 3)[0].strip()):
+            lines[i - 1] = lines[i - 1] + lines[i]
+            lines.pop(i)
+
+    # return lines
 
     # create list of tuples with (character, ep, line)
     t_list = [(l.split(',', 3)[2].strip(), l.split(',', 3)[1].strip(), _count_words(l.split(',', 3)[3].strip())) for l in lines]
@@ -136,37 +105,42 @@ def get_num_words_spoken_by_character_per_episode(content: str) -> defaultdict()
 
 def main():
 
-    print("thank you for everything you have given me...")
+    print("thank you for the waves...")
 
     # content = get_season_csv_file(season=1)
     content = test
-    print(get_num_words_spoken_by_character_per_episode(content))
+    words_spoken_test = get_num_words_spoken_by_character_per_episode(content)
 
-    name_count = [
-        ("Lucy", '2', 10),
-        ("Bob", '3', 5),
-        ("Jim", '9', 40),
-        ("Susan", '2', 6),
-        ("Lucy", '1', 2),
-        ("Bob", '3', 30),
-        ("Harold", '10', 6)
-    ]
+    print(words_spoken_test)
+    # for l in words_spoken_test:
+    #     print(l)
 
-    ret = dict()
-    d = defaultdict(list)
+    # print(words_spoken_test['Agent 1'].most_common()[:2])
+    # name_count = [
+    #     ("Lucy", '2', 10),
+    #     ("Bob", '3', 5),
+    #     ("Jim", '9', 40),
+    #     ("Susan", '2', 6),
+    #     ("Lucy", '1', 2),
+    #     ("Bob", '3', 30),
+    #     ("Harold", '10', 6)
+    # ]
 
-    for name, *v in name_count:
-        d[name].append(v)
+    # ret = dict()
+    # d = defaultdict(list)
 
-    new_list = list(d.items())
-    # print(new_list)
+    # for name, *v in name_count:
+    #     d[name].append(v)
 
-    for e in new_list:
-        c_list = [tuple(l) for l in e[1]]
-        ret[e[0]] = Counter(key for key, num in c_list for idx in range(num))
+    # new_list = list(d.items())
+    # # print(new_list)
 
-    test_str = "Hm, let me see that.  Why, this is Anasazi writing! My God, this must be thousands of years old"
-    print(_count_words(test_str))
+    # for e in new_list:
+    #     c_list = [tuple(l) for l in e[1]]
+    #     ret[e[0]] = Counter(key for key, num in c_list for idx in range(num))
+
+    # test_str = "Hm, let me see that.  Why, this is Anasazi writing! My God, this must be thousands of years old"
+    # print(_count_words(test_str))
 
 
 if __name__ == "__main__":
