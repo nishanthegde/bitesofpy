@@ -26,10 +26,18 @@ Season,Episode,Character,Line
 def _count_words(line: str) -> int:
     # print(line)
     # line = line.replace("\'re", " are")
-    line = re.sub(r'[^A-Za-z0-9 ]+', '', line)
+    # line = re.sub(r'[^A-Za-z0-9 ]+', '', line)
     # print(len(re.findall(r'\w+', line)))
 
-    return len(re.findall(r'\w+', line))
+    # return len(re.findall(r'\w+', line))
+
+    stripped_lines = [l.strip() for l in line.split() if l.strip() != '"']
+    # stripped_lines = line.split()
+
+    # if character == 'Anthropologist':
+    #     print(stripped_lines)
+
+    return len(stripped_lines)
 
 
 def _check_int(s):
@@ -53,7 +61,7 @@ def get_num_words_spoken_by_character_per_episode(content: str) -> defaultdict()
        keys=characters and values=Counter object,
        which is a mapping of episode=>words spoken"""
 
-    ret_dict = dict()  # return
+    ret_dict = defaultdict(lambda: Counter())  # return
 
     # lines = [l for l in content.strip().split("\n") if l != "\""]
     lines = [l for l in content.strip().split("\n")][1:]
@@ -103,15 +111,22 @@ def main():
 
     print("thank you for the waves...")
 
-    content = get_season_csv_file(season=1)
     # content = test
     # words_spoken_test = get_num_words_spoken_by_character_per_episode(content)
     # print(words_spoken_test)
+    content = get_season_csv_file(season=1)
     words_spoken_s1 = get_num_words_spoken_by_character_per_episode(content)
-    print(words_spoken_s1['Stan'].most_common()[:3])
-    print(words_spoken_s1['Cartman'].most_common()[:3])
+    print(words_spoken_s1['Stan'].most_common()[: 3])
+    print(words_spoken_s1['Cartman'].most_common()[: 3])
     # print(words_spoken_s1['Anthropologist'].most_common()[:3])
-    # print(words_spoken_s1['Cartman'].most_common()[-3:])
+    print(words_spoken_s1['Cartman'].most_common()[-3:])
+    print(words_spoken_s1['bogus'].most_common())
+
+    content = get_season_csv_file(season=5)
+    words_spoken_s5 = get_num_words_spoken_by_character_per_episode(content)
+    print(words_spoken_s5['Sheila'].most_common()[: 3])
+    print(words_spoken_s5['Ms. Choksondik'].most_common()[:3])
+    # print(words_spoken_s5['Cartman'].most_common()[: 3])
 
 
 if __name__ == "__main__":
