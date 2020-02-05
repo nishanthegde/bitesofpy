@@ -20,7 +20,7 @@ class LightsGrid:
         :param s1: The bottom right hand corner of the grid to operate on
 
         Suggested return are 4 integers representing x1, x2, y1, y2 [hint]"""
-        pass
+        return (int(s1.split(",")[0]), int(s1.split(",")[1]), int(s2.split(",")[0]), int(s2.split(",")[1]))
 
     def validate_grid(self):
         """A helper function you might want to write to verify that:
@@ -32,21 +32,24 @@ class LightsGrid:
         """The turn_on function takes 2 parameters:
 
         :param s1: The top left hand corner of the grid to operate on
-        :param s1: The bottom right hand corner of the grid to operate on
+        :param s2: The bottom right hand corner of the grid to operate on
 
         For each light in the grid slice given:
           - If the light is already on, do nothing
           - If the light is off, turn it on at intensity 1
         """
         # Process grid coordinates
+        r_start, c_start, r_end, c_end = self.process_grid_coordinates(s1, s2)
 
         # First extract the slice of the grid into a new dataframe
-
+        grid_slice = self.grid.iloc[r_start:r_end + 1, c_start:c_end + 1].copy()
         # Now create a mask of all lights == 0 in the slice
-
+        mask = (grid_slice == 0)
         # # Now turn on all lights that are off
+        grid_slice[:] = np.where(mask, 1, grid_slice)
 
         # Finally overwrite the grid with the new values
+        self.grid.update(grid_slice)
 
     def turn_off(self, s1: str, s2: str):
         """The turn_off function takes 2 parameters:
@@ -106,12 +109,23 @@ class LightsGrid:
         Each instruction should be processed in sequence,
           excluding the first instruction of course.
         """
-        pass
+        for inst in self.instructions:
+            if inst.split(" ")[0].lower() == "turn":
+                if inst.split(" ")[1].lower() == "on":
+                    self.turn_on(inst.split(" ")[2], inst.split(" ")[4])
 
     @property
     def lights_intensity(self):
         """(given) get the total intensity of all lights"""
         return self.grid.to_numpy().sum()
+
+
+def main():
+    print('time to get into machine learning')
+    lights = LightsGrid(10, ["turn on 0,0 through 9,9"])
+    # print(lights.grid)
+    lights.follow_instructions()
+    print(lights.lights_intensity)
 
 
 # Main function that can be used to test the Class methods
@@ -168,18 +182,18 @@ if __name__ == "__main__":
     turn off 3,72 through 68,75"""
 
     # Create a list of all the instructions
-    instructions = [line.strip() for line in instructions.splitlines()]
+    # instructions = [line.strip() for line in instructions.splitlines()]
+    # # The grid size instruction is first
+    # # Extract it and convert to int
+    # grid_size = int(instructions[0].split(" ")[4])
 
-    # The grid size instruction is first
-    # Extract it and convert to int
-    grid_size = int(instructions[0].split(" ")[4])
+    # # Create a LightsGrid Class instance
+    # lights = LightsGrid(grid_size, instructions[1:])
 
-    # Create a LightsGrid Class instance
-    lights = LightsGrid(grid_size, instructions[1:])
+    # # Follow the instructions
+    # lights.follow_instructions()
 
-    # Follow the instructions
-    lights.follow_instructions()
-
-    # Print the total intensity of the lights
-    # The correct answer is 12317
-    print(f"Total intensity of Lights on: {lights.lights_intensity}\n")
+    # # Print the total intensity of the lights
+    # # The correct answer is 12317
+    # print(f"Total intensity of Lights on: {lights.lights_intensity}\n")
+    main()
