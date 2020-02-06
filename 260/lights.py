@@ -58,7 +58,12 @@ class LightsGrid:
         :param s1: The bottom right hand corner of the grid to operate on
 
         Turn off all lights in the grid slice given."""
-        pass
+        r_start, c_start, r_end, c_end = self.process_grid_coordinates(s1, s2)
+        grid_slice = self.grid.iloc[r_start:r_end + 1, c_start:c_end + 1].copy()
+
+        grid_slice.loc[:, :] = 0
+
+        self.grid.update(grid_slice)
 
     def turn_up(self, amount: int, s1: str, s2: str):
         """The turn_up function takes 3 parameters:
@@ -113,6 +118,8 @@ class LightsGrid:
             if inst.split(" ")[0].lower() == "turn":
                 if inst.split(" ")[1].lower() == "on":
                     self.turn_on(inst.split(" ")[2], inst.split(" ")[4])
+                elif inst.split(" ")[1].lower() == "off":
+                    self.turn_off(inst.split(" ")[2], inst.split(" ")[4])
 
     @property
     def lights_intensity(self):
@@ -122,10 +129,14 @@ class LightsGrid:
 
 def main():
     print('time to get into machine learning')
-    lights = LightsGrid(10, ["turn on 0,0 through 9,9"])
-    # print(lights.grid)
+    lights = LightsGrid(10, [
+        "turn on 0,0 through 9,9",
+        "turn off 0,0 through 4,9",
+        "turn on 0,0 through 4,4",
+    ])
     lights.follow_instructions()
     print(lights.lights_intensity)
+    assert lights.lights_intensity == 75
 
 
 # Main function that can be used to test the Class methods
