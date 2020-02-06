@@ -50,6 +50,7 @@ class LightsGrid:
 
         # Finally overwrite the grid with the new values
         self.grid.update(grid_slice)
+        self.grid = self.grid.astype('int32')
 
     def turn_off(self, s1: str, s2: str):
         """The turn_off function takes 2 parameters:
@@ -64,6 +65,7 @@ class LightsGrid:
         grid_slice.loc[:, :] = 0
 
         self.grid.update(grid_slice)
+        self.grid = self.grid.astype('int32')
 
     def turn_up(self, amount: int, s1: str, s2: str):
         """The turn_up function takes 3 parameters:
@@ -74,7 +76,13 @@ class LightsGrid:
 
         For each light in the grid slice given turn the light up
           by the given amount. Don't turn a light up past 5"""
-        pass
+        r_start, c_start, r_end, c_end = self.process_grid_coordinates(s1, s2)
+        grid_slice = self.grid.iloc[r_start:r_end + 1, c_start:c_end + 1].copy()
+
+        grid_slice.loc[:, :] += amount
+
+        self.grid.update(grid_slice, filter_func=lambda x: x + amount <= 5)
+        self.grid = self.grid.astype('int32')
 
     def turn_down(self, amount: int, s1: str, s2: str):
         """The turn down function takes 3 parameters:
@@ -120,6 +128,8 @@ class LightsGrid:
                     self.turn_on(inst.split(" ")[2], inst.split(" ")[4])
                 elif inst.split(" ")[1].lower() == "off":
                     self.turn_off(inst.split(" ")[2], inst.split(" ")[4])
+                elif inst.split(" ")[1].lower() == "up":
+                    self.turn_up(int(inst.split(" ")[2]), inst.split(" ")[3], inst.split(" ")[5])
 
     @property
     def lights_intensity(self):
@@ -130,13 +140,15 @@ class LightsGrid:
 def main():
     print('time to get into machine learning')
     lights = LightsGrid(10, [
-        "turn on 0,0 through 9,9",
-        "turn off 0,0 through 4,9",
-        "turn on 0,0 through 4,4",
+                "turn on 0,0 through 9,9",
+                "turn up 1 0,0 through 9,9",
+                "turn off 0,0 through 4,4",
+                "turn off 3,3 through 5,5"
     ])
     lights.follow_instructions()
     print(lights.lights_intensity)
-    assert lights.lights_intensity == 75
+    print(lights.grid)
+    # assert lights.lights_intensity == 75
 
 
 # Main function that can be used to test the Class methods
