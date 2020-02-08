@@ -45,7 +45,7 @@ class LightsGrid:
         grid_slice = self.grid.iloc[r_start:r_end + 1, c_start:c_end + 1].copy()
         # Now create a mask of all lights == 0 in the slice
         mask = (grid_slice == 0)
-        # # Now turn on all lights that are off
+        # Now turn on all lights that are off
         grid_slice[:] = np.where(mask, 1, grid_slice)
 
         # Finally overwrite the grid with the new values
@@ -81,7 +81,12 @@ class LightsGrid:
 
         grid_slice.loc[:, :] += amount
 
-        self.grid.update(grid_slice, filter_func=lambda x: x + amount <= 5)
+        mask = (grid_slice > 5)
+        grid_slice[:] = np.where(mask, 5, grid_slice)
+
+        # print(grid_slice)
+        # self.grid.update(grid_slice, filter_func=lambda x: x + amount <= 5)
+        self.grid.update(grid_slice)
         self.grid = self.grid.astype('int32')
 
     def turn_down(self, amount: int, s1: str, s2: str):
@@ -106,15 +111,23 @@ class LightsGrid:
           - If the light is off, turn it on at intensity 3
         """
         # Process grid coordinates
-
+        r_start, c_start, r_end, c_end = self.process_grid_coordinates(s1, s2)
         # First extract the slice of the grid into a new dataframe
+        grid_slice = self.grid.iloc[r_start:r_end + 1, c_start:c_end + 1].copy()
 
         # Now create a mask of all lights > 0 in the slice
-
+        mask = (grid_slice > 0)
+        mask2 = (grid_slice == 0)
         # Now turn off all lights that are on in the slice
+        grid_slice[:] = np.where(mask, 0, grid_slice)
         # Set all lights that are off to 3 in the slice
+        grid_slice[:] = np.where(mask2, 3, grid_slice)
+
+        print(grid_slice)
 
         # Finally overwrite the grid with the new values
+        self.grid.update(grid_slice)
+        self.grid = self.grid.astype('int32')
 
     def follow_instructions(self):
         """Function to process all instructions.
@@ -130,6 +143,8 @@ class LightsGrid:
                     self.turn_off(inst.split(" ")[2], inst.split(" ")[4])
                 elif inst.split(" ")[1].lower() == "up":
                     self.turn_up(int(inst.split(" ")[2]), inst.split(" ")[3], inst.split(" ")[5])
+            elif inst.split(" ")[0].lower() == "toggle":
+                self.toggle(inst.split(" ")[1], inst.split(" ")[3])
 
     @property
     def lights_intensity(self):
@@ -140,14 +155,13 @@ class LightsGrid:
 def main():
     print('time to get into machine learning')
     lights = LightsGrid(10, [
-                "turn on 0,0 through 9,9",
-                "turn up 1 0,0 through 9,9",
-                "turn off 0,0 through 4,4",
-                "turn off 3,3 through 5,5"
+        "turn on 0,0 through 9,9",
+        "turn off 0,0 through 4,4",
+        "turn up 5 0,0 through 9,9",
     ])
     lights.follow_instructions()
     print(lights.lights_intensity)
-    print(lights.grid)
+    # print(lights.grid)
     # assert lights.lights_intensity == 75
 
 
