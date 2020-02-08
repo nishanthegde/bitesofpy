@@ -98,7 +98,16 @@ class LightsGrid:
 
         For each light in the grid slice given turn the light down
           by the given amount. Don't turn a light down past 0"""
-        pass
+        r_start, c_start, r_end, c_end = self.process_grid_coordinates(s1, s2)
+        grid_slice = self.grid.iloc[r_start:r_end + 1, c_start:c_end + 1].copy()
+
+        grid_slice.loc[:, :] -= amount
+
+        mask = (grid_slice < 0)
+        grid_slice[:] = np.where(mask, 0, grid_slice)
+
+        self.grid.update(grid_slice)
+        self.grid = self.grid.astype('int32')
 
     def toggle(self, s1: str, s2: str):
         """The toggle function takes 2 parameters:
@@ -123,7 +132,7 @@ class LightsGrid:
         # Set all lights that are off to 3 in the slice
         grid_slice[:] = np.where(mask2, 3, grid_slice)
 
-        print(grid_slice)
+        # print(grid_slice)
 
         # Finally overwrite the grid with the new values
         self.grid.update(grid_slice)
@@ -143,6 +152,8 @@ class LightsGrid:
                     self.turn_off(inst.split(" ")[2], inst.split(" ")[4])
                 elif inst.split(" ")[1].lower() == "up":
                     self.turn_up(int(inst.split(" ")[2]), inst.split(" ")[3], inst.split(" ")[5])
+                elif inst.split(" ")[1].lower() == "down":
+                    self.turn_down(int(inst.split(" ")[2]), inst.split(" ")[3], inst.split(" ")[5])
             elif inst.split(" ")[0].lower() == "toggle":
                 self.toggle(inst.split(" ")[1], inst.split(" ")[3])
 
@@ -154,13 +165,9 @@ class LightsGrid:
 
 def main():
     print('time to get into machine learning')
-    lights = LightsGrid(10, [
-        "turn on 0,0 through 9,9",
-        "turn off 0,0 through 4,4",
-        "turn up 5 0,0 through 9,9",
-    ])
-    lights.follow_instructions()
-    print(lights.lights_intensity)
+    # lights = LightsGrid(10, ["turn on 0,0 through 9,9", "turn down 2 0,0 through 9,9"])
+    # lights.follow_instructions()
+    # print(lights.lights_intensity)
     # print(lights.grid)
     # assert lights.lights_intensity == 75
 
@@ -219,18 +226,18 @@ if __name__ == "__main__":
     turn off 3,72 through 68,75"""
 
     # Create a list of all the instructions
-    # instructions = [line.strip() for line in instructions.splitlines()]
-    # # The grid size instruction is first
-    # # Extract it and convert to int
-    # grid_size = int(instructions[0].split(" ")[4])
+    instructions = [line.strip() for line in instructions.splitlines()]
+    # The grid size instruction is first
+    # Extract it and convert to int
+    grid_size = int(instructions[0].split(" ")[4])
 
-    # # Create a LightsGrid Class instance
-    # lights = LightsGrid(grid_size, instructions[1:])
+    # Create a LightsGrid Class instance
+    lights = LightsGrid(grid_size, instructions[1:])
 
-    # # Follow the instructions
-    # lights.follow_instructions()
+    # Follow the instructions
+    lights.follow_instructions()
 
-    # # Print the total intensity of the lights
-    # # The correct answer is 12317
-    # print(f"Total intensity of Lights on: {lights.lights_intensity}\n")
+    # Print the total intensity of the lights
+    # The correct answer is 12317
+    print(f"Total intensity of Lights on: {lights.lights_intensity}\n")
     main()
