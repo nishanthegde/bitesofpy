@@ -45,8 +45,24 @@ def mark_islands(i: int, j: int, grid: list):
 
 def main():
     print('thank you for everything...')
-    print(count_islands(grid))
-    print(grid)
+    # print(count_islands(grid))
+    # print(grid)
+    a = np.asarray([1, 1, 1, 0, 0, 0, 1, 1, 0, 0])
+    a_ext = np.concatenate(([0], a, [0]))
+    # print(a_ext, a_ext[1:], a_ext[:-1])
+    print(a_ext)
+    idx = np.flatnonzero(a_ext[1:] != a_ext[:-1])
+    print(idx)
+    # idx1 = np.flatnonzero(a_ext)
+    # print(idx1)
+    print([idx[1::2]])
+    print(a_ext[1:][idx[1::2]])
+    print(idx[::2])
+    print(idx[::2] - idx[1::2])
+
+    a_ext[1:][idx[1::2]] = idx[::2] - idx[1::2]
+    print(a_ext[1:-1])
+    print(a_ext.cumsum()[1:-1])
 
 
 if __name__ == '__main__':
