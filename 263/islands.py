@@ -1,6 +1,9 @@
 import numpy as np
 
 
+grid_single = [[1, 1, 1, 0, 0, 0, 1, 1, 0, 0]]
+grid_single1 = [[0, 0, 0, 0, 0, 0, 0, 0]]
+
 grid = [[1, 1, 0, 0, 1],
         [1, 1, 0, 0, 1],
         [0, 1, 0, 0, 0],
@@ -17,19 +20,28 @@ def count_islands(grid: list) -> int:
     It's also preferred to check/mark the visited islands:
     - eg. using the helper function - mark_islands().
     """
-    # grid = np.asarray(grid, dtype=np.int32)
+    grid = np.asarray(grid, dtype=np.int32)
 
-    # number of islands = 0         # var. for the counts
+    # var for # of islands
     islands = 0
 
+    # indices for 1s
+    idx_nz = np.flatnonzero(grid)
+
+    if idx_nz.shape[0] > 0:  # if 1s present
+        islands = 1  # initiate island count
+
+        # compare each element with next...
+        print(idx_nz)
+
     # loop through grid
-    for i in range(len(grid)):
-        print(grid[i][0])
-        if grid[i][0] == 1:
-            mark_islands(i, 0, grid)
+    # for i in range(len(grid)):
+    #     print(grid[i][0])
+    #     if grid[i][0] == 1:
+    #         mark_islands(i, 0, grid)
 
     # mark_islands(r, c, grid)
-    return islands
+    return grid
     # return np.asarray(grid, dtype=np.int32)
 
 
@@ -45,24 +57,27 @@ def mark_islands(i: int, j: int, grid: list):
 
 def main():
     print('thank you for everything...')
-    # print(count_islands(grid))
-    # print(grid)
-    a = np.asarray([1, 1, 1, 0, 0, 0, 1, 1, 0, 0])
-    a_ext = np.concatenate(([0], a, [0]))
-    # print(a_ext, a_ext[1:], a_ext[:-1])
-    print(a_ext)
-    idx = np.flatnonzero(a_ext[1:] != a_ext[:-1])
-    print(idx)
-    # idx1 = np.flatnonzero(a_ext)
-    # print(idx1)
-    print([idx[1::2]])
-    print(a_ext[1:][idx[1::2]])
-    print(idx[::2])
-    print(idx[::2] - idx[1::2])
+    islands = count_islands(grid_single)
+    print(islands)
+    # print(list(np.flatnonzero(islands)))
 
-    a_ext[1:][idx[1::2]] = idx[::2] - idx[1::2]
-    print(a_ext[1:-1])
-    print(a_ext.cumsum()[1:-1])
+    # print(grid)
+
+    # a = np.asarray([1, 1, 1, 0, 0, 0, 1, 1, 0, 0])
+    # a_ext = np.concatenate(([0], a, [0]))
+
+    # print(a_ext)
+    # idx = np.flatnonzero(a_ext[1:] != a_ext[:-1])
+    # print(idx)
+
+    # print([idx[1::2]])
+    # print(a_ext[1:][idx[1::2]])
+    # print(idx[::2])
+    # print(idx[::2] - idx[1::2])
+
+    # a_ext[1:][idx[1::2]] = idx[::2] - idx[1::2]
+    # print(a_ext[1:-1])
+    # print(a_ext.cumsum()[1:-1])
 
 
 if __name__ == '__main__':
