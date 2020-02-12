@@ -1,8 +1,10 @@
 import numpy as np
 
-
 grid_single = [[1, 1, 1, 0, 0, 0, 1, 1, 0, 0]]
 grid_single1 = [[0, 0, 0, 0, 0, 0, 0, 0]]
+grid_single2 = [[1, 0, 1, 0, 0, 1, 0, 1]]
+grid_single3 = [[1, 1, 1, 1, 1, 1, 1, 1]]
+grid_single4 = [[0, 0, 1, 1, 1, 1, 0, 1]]
 
 grid = [[1, 1, 0, 0, 1],
         [1, 1, 0, 0, 1],
@@ -32,7 +34,8 @@ def count_islands(grid: list) -> int:
         islands = 1  # initiate island count
 
         # compare each element with next...
-        print(idx_nz)
+        idx_nz_comp = idx_nz[1:] - idx_nz[:-1]
+        islands += np.count_nonzero(idx_nz_comp != 1)
 
     # loop through grid
     # for i in range(len(grid)):
@@ -41,7 +44,7 @@ def count_islands(grid: list) -> int:
     #         mark_islands(i, 0, grid)
 
     # mark_islands(r, c, grid)
-    return grid
+    return islands
     # return np.asarray(grid, dtype=np.int32)
 
 
@@ -57,7 +60,7 @@ def mark_islands(i: int, j: int, grid: list):
 
 def main():
     print('thank you for everything...')
-    islands = count_islands(grid_single)
+    islands = count_islands(grid_single4)
     print(islands)
     # print(list(np.flatnonzero(islands)))
 
