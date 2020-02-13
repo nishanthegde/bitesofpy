@@ -37,15 +37,7 @@ def count_islands(grid: list) -> int:
         idx_nz_comp = idx_nz[1:] - idx_nz[:-1]
         islands += np.count_nonzero(idx_nz_comp != 1)
 
-    # loop through grid
-    # for i in range(len(grid)):
-    #     print(grid[i][0])
-    #     if grid[i][0] == 1:
-    #         mark_islands(i, 0, grid)
-
-    # mark_islands(r, c, grid)
     return islands
-    # return np.asarray(grid, dtype=np.int32)
 
 
 def mark_islands(i: int, j: int, grid: list):
