@@ -6,11 +6,46 @@ grid_single2 = [[1, 0, 1, 0, 0, 1, 0, 1]]
 grid_single3 = [[1, 1, 1, 1, 1, 1, 1, 1]]
 grid_single4 = [[0, 0, 1, 1, 1, 1, 0, 1]]
 
-grid = [[1, 1, 0, 0, 1],
-        [1, 1, 0, 0, 1],
-        [0, 1, 0, 0, 0],
-        [1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0]]
+grid = [[1, 0, 0, 1],
+        [1, 0, 1, 0],
+        [0, 1, 0, 0],
+        [1, 0, 0, 1]]
+
+empty = [[0, 0, 0, 0],
+         [0, 0, 0, 0],
+         [0, 0, 0, 0],
+         [0, 0, 0, 0]]
+
+bad_map = [[]]
+
+
+sparse = [[1, 0, 1],
+          [0, 1, 0],
+          [1, 0, 1]]
+
+circles = [[1, 1, 0, 0, 0, 1],
+           [1, 0, 0, 0, 0, 1],
+           [1, 0, 0, 0, 1, 1],
+           [1, 0, 0, 0, 1, 0],
+           [1, 0, 0, 1, 1, 0],
+           [1, 1, 1, 1, 0, 0]]
+
+
+def count_islands_row(grid_row: np.ndarray) -> int:
+
+    islands = 0
+
+    # indices for 1s
+    idx_nz = np.flatnonzero(grid_row)
+
+    if idx_nz.shape[0] > 0:  # if 1s present
+        islands = 1  # initiate island count
+
+        # compare each element with next...
+        idx_nz_comp = idx_nz[1:] - idx_nz[:-1]
+        islands += np.count_nonzero(idx_nz_comp != 1)
+
+    return islands
 
 
 def count_islands(grid: list) -> int:
@@ -24,36 +59,82 @@ def count_islands(grid: list) -> int:
     """
     grid = np.asarray(grid, dtype=np.int32)
 
+    # print(grid)
     # var for # of islands
     islands = 0
 
-    # indices for 1s
-    idx_nz = np.flatnonzero(grid)
+    for i in range(0, grid.shape[0]):
+        if i > 0:
+            grid_temp = grid[i] - grid[i - 1]
+            print(grid[i], grid[i - 1], grid_temp)
+            grid_temp = np.where(grid_temp < 0, 0, grid_temp)
+            islands += count_islands_row(grid_temp)
+            print(islands)
+            # print(grid_arr_new, count_islands(grid_arr_new))
+        else:
+            islands += count_islands_row(grid[i])
+            print(islands)
+            # print(grid[i], count_islands(grid_arr[i]))
 
-    if idx_nz.shape[0] > 0:  # if 1s present
-        islands = 1  # initiate island count
-
-        # compare each element with next...
-        idx_nz_comp = idx_nz[1:] - idx_nz[:-1]
-        islands += np.count_nonzero(idx_nz_comp != 1)
+        # islands += count_islands_row(grid[i])
 
     return islands
 
 
-def mark_islands(i: int, j: int, grid: list):
+def mark_islands(i: int, j: int, grid: np.ndarray):
     """
     Input: the row, column and grid
-    Output: None. Just mark the visisted islands as in-place operation.
+    Output: None. Just mark the visited islands as in-place operation.
     """
-    grid[i][j] = '#'      # one way to mark visited ones - suggestion.
+
+    grid[i, j] = 9    # one way to mark visited ones - suggestion.
+
     # markers = numpy.copy(grid)
     # print(markers)
 
 
 def main():
-    print('thank you for everything...')
-    islands = count_islands(grid_single4)
+    # print('please let there be peace...')
+    # islands = count_islands(grid_single)
+    # print(islands)
+    # islands = count_islands(grid_single1)
+    # print(islands)
+    # islands = count_islands(grid_single2)
+    # print(islands)
+    # islands = count_islands(grid_single3)
+    # print(islands)
+    # islands = count_islands(grid_single4)
+    # print(islands)
+
+    islands = count_islands(circles)
     print(islands)
+
+    # grid_arr = np.asarray(grid, dtype=np.int32)
+
+    # print(grid_arr)
+    # print(grid_arr.shape)
+
+    # for i in range(0, grid_arr.shape[0]):
+    #     if i > 0:
+    #         print(grid_arr[i], grid_arr[i - 1])
+    #         grid_arr_new = grid_arr[i] - grid_arr[i - 1]
+    #         grid_arr_new = np.where(grid_arr_new < 0, 0, grid_arr_new)
+    #         print(grid_arr_new, count_islands(grid_arr_new))
+    #     else:
+    #         print(grid_arr[i], count_islands(grid_arr[i]))
+
+    # a = np.array([-1, 0, 0, 0, -1])
+    # print(a < 0)
+    # a = np.where(a < 0, 0, a)
+    # print(a)
+
+    # print(grid_arr)
+
+    # idx_nz = np.flatnonzero(grid_arr)
+    # print(idx_nz)
+    # idx_nz_comp = idx_nz[1:] - idx_nz[:-1]
+    # print(idx_nz_comp)
+
     # print(list(np.flatnonzero(islands)))
 
     # print(grid)
