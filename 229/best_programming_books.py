@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from urllib.request import urlretrieve
 
@@ -5,7 +6,9 @@ from bs4 import BeautifulSoup
 
 url = ("https://bites-data.s3.us-east-2.amazonaws.com/"
        "best-programming-books.html")
-tmp = Path("/tmp")
+local = os.getcwd()
+# local = "/tmp"
+tmp = Path(local)
 html_file = tmp / "books.html"
 
 if not html_file.exists():
@@ -51,15 +54,20 @@ def load_data():
     should be updated to indicate this new sorting order.The Book object
     with the highest rating should be first and go down from there.
     """
-    pass
+    soup = _get_soup(html_file)
+
+    for s in soup.find_all("div", {"class": "book accepted normal"}):
+        print(s['data-title'])
 
 
 def main():
     books = load_data()
-    display_books(books, limit=5, year=2017)
+    # print(type(books))
+    # display_books(books, limit=5, year=2017)
     """If done correctly, the previous function call should display the
     output below.
     """
+    print('thank you for everything...')
 
 
 if __name__ == "__main__":
