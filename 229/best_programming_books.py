@@ -1,4 +1,5 @@
 import os
+
 from pathlib import Path
 from urllib.request import urlretrieve
 
@@ -24,7 +25,13 @@ class Book:
     rank - integer rank to be updated once the books have been sorted
     rating - float as indicated on the page
     """
-    pass
+
+    def __init__(self, title, author, year, rank, rating):
+        self.title = title
+        self.author = author
+        self.year = year
+        self.rank = rank
+        self.rating = rating
 
 
 def _get_soup(file):
@@ -57,7 +64,20 @@ def load_data():
     soup = _get_soup(html_file)
 
     for s in soup.find_all("div", {"class": "book accepted normal"}):
-        print(s['data-title'])
+        for r in s.find_all("div", {"class": "rank"}):
+            title = s['data-title'].strip()
+            rank = int(r.text.strip())
+            for a in s.find_all("h3", {"class": "authors"}):
+                authors = list()
+                for a1 in a.find_all(target="_blank"):
+                    if 'you?' not in a1.text.strip().lower():
+                        authors.append(a1.text.strip())
+            for y in s.find_all("span", {"class": "date"}):
+                year = int(y.text.strip().replace(" ", "").replace("|", ""))
+            for ra in s.find_all("span", {"class": "our-rating"}):
+                ra = float(ra.text.strip())
+
+        print(title, '; '.join(authors), year, rank, ra)
 
 
 def main():
