@@ -5,6 +5,8 @@ from urllib.request import urlretrieve
 
 from bs4 import BeautifulSoup
 
+from collections import Counter
+
 url = ("https://bites-data.s3.us-east-2.amazonaws.com/"
        "best-programming-books.html")
 local = os.getcwd()
@@ -29,9 +31,15 @@ class Book:
     def __init__(self, title, author, year, rank, rating):
         self.title = title
         self.author = author
-        self.year = year
-        self.rank = rank
-        self.rating = rating
+        self.year = int(year)
+        self.rank = int(rank)
+        self.rating = float(rating)
+
+    def __str__(self):
+        rank_str = ('000' + str(self.rank))[-3:]
+        year_str = '(' + str(self.year) + ')'
+
+        return '[{}] {} {}\n      {} {}'.format(rank_str, self.title, year_str, self.author, str(self.rating))
 
 
 def _get_soup(file):
@@ -61,33 +69,52 @@ def load_data():
     should be updated to indicate this new sorting order.The Book object
     with the highest rating should be first and go down from there.
     """
+    books = list()
     soup = _get_soup(html_file)
 
     for s in soup.find_all("div", {"class": "book accepted normal"}):
+        for t in s.find_all("h2", {"class": "main"}):
+            title = t.text.strip()
         for r in s.find_all("div", {"class": "rank"}):
-            title = s['data-title'].strip()
+            # title = s['data-title'].strip()
             rank = int(r.text.strip())
             for a in s.find_all("h3", {"class": "authors"}):
                 authors = list()
                 for a1 in a.find_all(target="_blank"):
                     if 'you?' not in a1.text.strip().lower():
                         authors.append(a1.text.strip())
+                        # author = a1.text.strip
             for y in s.find_all("span", {"class": "date"}):
                 year = int(y.text.strip().replace(" ", "").replace("|", ""))
             for ra in s.find_all("span", {"class": "our-rating"}):
-                ra = float(ra.text.strip())
+                rating = float(ra.text.strip())
 
-        print(title, '; '.join(authors), year, rank, ra)
+        books.append(Book(title, '; '.join(authors), year, rank, rating))
+        # print(title, '; '.join(authors), year, rank, ra)
+
+    return [b for b in books if 'python' in b.title.lower()]
 
 
 def main():
+    print('thank you for everything...')
     books = load_data()
-    # print(type(books))
+    # print(len(set([b.title for b in books])))
+    c = Counter([b.title for b in books])
+    print(c.most_common())
     # display_books(books, limit=5, year=2017)
     """If done correctly, the previous function call should display the
     output below.
     """
-    print('thank you for everything...')
+
+    # title = "Python Testing with pytest"
+    # author = "Okken, Brian"
+    # year = 2017
+    # rank = 1
+    # rating = 5
+
+    # b = Book(title, author, year, rank, rating)
+    # actual = str(b)
+    # print(actual)
 
 
 if __name__ == "__main__":
