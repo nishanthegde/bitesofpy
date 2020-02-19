@@ -72,35 +72,41 @@ def load_data():
     books = list()
     soup = _get_soup(html_file)
 
-    for s in soup.find_all("div", {"class": "book accepted normal"}):
-        for t in s.find_all("h2", {"class": "main"}):
-            title = t.text.strip()
-        for r in s.find_all("div", {"class": "rank"}):
-            # title = s['data-title'].strip()
-            rank = int(r.text.strip())
-            for a in s.find_all("h3", {"class": "authors"}):
-                authors = list()
-                for a1 in a.find_all(target="_blank"):
-                    if 'you?' not in a1.text.strip().lower():
-                        authors.append(a1.text.strip())
-                        # author = a1.text.strip
-            for y in s.find_all("span", {"class": "date"}):
-                year = int(y.text.strip().replace(" ", "").replace("|", ""))
-            for ra in s.find_all("span", {"class": "our-rating"}):
-                rating = float(ra.text.strip())
+    for s in soup.find_all("div", {"class": "books"}):
+        for bh in s.find_all("div", {"class": "book-header-title"}):
+            for t in bh.find_all("h2", {"class": "main"}):
+                if 'python' in t.text.strip().lower():
+                    books.append(t.text.strip())
+        # for s in soup.find_all("div", {"class": "book accepted normal"}):
+        #     for t in s.find_all("h2", {"class": "main"}):
+        #         title = t.text.strip()
+        #     for r in s.find_all("div", {"class": "rank"}):
+        #         # title = s['data-title'].strip()
+        #         rank = int(r.text.strip())
+        #         for a in s.find_all("h3", {"class": "authors"}):
+        #             authors = list()
+        #             for a1 in a.find_all(target="_blank"):
+        #                 if 'you?' not in a1.text.strip().lower():
+        #                     authors.append(a1.text.strip())
+        #                     # author = a1.text.strip
+        #         for y in s.find_all("span", {"class": "date"}):
+        #             year = int(y.text.strip().replace(" ", "").replace("|", ""))
+        #         for ra in s.find_all("span", {"class": "our-rating"}):
+        #             rating = float(ra.text.strip())
 
-        books.append(Book(title, '; '.join(authors), year, rank, rating))
-        # print(title, '; '.join(authors), year, rank, ra)
+        #     books.append(Book(title, '; '.join(authors), year, rank, rating))
+        #     # print(title, '; '.join(authors), year, rank, ra)
 
-    return [b for b in books if 'python' in b.title.lower()]
+        return books
 
 
 def main():
     print('thank you for everything...')
     books = load_data()
+    print(len(books))
     # print(len(set([b.title for b in books])))
-    c = Counter([b.title for b in books])
-    print(c.most_common())
+    # c = Counter([b.title for b in books])
+    # print(c.most_common())
     # display_books(books, limit=5, year=2017)
     """If done correctly, the previous function call should display the
     output below.
