@@ -77,37 +77,46 @@ def load_data():
     soup = _get_soup(html_file)
 
     for s in soup.find_all("div", {"class": "books"}):
-        for bh in s.find_all("div", {"class": "book-header-title"}):
+        # if s.find("div", {"class": "rank"}):
+        #     print("didn't find h2")
+        for s1 in s.find_all("div", {"class": "book accepted normal"}):
             py = False
-            for t in bh.find_all("h2", {"class": "main"}):
-                if 'python' in t.text.strip().lower():
-                    py = True
-                    title = books.append(t.text.strip())
-            for a in bh.find_all("h3", {"class": "authors"}):
-                if py:
-                    author = _format_author(a.find("a", target="_blank").text.strip())
-                    print(author)
-                # for a in st.find(a):
-                # print(a.text.strip())
-                # for s in soup.find_all("div", {"class": "book accepted normal"}):
-                #     for t in s.find_all("h2", {"class": "main"}):
-                #         title = t.text.strip()
-                #     for r in s.find_all("div", {"class": "rank"}):
-                #         # title = s['data-title'].strip()
-                #         rank = int(r.text.strip())
-                #         for a in s.find_all("h3", {"class": "authors"}):
-                #             authors = list()
-                #             for a1 in a.find_all(target="_blank"):
-                #                 if 'you?' not in a1.text.strip().lower():
-                #                     authors.append(a1.text.strip())
-                #                     # author = a1.text.strip
-                #         for y in s.find_all("span", {"class": "date"}):
-                #             year = int(y.text.strip().replace(" ", "").replace("|", ""))
-                #         for ra in s.find_all("span", {"class": "our-rating"}):
-                #             rating = float(ra.text.strip())
+            for bh in s1.find_all("div", {"class": "book-header-title"}):
+                for t in bh.find_all("h2", {"class": "main"}):
+                    if 'python' in t.text.strip().lower():
+                        py = True
+                        title = t.text.strip()
+                        print(title)
+                for a in bh.find_all("h3", {"class": "authors"}):
+                    if py:
+                        author = _format_author(a.find("a", target="_blank").text.strip())
+                        print(author)
+                for y in bh.find_all("span", {"class": "date"}):
+                    if py:
+                        year = int(y.text.strip().replace(" ", "").replace("|", ""))
+                        print(year)
 
-                #     books.append(Book(title, '; '.join(authors), year, rank, rating))
-                #     # print(title, '; '.join(authors), year, rank, ra)
+            # for a in st.find(a):
+            # print(a.text.strip())
+            # for s in soup.find_all("div", {"class": "book accepted normal"}):
+            #     for t in s.find_all("h2", {"class": "main"}):
+            #         title = t.text.strip()
+            #     for r in s.find_all("div", {"class": "rank"}):
+            #         # title = s['data-title'].strip()
+            #         rank = int(r.text.strip())
+            #         for a in s.find_all("h3", {"class": "authors"}):
+            #             authors = list()
+            #             for a1 in a.find_all(target="_blank"):
+            #                 if 'you?' not in a1.text.strip().lower():
+            #                     authors.append(a1.text.strip())
+            #                     # author = a1.text.strip
+            #         for y in s.find_all("span", {"class": "date"}):
+            #             year = int(y.text.strip().replace(" ", "").replace("|", ""))
+            #         for ra in s.find_all("span", {"class": "our-rating"}):
+            #             rating = float(ra.text.strip())
+
+            #     books.append(Book(title, '; '.join(authors), year, rank, rating))
+            #     # print(title, '; '.join(authors), year, rank, ra)
 
         return books
 
@@ -116,6 +125,7 @@ def main():
     print('thank you for everything...')
     books = load_data()
     print(len(books))
+    print(books)
     # print(len(set([b.title for b in books])))
     # c = Counter([b.title for b in books])
     # print(c.most_common())
