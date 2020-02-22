@@ -58,7 +58,7 @@ def display_books(books, limit=10, year=None):
 
 
 def _format_author(author: str) -> str:
-    return ' '.join(author.split(' ')[::-1]).strip()
+    return ', '.join(author.split(' ')[::-1]).strip()
 
 
 def load_data():
@@ -77,56 +77,42 @@ def load_data():
     soup = _get_soup(html_file)
 
     for s in soup.find_all("div", {"class": "books"}):
-        # if s.find("div", {"class": "rank"}):
-        #     print("didn't find h2")
+
         for s1 in s.find_all("div", {"class": "book accepted normal"}):
             py = False
             for bh in s1.find_all("div", {"class": "book-header-title"}):
-                for t in bh.find_all("h2", {"class": "main"}):
-                    if 'python' in t.text.strip().lower():
+                # for t in bh.find_all("h2", {"class": "main"}):
+                if bh.find("h2", {"class": "main"}):
+                    title = bh.find("h2", {"class": "main"}).text.strip()
+                    if 'python' in title.lower():
                         py = True
-                        title = t.text.strip()
-                        print(title)
-                for a in bh.find_all("h3", {"class": "authors"}):
-                    if py:
+                if py:
+                    for a in bh.find_all("h3", {"class": "authors"}):
                         author = _format_author(a.find("a", target="_blank").text.strip())
-                        print(author)
-                for y in bh.find_all("span", {"class": "date"}):
-                    if py:
-                        year = int(y.text.strip().replace(" ", "").replace("|", ""))
-                        print(year)
+                    for y in bh.find_all("span", {"class": "date"}):
+                        if bh.find("span", {"class": "date"}):
+                            year = bh.find("span", {"class": "date"}).text.strip().replace(" ", "").replace("|", "")
 
-            # for a in st.find(a):
-            # print(a.text.strip())
-            # for s in soup.find_all("div", {"class": "book accepted normal"}):
-            #     for t in s.find_all("h2", {"class": "main"}):
-            #         title = t.text.strip()
-            #     for r in s.find_all("div", {"class": "rank"}):
-            #         # title = s['data-title'].strip()
-            #         rank = int(r.text.strip())
-            #         for a in s.find_all("h3", {"class": "authors"}):
-            #             authors = list()
-            #             for a1 in a.find_all(target="_blank"):
-            #                 if 'you?' not in a1.text.strip().lower():
-            #                     authors.append(a1.text.strip())
-            #                     # author = a1.text.strip
-            #         for y in s.find_all("span", {"class": "date"}):
-            #             year = int(y.text.strip().replace(" ", "").replace("|", ""))
-            #         for ra in s.find_all("span", {"class": "our-rating"}):
-            #             rating = float(ra.text.strip())
+                            rank = int(s1.find("div", {"class": "rank"}).text.strip())
+                            rating = float(s1.find("span", {"class": "our-rating"}).text.strip())
 
-            #     books.append(Book(title, '; '.join(authors), year, rank, rating))
-            #     # print(title, '; '.join(authors), year, rank, ra)
+                            books.append(Book(title, author, year, rank, rating))
 
         return books
 
 
 def main():
     print('thank you for everything...')
-    books = load_data()
-    print(len(books))
-    print(books)
-    # print(len(set([b.title for b in books])))
+    python_books = load_data()
+
+    assert python_books[0].author == "Bader, Dan"
+    assert python_books[-1].title == "Python for Tweens and Teens"
+    assert python_books[10].rating == 4.66
+
+    # print(len(python_books))
+    # print(python_books)
+    # print([(b.title, b.year, b.author, b.rank, b.rating) for b in python_books])
+
     # c = Counter([b.title for b in books])
     # print(c.most_common())
     # display_books(books, limit=5, year=2017)
