@@ -98,6 +98,9 @@ def load_data():
 
                             books.append(Book(title, author, year, rank, rating))
 
+        # sort books by rating, author, title, rank
+        books = sorted([b for b in books], key=lambda b: b.rating, reverse=True)
+
         return books
 
 
@@ -112,6 +115,8 @@ def main():
     # print(len(python_books))
     # print(python_books)
     # print([(b.title, b.year, b.author, b.rank, b.rating) for b in python_books])
+
+    print([float(b.rating) for b in python_books])
 
     # c = Counter([b.title for b in books])
     # print(c.most_common())
