@@ -54,12 +54,24 @@ def display_books(books, limit=10, year=None):
     :param year: integer indicating the oldest year to include
     :return: None
     """
-    pass
+    if year:
+        display_books = [b for b in books if b.year >= year][:limit]
+    else:
+        display_books = [b for b in books][:limit]
+
+    for b in display_books:
+        print(b)
 
 
 def _format_author(author: str) -> str:
-    # print(author.split(' '))
-    return ', '.join(author.split(' ')[::-1]).strip()
+    a = author.split(' ')
+    # print(a)
+    # print(a[1:-1])
+    if len(a[1:-1]) > 0:
+        return a[-1] + ', ' + a[0] + ' ' + ' '.join(a[1:-1])
+    else:
+        return a[-1] + ', ' + a[0]
+    # return ', '.join(author.split(' ')[:0]).strip()
 
 
 def load_data():
@@ -100,7 +112,7 @@ def load_data():
                             books.append(Book(title, author, year, rank, rating))
 
         # sort books by rating desc, year, title, author, title
-        books = sorted(sorted(sorted(sorted([b for b in books], key=lambda b: b.author.split(",")[0]), key=lambda b: b.title), key=lambda b: b.year), key=lambda b: b.rating, reverse=True)
+        books = sorted(sorted(sorted(sorted([b for b in books], key=lambda b: b.author.split(",")[0]), key=lambda b: b.title.lower()), key=lambda b: b.year), key=lambda b: b.rating, reverse=True)
 
         # update ranks
         for i, b in enumerate(books):
@@ -113,15 +125,19 @@ def main():
     print('thank you for everything...')
     python_books = load_data()
 
-    assert python_books[0].author == "Bader, Dan"
-    assert python_books[-1].title == "Python for Tweens and Teens"
-    assert python_books[10].rating == 4.66
+    # assert python_books[0].author == "Bader, Dan"
+    # assert python_books[-1].title == "Python for Tweens and Teens"
+    # assert python_books[10].rating == 4.66
 
     # print(len(python_books))
     # print(python_books)
     # print([(b.title, b.year, b.author, b.rank, b.rating) for b in python_books])
 
-    print([(b.rating, b.year, b.title, b.author, b.rank) for b in python_books])
+    # print([(b.rating, b.year, b.title, b.author, b.rank) for b in python_books])
+
+    # print(python_books[0])
+
+    # display_books(python_books, limit=40)
 
     # c = Counter([b.title for b in books])
     # print(c.most_common())
