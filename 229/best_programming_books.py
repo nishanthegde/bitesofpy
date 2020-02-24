@@ -9,8 +9,8 @@ from collections import Counter
 
 url = ("https://bites-data.s3.us-east-2.amazonaws.com/"
        "best-programming-books.html")
-local = os.getcwd()
-# local = "/tmp"
+# local = os.getcwd()
+local = "/tmp"
 tmp = Path(local)
 html_file = tmp / "books.html"
 
