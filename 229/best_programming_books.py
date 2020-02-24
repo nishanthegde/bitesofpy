@@ -58,6 +58,7 @@ def display_books(books, limit=10, year=None):
 
 
 def _format_author(author: str) -> str:
+    # print(author.split(' '))
     return ', '.join(author.split(' ')[::-1]).strip()
 
 
@@ -98,8 +99,12 @@ def load_data():
 
                             books.append(Book(title, author, year, rank, rating))
 
-        # sort books by rating, author, title, rank
-        books = sorted([b for b in books], key=lambda b: b.rating, reverse=True)
+        # sort books by rating desc, year, title, author, title
+        books = sorted(sorted(sorted(sorted([b for b in books], key=lambda b: b.author.split(",")[0]), key=lambda b: b.title), key=lambda b: b.year), key=lambda b: b.rating, reverse=True)
+
+        # update ranks
+        for i, b in enumerate(books):
+            b.rank = i + 1
 
         return books
 
@@ -116,7 +121,7 @@ def main():
     # print(python_books)
     # print([(b.title, b.year, b.author, b.rank, b.rating) for b in python_books])
 
-    print([float(b.rating) for b in python_books])
+    print([(b.rating, b.year, b.title, b.author, b.rank) for b in python_books])
 
     # c = Counter([b.title for b in books])
     # print(c.most_common())
