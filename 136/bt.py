@@ -45,22 +45,58 @@ def check_bt(donor, recipient):
         Returns:
         bool: True for compatability, False otherwise.
     """
-    return False
+    if isinstance(donor, Bloodtype):
+        donor_value = donor.value
+    elif isinstance(donor, str):
+        try:
+            donor_value = blood_type_text[donor].value
+        except:
+            raise ValueError("Input value is not in the defined interval")
+    elif isinstance(donor, int):
+        if donor in Bloodtype._value2member_map_:
+            donor_value = donor
+        else:
+            raise ValueError("Input value is not in the defined interval")
+    else:
+        raise TypeError("Donor must be int | str | Bloodtype")
+
+    if isinstance(recipient, Bloodtype):
+        recipient_value = recipient.value
+    elif isinstance(recipient, str):
+        try:
+            recipient_value = blood_type_text[recipient].value
+        except:
+            raise ValueError("Input value is not in the defined interval")
+    elif isinstance(recipient, int):
+        if recipient in Bloodtype._value2member_map_:
+            recipient_value = recipient
+        else:
+            raise ValueError("Input value is not in the defined interval")
+    else:
+        raise TypeError("Recepient must be int | str | Bloodtype")
+
+    if sum(n < 0 for n in _particular_antigen_comp(donor_value, recipient_value)) > 0:
+        return False
+
+    return True
 
 
-# hint
 def _particular_antigen_comp(donor: int, recipient: int) -> tuple:
     """Returns a particalar antigen compatibility, where each tuple member
     marks a compatibility for a particular antigen  (A, B, Rh-D).
+
     If tuple member is non-negative there is a compatibility.
+
     For red blood cell compatibility is required that
     all tuple members are non-negative (i.e. compatibility for all 3 antigens).
     0- bloodtype is represented as 0 ; AB+ is represented as 7; see Bloodtype enum
+
     Examples:
     _particular_antigen_comp(0, 7) -> (1, 1, 1)    0- can donate to AB+
     _particular_antigen_comp(1, 3) -> (0, 1, 0)    0+ can donate to B+
     _particular_antigen_comp(2, 5) -> (1, -1, 1)   B+ cannot donate to A+
     _particular_antigen_comp(7, 0) -> (-1, -1, -1) AB+ cannot donate to 0-
+
     """
     return (
         ((recipient // 4) % 2) - ((donor // 4) % 2),
@@ -75,6 +111,11 @@ def main():
     for i in range(8):
         recipient = Bloodtype(i)
         print(check_bt(donor, recipient))
+
+    # print(_particular_antigen_comp(Bloodtype.ZERO_NEG.value, Bloodtype.AB_POS.value))
+    # print(_particular_antigen_comp(Bloodtype.ZERO_POS.value, Bloodtype.B_POS.value))
+    # print(_particular_antigen_comp(Bloodtype.B_POS.value, Bloodtype.A_POS.value))
+    # print(_particular_antigen_comp(Bloodtype.AB_POS.value, Bloodtype.ZERO_NEG.value))
 
 
 if __name__ == '__main__':
