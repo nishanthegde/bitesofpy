@@ -33,4 +33,4 @@ circles = [[1, 1, 0, 0, 0, 1],
     (circles, 1),
 ])
 def test_count_islands(data, expected):
-    assert count_islands(data) == expected
+  assert count_islands(data) == expected
