@@ -18,16 +18,37 @@ def print_sequence_route(grid, start_coordinates=None):
     grid_list = [re.split(' - |    |   ||', r) for r in grid_list][::2]
     grid_list = [[int(float(j)) for j in i] for i in grid_list]
 
-    grid_mat = np.array(grid_list)
+    grid_array = np.array(grid_list)
 
-    return grid_mat
+    start_idx_tuple = np.where(grid_array == START_VALUE)
+    start_idx_coord = list(zip(start_idx_tuple[0], start_idx_tuple[1]))
+
+    # assign row index and col index for START_VALUE to center
+    center_row_idx = start_idx_coord[0][0]
+    center_col_idx = start_idx_coord[0][1]
+
+    print(center_row_idx, center_col_idx)
+
+    # check 4 neighbors
+    if grid_array[center_row_idx, center_col_idx + 1] == START_VALUE + 1:
+        center_col_idx = center_col_idx + 1
+    if grid_array[center_row_idx, center_col_idx - 1] == START_VALUE + 1:
+        center_col_idx = center_col_idx - 1
+    if grid_array[center_row_idx + 1, center_col_idx] == START_VALUE + 1:
+        center_row_idx = center_row_idx + 1
+    if grid_array[center_row_idx - 1, center_col_idx] == START_VALUE + 1:
+        center_row_idx = center_row_idx - 1
+
+    print(center_row_idx, center_col_idx)
+
+    return grid_array
 
 
 def main():
     print("thank you for everything...")
-    print(print_sequence_route(tg.small_grid).shape)
-    print(type(print_sequence_route(tg.intermediate_grid)))
-    print(print_sequence_route(tg.big_grid).shape)
+    print(print_sequence_route(tg.small_grid))
+    # print(print_sequence_route(tg.intermediate_grid))
+    # print(print_sequence_route(tg.big_grid))
 
 
 if __name__ == "__main__":
