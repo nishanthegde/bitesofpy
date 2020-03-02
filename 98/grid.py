@@ -6,6 +6,28 @@ DOWN, UP, LEFT, RIGHT = '⇓', '⇑', '⇐', '⇒'
 START_VALUE = 1
 
 
+def check_neighbors_val(grid_array: np.array, val: int, center: tuple) -> tuple:
+    # check 4 neighbors for next value and return tuple of indices of new center and direction
+
+    center_row_idx = center[0]
+    center_col_idx = center[1]
+
+    if grid_array[center_row_idx, center_col_idx + 1] == val + 1:
+        center_col_idx = center_col_idx + 1
+        direction = RIGHT
+    if grid_array[center_row_idx, center_col_idx - 1] == val + 1:
+        center_col_idx = center_col_idx - 1
+        direction = LEFT
+    if grid_array[center_row_idx + 1, center_col_idx] == val + 1:
+        center_row_idx = center_row_idx + 1
+        direction = UP
+    if grid_array[center_row_idx - 1, center_col_idx] == val + 1:
+        center_row_idx = center_row_idx - 1
+        direction = DOWN
+
+    return (center_row_idx, center_col_idx, direction)
+
+
 def print_sequence_route(grid, start_coordinates=None):
     """Receive grid string, convert to 2D matrix of ints, find the
        START_VALUE coordinates and move through the numbers in order printing
@@ -29,17 +51,7 @@ def print_sequence_route(grid, start_coordinates=None):
 
     print(center_row_idx, center_col_idx)
 
-    # check 4 neighbors
-    if grid_array[center_row_idx, center_col_idx + 1] == START_VALUE + 1:
-        center_col_idx = center_col_idx + 1
-    if grid_array[center_row_idx, center_col_idx - 1] == START_VALUE + 1:
-        center_col_idx = center_col_idx - 1
-    if grid_array[center_row_idx + 1, center_col_idx] == START_VALUE + 1:
-        center_row_idx = center_row_idx + 1
-    if grid_array[center_row_idx - 1, center_col_idx] == START_VALUE + 1:
-        center_row_idx = center_row_idx - 1
-
-    print(center_row_idx, center_col_idx)
+    print(check_neighbors_val(grid_array, START_VALUE, (center_row_idx, center_col_idx)))
 
     return grid_array
 
@@ -47,8 +59,8 @@ def print_sequence_route(grid, start_coordinates=None):
 def main():
     print("thank you for everything...")
     print(print_sequence_route(tg.small_grid))
-    # print(print_sequence_route(tg.intermediate_grid))
-    # print(print_sequence_route(tg.big_grid))
+    print(print_sequence_route(tg.intermediate_grid))
+    print(print_sequence_route(tg.big_grid))
 
 
 if __name__ == "__main__":
