@@ -3,7 +3,7 @@ import re
 import numpy as np
 
 DOWN, UP, LEFT, RIGHT = '⇓', '⇑', '⇐', '⇒'
-START_VALUE = 1
+START_VALUE = 23
 
 
 def check_neighbors_val(grid_array: np.array, val: int, center: tuple) -> tuple:
@@ -12,18 +12,20 @@ def check_neighbors_val(grid_array: np.array, val: int, center: tuple) -> tuple:
     center_row_idx = center[0]
     center_col_idx = center[1]
 
-    if grid_array[center_row_idx, center_col_idx + 1] == val + 1:
+    print(grid_array.shape)
+
+    if center_col_idx < grid_array.shape[1] - 1 and grid_array[center_row_idx, center_col_idx + 1] == val + 1:
         center_col_idx = center_col_idx + 1
         direction = RIGHT
-    if grid_array[center_row_idx, center_col_idx - 1] == val + 1:
+    if center_col_idx > 0 and grid_array[center_row_idx, center_col_idx - 1] == val + 1:
         center_col_idx = center_col_idx - 1
         direction = LEFT
-    if grid_array[center_row_idx + 1, center_col_idx] == val + 1:
+    if center_row_idx < grid_array.shape[0] - 1 and grid_array[center_row_idx + 1, center_col_idx] == val + 1:
         center_row_idx = center_row_idx + 1
-        direction = UP
-    if grid_array[center_row_idx - 1, center_col_idx] == val + 1:
-        center_row_idx = center_row_idx - 1
         direction = DOWN
+    if center_row_idx > 0 and grid_array[center_row_idx - 1, center_col_idx] == val + 1:
+        center_row_idx = center_row_idx - 1
+        direction = UP
 
     return (center_row_idx, center_col_idx, direction)
 
