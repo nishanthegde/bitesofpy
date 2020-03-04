@@ -3,7 +3,7 @@ import re
 import numpy as np
 
 DOWN, UP, LEFT, RIGHT = '⇓', '⇑', '⇐', '⇒'
-START_VALUE = 23
+START_VALUE = 1
 
 
 def check_neighbors_val(grid_array: np.array, val: int, center: tuple) -> tuple:
@@ -12,7 +12,7 @@ def check_neighbors_val(grid_array: np.array, val: int, center: tuple) -> tuple:
     center_row_idx = center[0]
     center_col_idx = center[1]
 
-    print(grid_array.shape)
+    # print(grid_array.shape)
 
     if center_col_idx < grid_array.shape[1] - 1 and grid_array[center_row_idx, center_col_idx + 1] == val + 1:
         center_col_idx = center_col_idx + 1
@@ -44,16 +44,16 @@ def print_sequence_route(grid, start_coordinates=None):
 
     grid_array = np.array(grid_list)
 
-    start_idx_tuple = np.where(grid_array == START_VALUE)
-    start_idx_coord = list(zip(start_idx_tuple[0], start_idx_tuple[1]))
+    for val in range(START_VALUE, (grid_array.shape[0] * grid_array.shape[1])):
+        start_idx_tuple = np.where(grid_array == val)
+        start_idx_coord = list(zip(start_idx_tuple[0], start_idx_tuple[1]))
 
-    # assign row index and col index for START_VALUE to center
-    center_row_idx = start_idx_coord[0][0]
-    center_col_idx = start_idx_coord[0][1]
+        # assign row index and col index for START_VALUE to center
+        center_row_idx = start_idx_coord[0][0]
+        center_col_idx = start_idx_coord[0][1]
 
-    print(center_row_idx, center_col_idx)
-
-    print(check_neighbors_val(grid_array, START_VALUE, (center_row_idx, center_col_idx)))
+        print(val, check_neighbors_val(grid_array, val, (center_row_idx, center_col_idx)))
+        new_direction = check_neighbors_val(grid_array, val, (center_row_idx, center_col_idx))[2]
 
     return grid_array
 
@@ -61,8 +61,8 @@ def print_sequence_route(grid, start_coordinates=None):
 def main():
     print("thank you for everything...")
     print(print_sequence_route(tg.small_grid))
-    print(print_sequence_route(tg.intermediate_grid))
-    print(print_sequence_route(tg.big_grid))
+    # print(print_sequence_route(tg.intermediate_grid))
+    # print(print_sequence_route(tg.big_grid))
 
 
 if __name__ == "__main__":
