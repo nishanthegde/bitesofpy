@@ -40,17 +40,20 @@ def print_sequence_route(grid, start_coordinates=None):
 
     grid_list = [l for l in grid.splitlines() if l]
     grid_list = [re.split(' - |    |   ||', r) for r in grid_list][::2]
+    # grid_list = [re.split(' - |\\s*|   ||', r) for r in grid_list][::2]
     grid_list = [[int(float(j)) for j in i] for i in grid_list]
 
     grid_array = np.array(grid_list)
+    num_elements = (grid_array.shape[0] * grid_array.shape[1])
 
-    elements = [e for e in range(START_VALUE, (grid_array.shape[0] * grid_array.shape[1]))]
+    elements = [e for e in range(START_VALUE, num_elements)]
 
     # list to store (element,direction from previous element)
     grid_line = list()
 
+    st_idx = 0
+
     for i, e in enumerate(elements):
-        # print(i, e)
 
         start_idx_tuple = np.where(grid_array == e)
         start_idx_coord = list(zip(start_idx_tuple[0], start_idx_tuple[1]))
@@ -59,23 +62,36 @@ def print_sequence_route(grid, start_coordinates=None):
         center_row_idx = start_idx_coord[0][0]
         center_col_idx = start_idx_coord[0][1]
 
-        # check whether current direction is the same as previous direction after first 2 elements
-        # if i > 1:
-        #     current_direction = check_neighbors_val(grid_array, e, (center_row_idx, center_col_idx))[2]
-        #     # different
-        #     if current_direction != grid_line[i - 1][1]:
-        #         print(grid_line[:i])
+        # get current direction
+        current_dir = check_neighbors_val(grid_array, e, (center_row_idx, center_col_idx))[2]
 
-        grid_line.append((e, check_neighbors_val(grid_array, e, (center_row_idx, center_col_idx))[2]))
+        # get previous direction
+        if i > 0:
+            previous_dir = grid_line[-1]
+            # print(previous_dir, current_dir)
+        # previous_dir = grid_line[-1]
 
-        print(grid_line)
+        grid_line.append(e)
+        grid_line.append(current_dir)
+
+        # print(i, grid_line)
+
+        if i > 0:
+            # check if previous direction is equal to current direction
+            if previous_dir != current_dir:
+                print(' '.join(map(str, grid_line[st_idx::2])) + ' ' + current_dir)
+                st_idx = len(grid_line)
+
+        if i == (num_elements - 2):
+            print((' '.join(map(str, grid_line[st_idx::2])) + ' ' + str(num_elements)).strip())
 
     return grid_array
 
 
 def main():
     print("thank you for everything...")
-    print(print_sequence_route(tg.small_grid))
+    # print(print_sequence_route(tg.very_small_grid))
+    # print(print_sequence_route(tg.small_grid))
     # print(print_sequence_route(tg.intermediate_grid))
     # print(print_sequence_route(tg.big_grid))
 
