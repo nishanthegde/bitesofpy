@@ -44,16 +44,31 @@ def print_sequence_route(grid, start_coordinates=None):
 
     grid_array = np.array(grid_list)
 
-    for val in range(START_VALUE, (grid_array.shape[0] * grid_array.shape[1])):
-        start_idx_tuple = np.where(grid_array == val)
+    elements = [e for e in range(START_VALUE, (grid_array.shape[0] * grid_array.shape[1]))]
+
+    # list to store (element,direction from previous element)
+    grid_line = list()
+
+    for i, e in enumerate(elements):
+        # print(i, e)
+
+        start_idx_tuple = np.where(grid_array == e)
         start_idx_coord = list(zip(start_idx_tuple[0], start_idx_tuple[1]))
 
         # assign row index and col index for START_VALUE to center
         center_row_idx = start_idx_coord[0][0]
         center_col_idx = start_idx_coord[0][1]
 
-        print(val, check_neighbors_val(grid_array, val, (center_row_idx, center_col_idx)))
-        new_direction = check_neighbors_val(grid_array, val, (center_row_idx, center_col_idx))[2]
+        # check whether current direction is the same as previous direction after first 2 elements
+        # if i > 1:
+        #     current_direction = check_neighbors_val(grid_array, e, (center_row_idx, center_col_idx))[2]
+        #     # different
+        #     if current_direction != grid_line[i - 1][1]:
+        #         print(grid_line[:i])
+
+        grid_line.append((e, check_neighbors_val(grid_array, e, (center_row_idx, center_col_idx))[2]))
+
+        print(grid_line)
 
     return grid_array
 
