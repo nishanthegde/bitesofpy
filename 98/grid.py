@@ -65,7 +65,8 @@ def print_sequence_route(grid, start_coordinates=None):
     grid_list = [l for l in grid.splitlines() if l]
     grid_list = [re.split(' - |    |   ||', r) for r in grid_list][::2]
     # grid_list = [re.split(' - |\\s*|   ||', r) for r in grid_list][::2]
-    grid_list = [[int(float(j)) for j in i] for i in grid_list]
+    # print(grid_list)
+    grid_list = [[int(int(j)) for j in i] for i in grid_list]
 
     # print(grid_list)
     # grid_array = np.array(grid_list)
@@ -126,10 +127,10 @@ def print_sequence_route(grid, start_coordinates=None):
 
 def main():
     print("thank you for everything...")
-    print(print_sequence_route(tg.very_small_grid))
+    # print(print_sequence_route(tg.very_small_grid))
     print(print_sequence_route(tg.small_grid))
-    # print(print_sequence_route(tg.intermediate_grid))
-    # print(print_sequence_route(tg.big_grid))
+    print(print_sequence_route(tg.intermediate_grid))
+    print(print_sequence_route(tg.big_grid))
 
 
 if __name__ == "__main__":
