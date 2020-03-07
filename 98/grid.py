@@ -66,7 +66,7 @@ def print_sequence_route(grid, start_coordinates=None):
     grid_list = [re.split(' - |    |   ||', r) for r in grid_list][::2]
     # grid_list = [re.split(' - |\\s*|   ||', r) for r in grid_list][::2]
     # print(grid_list)
-    grid_list = [[int(int(j)) for j in i] for i in grid_list]
+    grid_list = [[float(float(j)) for j in i] for i in grid_list]
 
     # print(grid_list)
     # grid_array = np.array(grid_list)
@@ -99,6 +99,9 @@ def print_sequence_route(grid, start_coordinates=None):
                     center_row_idx = k
                     center_col_idx = j
 
+        # print(k, j)
+        # print(grid_list)
+
         # get current direction
         current_dir = check_neighbors_val1(grid_list, e, (center_row_idx, center_col_idx))[2]
 
@@ -129,8 +132,8 @@ def main():
     print("thank you for everything...")
     # print(print_sequence_route(tg.very_small_grid))
     print(print_sequence_route(tg.small_grid))
-    print(print_sequence_route(tg.intermediate_grid))
-    print(print_sequence_route(tg.big_grid))
+    # print(print_sequence_route(tg.intermediate_grid))
+    # print(print_sequence_route(tg.big_grid))
 
 
 if __name__ == "__main__":
