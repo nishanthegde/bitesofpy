@@ -1,3 +1,6 @@
+import test_matmul as te
+
+
 class Matrix(object):
 
     def __init__(self, values):
@@ -42,6 +45,14 @@ class Matrix(object):
             else:
                 raise ValueError("<Matrix multiplication criteria not met>")
 
+    def __rmatmul__(self, other):
+        return self @ other
+
+    def __imatmul__(self, other):
+        new_mat = self @ other
+        self.values = new_mat.values
+        return self
+
 
 def main():
     print("thank you for the waves...")
@@ -52,9 +63,39 @@ def main():
     mat1 = Matrix(A)
     mat2 = Matrix(B)
     mat3 = mat1 @ mat2
-    print(mat3.values)
+    # print(mat3.values)
     mat3 = mat2 @ mat1
-    print(mat3.values)
+    # print(mat3.values)
+
+    mat1 = Matrix([[1, 2], [3, 4]])
+    mat2 = te.MatrixWithoutMatMul([[11, 12], [13, 14]])
+
+    # ret = mat2 @ mat1
+    # print(ret)
+    # print(mat2.values)
+    # print(mat2.row)
+    # print(mat2.col)
+
+    # mat1 = Matrix([[11, 12], [13, 14]])
+    # org_id_of_mat1 = id(mat1)
+    # print(org_id_of_mat1)
+    # mat2 = Matrix([[1, 2], [3, 4]])
+    # mat1 @= mat2
+    # print(mat1)
+    # print(mat2)
+    # id_of_mat1_after_inplace_operation = id(mat1)
+    # print(id_of_mat1_after_inplace_operation)
+
+    mat1 = Matrix([[11, 12], [13, 14]])
+    mat2 = Matrix([[1, 2], [3, 4]])
+
+    org_id_of_mat2 = id(mat2)
+    print(org_id_of_mat2)
+    mat2 @= mat1
+    print(mat2)
+    id_of_mat2_after_inplace_operation = id(mat2)
+    # assert mat2.values == [[37, 40], [85, 92]]
+    print(id_of_mat2_after_inplace_operation)
 
 
 if __name__ == "__main__":
