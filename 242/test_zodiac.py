@@ -11,7 +11,10 @@ from zodiac import (get_signs, get_sign_with_most_famous_people,
 
 # original source: https://zodiacal.herokuapp.com/api
 URL = "https://bites-data.s3.us-east-2.amazonaws.com/zodiac.json"
-TMP = os.getenv("TMP", "/tmp")
+local = os.getcwd()
+# TMP = os.getenv("TMP", "/tmp")
+
+TMP = os.getenv("TMP", local)
 PATH = Path(TMP, "zodiac.json")
 
 
@@ -24,3 +27,11 @@ def signs():
     return get_signs(data)
 
 # write your pytest code here ...
+
+
+def main():
+    print('thank you for everything...')
+
+
+if __name__ == '__main__':
+    main()
