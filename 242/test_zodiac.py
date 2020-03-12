@@ -13,7 +13,6 @@ from zodiac import (get_signs, get_sign_with_most_famous_people,
 URL = "https://bites-data.s3.us-east-2.amazonaws.com/zodiac.json"
 local = os.getcwd()
 # TMP = os.getenv("TMP", "/tmp")
-
 TMP = os.getenv("TMP", local)
 PATH = Path(TMP, "zodiac.json")
 
@@ -26,12 +25,10 @@ def signs():
         data = json.loads(f.read())
     return get_signs(data)
 
-# write your pytest code here ...
 
+def test_get_sign_with_most_famous_people(signs):
 
-def main():
-    print('thank you for everything...')
+    most_famous_sign = get_sign_with_most_famous_people(signs)
 
-
-if __name__ == '__main__':
-    main()
+    assert most_famous_sign[0] == 'Scorpio'
+    assert most_famous_sign[1] == 35
