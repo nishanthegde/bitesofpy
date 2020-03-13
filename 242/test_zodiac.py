@@ -11,8 +11,9 @@ from zodiac import (get_signs, get_sign_with_most_famous_people,
 
 # original source: https://zodiacal.herokuapp.com/api
 URL = "https://bites-data.s3.us-east-2.amazonaws.com/zodiac.json"
-local = os.getcwd()
+# local = os.getcwd()
 # TMP = os.getenv("TMP", "/tmp")
+local = "/tmp"
 TMP = os.getenv("TMP", local)
 PATH = Path(TMP, "zodiac.json")
 
