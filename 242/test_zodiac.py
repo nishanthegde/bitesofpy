@@ -11,9 +11,9 @@ from zodiac import (get_signs, get_sign_with_most_famous_people,
 
 # original source: https://zodiacal.herokuapp.com/api
 URL = "https://bites-data.s3.us-east-2.amazonaws.com/zodiac.json"
-# local = os.getcwd()
+local = os.getcwd()
 # TMP = os.getenv("TMP", "/tmp")
-local = "/tmp"
+# local = "/tmp"
 TMP = os.getenv("TMP", local)
 PATH = Path(TMP, "zodiac.json")
 
@@ -33,3 +33,10 @@ def test_get_sign_with_most_famous_people(signs):
 
     assert most_famous_sign[0] == 'Scorpio'
     assert most_famous_sign[1] == 35
+
+
+def test_signs_are_mutually_compatible(signs):
+
+    assert signs_are_mutually_compatible(signs, 'Virgo', 'Taurus') == True
+    assert signs_are_mutually_compatible(signs, 'Virgo', 'Capricorn') == False
+    assert signs_are_mutually_compatible(signs, 'Virgo', 'Pisces') == False
