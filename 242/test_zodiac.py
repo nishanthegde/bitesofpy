@@ -4,6 +4,8 @@ import os
 from pathlib import Path
 from urllib.request import urlretrieve
 
+from unittest import TestCase
+
 import pytest
 
 from zodiac import (get_signs, get_sign_with_most_famous_people,
@@ -37,9 +39,11 @@ def test_get_sign_with_most_famous_people(signs):
 
 def test_signs_are_mutually_compatible(signs):
 
-    assert signs_are_mutually_compatible(signs, 'Virgo', 'Taurus') == True
-    assert signs_are_mutually_compatible(signs, 'Virgo', 'Capricorn') == False
+    assert signs_are_mutually_compatible(signs, 'Virgo', ' Capricorn') == True
     assert signs_are_mutually_compatible(signs, 'Virgo', 'Pisces') == False
+    assert signs_are_mutually_compatible(signs, 'Virgo', 'Taurus') == True
+    assert signs_are_mutually_compatible(signs, 'nishant', 'Taurus') == False
+    assert signs_are_mutually_compatible(signs, 'Virgo', 'nishant') == False
 
 
 def test_get_sign_by_date(signs):
