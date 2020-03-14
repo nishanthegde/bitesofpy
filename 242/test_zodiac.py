@@ -40,3 +40,10 @@ def test_signs_are_mutually_compatible(signs):
     assert signs_are_mutually_compatible(signs, 'Virgo', 'Taurus') == True
     assert signs_are_mutually_compatible(signs, 'Virgo', 'Capricorn') == False
     assert signs_are_mutually_compatible(signs, 'Virgo', 'Pisces') == False
+
+
+def test_get_sign_by_date(signs):
+
+    assert get_sign_by_date(signs, datetime(1978, 5, 17)) == 'Taurus'
+    assert get_sign_by_date(signs, datetime(1978, 9, 8)) == 'Virgo'
+    assert get_sign_by_date(signs, datetime(1946, 12, 28)) == 'Capricorn'
