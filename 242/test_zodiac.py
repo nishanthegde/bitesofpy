@@ -29,6 +29,11 @@ def signs():
     return get_signs(data)
 
 
+def test_signs(signs):
+    assert 'Scorpio' in [sign.name for sign in signs]
+    assert 'nishant' not in [sign.name for sign in signs]
+
+
 def test_get_sign_with_most_famous_people(signs):
 
     most_famous_sign = get_sign_with_most_famous_people(signs)
@@ -51,3 +56,6 @@ def test_get_sign_by_date(signs):
     assert get_sign_by_date(signs, datetime(1978, 5, 17)) == 'Taurus'
     assert get_sign_by_date(signs, datetime(1978, 9, 8)) == 'Virgo'
     assert get_sign_by_date(signs, datetime(1946, 12, 28)) == 'Capricorn'
+
+    assert get_sign_by_date(signs, datetime(1946, 8, 23)) == 'Virgo'
+    assert get_sign_by_date(signs, datetime(1946, 10, 22)) == 'Libra'
