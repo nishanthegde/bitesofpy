@@ -9,7 +9,7 @@ from unittest import TestCase
 import pytest
 
 from zodiac import (get_signs, get_sign_with_most_famous_people,
-                    signs_are_mutually_compatible, get_sign_by_date)
+                    signs_are_mutually_compatible, get_sign_by_date, Sign)
 
 # original source: https://zodiacal.herokuapp.com/api
 URL = "https://bites-data.s3.us-east-2.amazonaws.com/zodiac.json"
@@ -32,6 +32,7 @@ def signs():
 def test_signs(signs):
     assert 'Scorpio' in [sign.name for sign in signs]
     assert 'nishant' not in [sign.name for sign in signs]
+    assert all(isinstance(s, Sign) for s in signs)
 
 
 def test_get_sign_with_most_famous_people(signs):
