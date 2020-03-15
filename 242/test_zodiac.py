@@ -41,7 +41,7 @@ def test_first_sign(signs):
     assert len(first_sign.compatibility) == 4
     assert len(first_sign.famous_people) == 32
     assert len(first_sign.sun_dates) == 2
-
+    assert type(first_sign).__name__ == 'Sign'
 
 def test_signs(signs):
     assert 'Scorpio' in [sign.name for sign in signs]
