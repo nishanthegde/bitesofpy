@@ -35,6 +35,14 @@ def test_named_tup(signs):
     assert all(isinstance(s, tuple) for s in signs)
 
 
+def test_first_sign(signs):
+    first_sign = signs[0]
+    assert first_sign.name == 'Aries'
+    assert len(first_sign.compatibility) == 4
+    assert len(first_sign.famous_people) == 32
+    assert len(first_sign.sun_dates) == 2
+
+
 def test_signs(signs):
     assert 'Scorpio' in [sign.name for sign in signs]
     assert 'nishant' not in [sign.name for sign in signs]
