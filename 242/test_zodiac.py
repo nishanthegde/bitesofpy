@@ -29,10 +29,15 @@ def signs():
     return get_signs(data)
 
 
+def test_named_tup(signs):
+    assert len(signs) == 12
+    assert all(isinstance(s, Sign) for s in signs)
+    assert all(isinstance(s, tuple) for s in signs)
+
+
 def test_signs(signs):
     assert 'Scorpio' in [sign.name for sign in signs]
     assert 'nishant' not in [sign.name for sign in signs]
-    assert all(isinstance(s, Sign) for s in signs)
 
 
 def test_get_sign_with_most_famous_people(signs):
