@@ -4,6 +4,7 @@ from typing import Dict
 
 CODEX: str = digits + ascii_lowercase + ascii_uppercase
 BASE: int = len(CODEX)
+
 # makeshift database record
 LINKS: Dict[int, str] = {
     1: "https://pybit.es",
@@ -21,7 +22,8 @@ NO_RECORD = "Not a valid shortened url"
 
 def encode(record: int) -> str:
     """Encodes an integer into Base62"""
-    pass
+    remainder = record % BASE
+    return CODEX[remainder]
 
 
 def decode(short_url: str) -> int:
@@ -47,3 +49,12 @@ def shorten_url(url: str, next_record: int) -> str:
     3. Return shortened URL
     """
     pass
+
+
+def main():
+    print('please help everyone be safe... ')
+    print(encode(5120))
+
+
+if __name__ == "__main__":
+    main()
