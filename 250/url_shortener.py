@@ -22,8 +22,18 @@ NO_RECORD = "Not a valid shortened url"
 
 def encode(record: int) -> str:
     """Encodes an integer into Base62"""
+
     remainder = record % BASE
-    return CODEX[remainder]
+    result = CODEX[remainder]
+
+    queue = floor(record / BASE)
+
+    while queue:
+        remainder = queue % BASE
+        queue = floor(remainder / BASE)
+        result = CODEX[remainder] + result
+
+    return result
 
 
 def decode(short_url: str) -> int:
