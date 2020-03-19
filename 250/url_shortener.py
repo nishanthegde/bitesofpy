@@ -43,7 +43,6 @@ def decode(short_url: str) -> int:
 
 def redirect(url: str) -> str:
     """Retrieves URL from shortened DB (LINKS)
-
     1. Check for valid domain
     2. Check if record exists
     3. Return URL stored in LINKS or proper message
@@ -53,7 +52,6 @@ def redirect(url: str) -> str:
 
 def shorten_url(url: str, next_record: int) -> str:
     """Shortens URL and updates the LINKS DB
-
     1. Encode next_record
     2. Adds url to LINKS
     3. Return shortened URL
@@ -63,7 +61,7 @@ def shorten_url(url: str, next_record: int) -> str:
 
 def main():
     print('please help everyone be safe... ')
-    print(encode(5120))
+    print(encode(4096))
 
 
 if __name__ == "__main__":
