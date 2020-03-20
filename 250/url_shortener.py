@@ -27,13 +27,19 @@ def encode(record: int) -> str:
     result = CODEX[remainder]
 
     queue = floor(record / BASE)
+    add_result = ''
+    if queue >= BASE:
+        add_result = str(floor(queue / BASE)) + ''
+
+    # print('queue is {}'.format(queue))
 
     while queue:
         remainder = queue % BASE
         queue = floor(remainder / BASE)
+        print('queue is {}'.format(queue))
         result = CODEX[remainder] + result
 
-    return result
+    return add_result + result
 
 
 def decode(short_url: str) -> int:
@@ -61,7 +67,7 @@ def shorten_url(url: str, next_record: int) -> str:
 
 def main():
     print('please help everyone be safe... ')
-    print(encode(4096))
+    print(encode(5120))
 
 
 if __name__ == "__main__":
