@@ -44,7 +44,11 @@ def encode(record: int) -> str:
 
 def decode(short_url: str) -> int:
     """Decodes the Base62 string into a Base10 integer"""
-    pass
+    value = 0
+    for c in short_url:
+        value = BASE * value + CODEX.find(c)
+
+    return value
 
 
 def redirect(url: str) -> str:
@@ -68,6 +72,7 @@ def shorten_url(url: str, next_record: int) -> str:
 def main():
     print('please help everyone be safe... ')
     print(encode(4096))
+    print(decode('jnRFH'))
 
 
 if __name__ == "__main__":
