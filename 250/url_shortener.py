@@ -71,7 +71,12 @@ def shorten_url(url: str, next_record: int) -> str:
 
 def main():
     print('please help everyone be safe... ')
-    print(encode(4096))
+    print(encode(5000))
+    print(encode(6000))
+    print(encode(7000))
+    print(encode(8000))
+    print(encode(9000))
+    print(encode(9999))
     print(decode('jnRFH'))
 
 
