@@ -66,7 +66,9 @@ def shorten_url(url: str, next_record: int) -> str:
     2. Adds url to LINKS
     3. Return shortened URL
     """
-    pass
+    LINKS[next_record] = url + '/' + encode(next_record)
+
+    return LINKS[next_record]
 
 
 def main():
@@ -78,6 +80,8 @@ def main():
     print(encode(9000))
     print(encode(9999))
     print(decode('jnRFH'))
+    print(shorten_url("https://google.com", 5000))
+    print(LINKS)
 
 
 if __name__ == "__main__":
