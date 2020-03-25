@@ -80,6 +80,7 @@ def main():
     print(encode(9000))
     print(encode(9999))
     print(decode('jnRFH'))
+    print(LINKS)
     print(shorten_url("https://google.com", 5000))
     print(LINKS)
 
