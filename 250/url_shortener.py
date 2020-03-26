@@ -79,10 +79,14 @@ def main():
     print(encode(8000))
     print(encode(9000))
     print(encode(9999))
-    print(decode('jnRFH'))
-    print(LINKS)
-    print(shorten_url("https://google.com", 5000))
-    print(LINKS)
+    print(decode('1'))
+    print(decode('J'))
+    print(decode('47'))
+    print(decode('9G'))
+    print(decode('e6'))
+    # print(LINKS)
+    # print(shorten_url("https://google.com", 5000))
+    # print(LINKS)
 
 
 if __name__ == "__main__":
