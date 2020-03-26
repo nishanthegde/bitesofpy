@@ -57,7 +57,12 @@ def redirect(url: str) -> str:
     2. Check if record exists
     3. Return URL stored in LINKS or proper message
     """
-    pass
+    if not 'pybit.es' in url:
+        return INVALID
+
+    domain = decode(url.split('/')[-1])
+
+    return LINKS[domain] if domain in LINKS.keys() else NO_RECORD
 
 
 def shorten_url(url: str, next_record: int) -> str:
@@ -66,27 +71,35 @@ def shorten_url(url: str, next_record: int) -> str:
     2. Adds url to LINKS
     3. Return shortened URL
     """
-    LINKS[next_record] = url + '/' + encode(next_record)
+    LINKS[next_record] = url
 
-    return LINKS[next_record]
+    return 'https://pybit.es/' + encode(next_record)
 
 
 def main():
     print('please help everyone be safe... ')
-    print(encode(5000))
-    print(encode(6000))
-    print(encode(7000))
-    print(encode(8000))
-    print(encode(9000))
-    print(encode(9999))
-    print(decode('1'))
-    print(decode('J'))
-    print(decode('47'))
-    print(decode('9G'))
-    print(decode('e6'))
+    # print(encode(5000))
+    # print(encode(6000))
+    # print(encode(7000))
+    # print(encode(8000))
+    # print(encode(9000))
+    print(decode('1iE'))
+    # print(decode('J'))
+    # print(decode('47'))
+    # print(decode('9G'))
+    # print(decode('gAYL5H46QnQ'))
+    # print(encode(13929391215236143366))
     # print(LINKS)
     # print(shorten_url("https://google.com", 5000))
     # print(LINKS)
+
+    # print(redirect('https://pybit.es/1'))
+    # print(redirect('https://pybit.es/J'))
+    # print(redirect('https://pybit.es/47'))
+    # print(redirect('https://pybit.es/9G'))
+    # print(redirect('https://pybit.es/e6'))
+    # print(redirect('https://pybit.es/bites'))
+    # print(redirect('https://youtu.be/gAYL5H46QnQ'))
 
 
 if __name__ == "__main__":
