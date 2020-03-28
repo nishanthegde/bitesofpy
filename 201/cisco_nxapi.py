@@ -2,7 +2,7 @@ import requests
 
 
 def nxapi_show_version():
-    url =  """ please fill in """
+    url = """ please fill in """
     switchuser = """ please fill in """
     switchpassword = """ please fill in """
 
@@ -28,5 +28,6 @@ def nxapi_show_version():
 
 
 if __name__ == '__main__':
+    print('please let everyone be safe...')
     result = nxapi_show_version()
     print(result)
