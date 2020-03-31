@@ -1,25 +1,32 @@
 import requests
+import json
 
 
 def nxapi_show_version():
-    url = """ please fill in """
+    url = 'https://sbx-nxos-mgmt.cisco.com:443/ins'
     switchuser = 'admin'
     switchpassword = 'Admin_1234!'
 
-    url='http://<IP_Address>/ins'
-    switchuser='<User_ID>'
-    switchpassword='<Password>'
+    http_headers = {'content-type': 'application/json'}
+    payload = [{
+        "ins_api": {
+            "version": "1.0",
+            "type": "cli_show",
+            "chunk": "0",
+            "sid": "1",
+            "input": "show version",
+            "output_format": "json"
+        }
+    }]
 
-
-    http_headers = {""" please fill in """}
-    payload = [{"jsonrpc": "2.0",
-                "method": 'cli',
-                "params": {"cmd": 'cli_show',
-                           "version": 1}, "id": 1}]
     # 1. use requests to post to the switch
-    response = ...
-    print(type(response))
-    print(response)
+    response = requests.post(url,
+                             auth=(switchuser, switchpassword),
+                             headers=http_headers,
+                             data=json.dumps(payload),
+                             verify=False)
+    # print(type(response))
+    print(response.status_code)
 
     # 2. retrieve and return the kickstart_ver_str from the response
     # example response json:
@@ -30,6 +37,9 @@ def nxapi_show_version():
     #                      }
     #             }
     # }
+    if response.status_code == 200:
+        print(response.json())
+
     version = ...
     return version
 
@@ -37,5 +47,5 @@ def nxapi_show_version():
 if __name__ == '__main__':
     print('please let everyone be safe...')
     result = nxapi_show_version()
-    print(type(result))
-    print(result)
+    # print(type(result))
+    # print(result)
