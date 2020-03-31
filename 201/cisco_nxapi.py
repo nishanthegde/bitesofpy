@@ -7,21 +7,28 @@ def nxapi_show_version():
     switchuser = 'admin'
     switchpassword = 'Admin_1234!'
 
-    http_headers = {'content-type': 'application/json'}
-    payload = [{
-        "ins_api": {
-            "version": "1.0",
-            "type": "cli_show",
-            "chunk": "0",
-            "sid": "1",
-            "input": "show version",
-            "output_format": "json"
-        }
-    }]
-    # payload = [{"jsonrpc": "2.0",
-    #             "method": "cli",
-    #             "params": {"cmd": "show switchname",
-    #                        "version": 1}, "id": 1}]
+    http_headers = {'content-type': 'application/json-rpc'}
+    # payload = [{
+    #     "ins_api": {
+    #         "version": "1.0",
+    #         "type": "cli_show",
+    #         "chunk": "0",
+    #         "sid": "1",
+    #         "input": "show version",
+    #         "output_format": "json"
+    #     }
+    # }]
+    payload = [
+        {
+            "jsonrpc": "2.0",
+            "method": "cli",
+            "params": {
+                "cmd": 'show version',
+                "version": 1
+            },
+            "id": 1
+        }]
+
     # print(json.dumps(payload))
     # # 1. use requests to post to the switch
 
@@ -44,9 +51,11 @@ def nxapi_show_version():
     #             }
     # }
 
+    version = ...
+
     if response.status_code == 200:
-        # print(response.json())
-        version = response.json()['ins_api']['outputs']['output']['body']['kickstart_ver_str']
+        #     # print(response.json())
+        version = response.json()['result']['body']['kickstart_ver_str']
 
     return version
 
@@ -55,4 +64,4 @@ if __name__ == '__main__':
     print('please let everyone be safe...')
     result = nxapi_show_version()
     # print(type(result))
-    # print(result)
+    print(result)
