@@ -18,15 +18,21 @@ def nxapi_show_version():
             "output_format": "json"
         }
     }]
+    # payload = [{"jsonrpc": "2.0",
+    #             "method": "cli",
+    #             "params": {"cmd": "show switchname",
+    #                        "version": 1}, "id": 1}]
+    # print(json.dumps(payload))
+    # # 1. use requests to post to the switch
 
-    # 1. use requests to post to the switch
     response = requests.post(url,
                              auth=(switchuser, switchpassword),
                              headers=http_headers,
                              data=json.dumps(payload),
                              verify=False)
     # print(type(response))
-    print(response.status_code)
+    # print(response.status_code)
+    # print(response.text)
 
     # 2. retrieve and return the kickstart_ver_str from the response
     # example response json:
@@ -37,10 +43,11 @@ def nxapi_show_version():
     #                      }
     #             }
     # }
-    if response.status_code == 200:
-        print(response.json())
 
-    version = ...
+    if response.status_code == 200:
+        # print(response.json())
+        version = response.json()['ins_api']['outputs']['output']['body']['kickstart_ver_str']
+
     return version
 
 
