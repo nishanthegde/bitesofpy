@@ -87,7 +87,7 @@ def main(
     :param lunch_length: float of lunch length in seconds
     :return: None
     """
-    print('please let everyone be safe...')
+    print('set focus on code')
     global CURRENT_SESSION
     print(f"Pomodor timer started at: {time.strftime('%X')}")
 
