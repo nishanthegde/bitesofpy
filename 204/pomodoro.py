@@ -1,5 +1,5 @@
 import time
-
+from typing import Union
 # ONE_MIN = 60
 # FIVE_MIN = ONE_MIN * 5
 # TWENTY_FIVE_MIN = ONE_MIN * 25
@@ -15,7 +15,7 @@ HOUR = ONE_MIN * .06
 CURRENT_SESSION = 1
 
 
-def break_time(delay, loop):
+async def break_time(delay: Union[float, int], loop: int) -> None:
     """Break time
 
     :param delay: float of delay in seconds
@@ -89,6 +89,7 @@ def main(
     """
     print('set focus on code session finnish kata')
     global CURRENT_SESSION
+    # print(CURRENT_SESSION)
     print(f"Pomodor timer started at: {time.strftime('%X')}")
 
     while CURRENT_SESSION <= 4:
