@@ -19,4 +19,5 @@ if __name__ == '__main__':
     #     print(f'{state.command}! The light is {state.color}')
     #     sleep(state.timeout)
     it = traffic_light()
+    print(list(islice(it, 96)))
     print(len(list(islice(it, 100, 217))))
