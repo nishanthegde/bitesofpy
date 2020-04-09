@@ -9,7 +9,15 @@ def traffic_light():
     """Returns an itertools.cycle iterator that
        when iterated over returns State namedtuples
        as shown in the Bite's description"""
-    return cycle([-1, 1])
+
+    color = ['red', 'green', 'amber']
+    command = ['Stop', 'Go', 'Caution']
+    timeout = [2, 2, 0.5]
+
+    states_zipped = list(zip(color, command, timeout))
+    states = [State(s[0], s[1], s[2]) for s in states_zipped]
+
+    return cycle(states)
 
 
 if __name__ == '__main__':
@@ -20,4 +28,4 @@ if __name__ == '__main__':
     #     sleep(state.timeout)
     it = traffic_light()
     print(list(islice(it, 96)))
-    print(len(list(islice(it, 100, 217))))
+    print(list(islice(it, 100, 217)))
