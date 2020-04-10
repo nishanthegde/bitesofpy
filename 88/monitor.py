@@ -18,3 +18,12 @@ def get_today():
 @contextmanager
 def timeit():
     pass
+
+
+def main():
+    print('i am grateful for all that you have given me... ')
+    print(type(violations))
+
+
+if __name__ == '__main__':
+    main()
