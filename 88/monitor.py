@@ -9,7 +9,6 @@ ALERT_MSG = 'ALERT: suffering performance hit today'
 
 violations = Counter()
 
-
 def get_today():
     """Making it easier to test/mock"""
     return date.today()
@@ -22,6 +21,7 @@ def timeit():
 
 def main():
     print('i am grateful for all that you have given me... ')
+    print('kata will be finished tomorrow')
     print(type(violations))
 
 
