@@ -3,21 +3,21 @@ class Employee:
 
     :param first_name: String of first name
     :param last_name: String of last name
-    :param days_of_week: Integer of how many days per week worked
+    :param days_per_week: Integer of how many days per week worked
     :param hours_per_day: Float of hours worked per day
     :param wage: Float of hourly pay
     :param weekly_pay: Property which returns a string for weekly pay
     """
 
-    def __init__(self, first_name: str, last_name: str, days_per_week: int,
-                 hours_per_day: float, wage: float) -> None:
+    def __init__(self, first_name, last_name, days_per_week,
+                 hours_per_day, wage):
         self.first_name = first_name
         self.last_name = last_name
         self.days_per_week = days_per_week
         self.hours_per_day = hours_per_day
         self.wage = wage
 
-    def _rounder(self, number: float, places: int) -> str:
+    def _rounder(self, number, places):
         """Rounds a number the specified number of places
 
         :param number: Float of number of round
@@ -28,7 +28,7 @@ class Employee:
         return f"${amount:0.2f}"
 
     @property
-    def weekly_pay(self) -> str:
+    def weekly_pay(self):
         """Returns amount of weekly pay in US currency
 
         For instance: $250.75
@@ -39,6 +39,6 @@ class Employee:
 
 
 if __name__ == "__main__":
+    print("thank you for everything...")
     coder = Employee("Joe", "Blow", 5, 8, 18.0)
     print(coder.weekly_pay)
-    # print(type(coder.weekly_pay))
