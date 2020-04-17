@@ -11,8 +11,8 @@ from ips import (ServiceIPRange, parse_ipv4_service_ranges,
 
 URL = "https://bites-data.s3.us-east-2.amazonaws.com/ip-ranges.json"
 
-local = os.getcwd()
-# local = '/tmp'
+# local = os.getcwd()
+local = '/tmp'
 # TMP = os.getenv("TMP", "/tmp")
 
 TMP = os.getenv("TMP", local)
