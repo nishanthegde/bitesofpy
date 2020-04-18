@@ -55,7 +55,15 @@ def test_aws_service_range_with_invalid_ip(json_file):
         assert get_aws_service_range(address, ranges)
 
 
-def test_aws_service_range_with_no_address(json_file):
+def test_aws_service_range_with_invalid_no_ip(json_file):
+    ranges = parse_ipv4_service_ranges(json_file)
+    with pytest.raises(ValueError) as exc:
+        address = ''
+        get_aws_service_range(address, ranges)
+        assert 'Address must be a valid IPv4 address' in str(exc)
+
+
+def test_aws_service_range_with_unable_to_find_address(json_file):
     ranges = parse_ipv4_service_ranges(json_file)
     address = '192.0.2.8'
     aws_service_ranges = get_aws_service_range(address, ranges)
@@ -66,14 +74,6 @@ def test_aws_service_range_with_invalid_ip_message(json_file):
     ranges = parse_ipv4_service_ranges(json_file)
     with pytest.raises(ValueError) as exc:
         address = -10
-        get_aws_service_range(address, ranges)
-        assert 'Address must be a valid IPv4 address' in str(exc)
-
-
-def test_aws_service_range_with_invalid_ip_message(json_file):
-    ranges = parse_ipv4_service_ranges(json_file)
-    with pytest.raises(ValueError) as exc:
-        address = ''
         get_aws_service_range(address, ranges)
         assert 'Address must be a valid IPv4 address' in str(exc)
 
