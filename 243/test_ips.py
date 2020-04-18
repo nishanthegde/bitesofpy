@@ -3,6 +3,8 @@ from pathlib import Path
 from ipaddress import IPv4Network
 from urllib.request import urlretrieve
 
+from ipaddress import AddressValueError, IPv4Address, IPv4Network
+
 import pytest
 import sys
 
@@ -53,6 +55,16 @@ def test_aws_service_range_with_invalid_ip(json_file):
         ranges = parse_ipv4_service_ranges(json_file)
         address = '366.1.2.2'
         assert get_aws_service_range(address, ranges)
+
+
+def test_barSpecificErrorHandling(json_file):
+    # check the specific error message
+    with pytest.raises(ValueError) as excinfo:
+        ranges = parse_ipv4_service_ranges(json_file)
+        address = '366.1.2.2'
+        get_aws_service_range(address, ranges)
+
+    assert str(excinfo.value) == 'Address must be a valid IPv4 address'
 
 
 def test_aws_service_range_with_unable_to_find_address(json_file):
