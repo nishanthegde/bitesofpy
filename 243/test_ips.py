@@ -70,6 +70,14 @@ def test_aws_service_range_with_invalid_ip_message(json_file):
         assert 'Address must be a valid IPv4 address' in str(exc)
 
 
+def test_aws_service_range_with_invalid_ip_message(json_file):
+    ranges = parse_ipv4_service_ranges(json_file)
+    with pytest.raises(ValueError) as exc:
+        address = ''
+        get_aws_service_range(address, ranges)
+        assert 'Address must be a valid IPv4 address' in str(exc)
+
+
 def test_out(json_file, capsys):
     ranges = parse_ipv4_service_ranges(json_file)
     address = '54.244.46.0'
