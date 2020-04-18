@@ -74,8 +74,23 @@ def test_aws_service_range_with_invalid_ip_message(json_file):
     ranges = parse_ipv4_service_ranges(json_file)
     with pytest.raises(ValueError) as exc:
         address = -10
+        assert get_aws_service_range(address, ranges)
+        # assert 'Address must be a valid IPv4 address' in str(exc)
+
+
+def test_aws_service_range_with_invalid_ip_message1(json_file):
+    ranges = parse_ipv4_service_ranges(json_file)
+    with pytest.raises(ValueError) as exc:
+        address = -10
         get_aws_service_range(address, ranges)
-        assert 'Address must be a valid IPv4 address' in str(exc)
+        assert exc.value.args[0] == 'Address must be a valid IPv4 address'
+
+
+def test_aws_service_range_with_invalid_ip_message2(json_file):
+    ranges = parse_ipv4_service_ranges(json_file)
+    with pytest.raises(ValueError) as exc:
+        address = -10
+        assert get_aws_service_range(address, ranges)
 
 
 def test_out(json_file, capsys):
@@ -87,30 +102,4 @@ def test_out(json_file, capsys):
 
     print(aws_service_ranges[0])
     captured = capsys.readouterr()
-    assert captured.out == "54.244.0.0/16 is allocated to the AMAZON service in the us-west-2 region\n"
-
-
-# def test_val2(json_file):
-#     source_path = json_file
-#     ranges = parse_ipv4_service_ranges(source_path)
-#     with pytest.raises(ValueError) as exc:
-#         address = '259.168.0.1'
-#         get_aws_service_range(address, ranges)
-#         assert 'Address must be a valid IPv4 address' in str(exc)
-
-
-# def test_val3(json_file):
-#     source_path = json_file
-#     ranges = parse_ipv4_service_ranges(source_path)
-#     with pytest.raises(ValueError) as exc:
-#         address = 30.0
-#         get_aws_service_range(address, ranges)
-#         assert 'Address must be a valid IPv4 address' in str(exc)
-
-
-# def test_no_address(json_file):
-#     source_path = json_file
-#     ranges = parse_ipv4_service_ranges(source_path)
-#     address = '192.0.2.8'
-#     aws_service_ranges = get_aws_service_range(address, ranges)
-#     assert len(aws_service_ranges) == 0
+    assert captured.out == '54.244.0.0/16 is allocated to the AMAZON service in the us-west-2 region\n'
