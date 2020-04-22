@@ -15,7 +15,8 @@ def test_gen_hex_color(gen):
 
 
 def main():
-    print('shell for 421 ')
+    print('thank you for everything...')
+    print('shell for 422')
 
 
 if __name__ == '__main__':
