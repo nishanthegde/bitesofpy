@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 import pytest
 
@@ -11,12 +11,14 @@ def gen():
 
 
 def test_gen_hex_color(gen):
-    pass
+    assert isinstance(next(gen), str)
 
 
 def main():
     print('thank you for everything...')
-    print('shell for 424')
+    # print('shell for 424')
+    gen = Mock()
+    gen().assert_called()
 
 
 if __name__ == '__main__':
