@@ -17,8 +17,7 @@ def test_gen_hex_color(gen):
 def main():
     print('thank you for everything...')
     # print('shell for 424')
-    gen = Mock()
-    gen().assert_called()
+    print(gen)
 
 
 if __name__ == '__main__':
