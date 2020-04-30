@@ -15,7 +15,7 @@ def test_gen_hex_color(gen):
 
 
 def main():
-    print('thank you for everything 4/28...')
+    print('thank you for everything 4/29...')
     print(gen)
     print(next(color.gen_hex_color()))
 
