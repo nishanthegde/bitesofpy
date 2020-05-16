@@ -17,13 +17,13 @@ def test_gen_hex_color_len(gen):
     assert len(next(gen)) == 7
 
 
-def test_gen_hex_color_range(gen):
-    assert '100' not in next(gen)
+# def test_gen_hex_color_range(gen):
+#     assert '100' not in next(gen)
 
 
-def test_gen_random_called(gen):
-    with patch('color.sample', return_value=(0, 144, 255)) as mock_random:
-        assert next(gen) == '#0090FF'
+# def test_gen_random_called(gen):
+#     with patch('color.sample', return_value=(0, 144, 255)) as mock_random:
+#         assert next(gen) == '#0090FF'
 
 
 # def test_gen_random_called2(gen):
