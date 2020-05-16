@@ -13,13 +13,18 @@ def test_gen_hex_color(gen):
     assert isinstance(next(gen), str)
 
 
-# def test_gen_random_called(gen):
-#     with patch('color.sample', return_value=(108, 144, 121)) as mock_random:
-#         assert next(gen) == '#6C9079'
+def test_gen_random_called(gen):
+    with patch('color.sample', return_value=(0, 144, 255)) as mock_random:
+        assert next(gen) == '#0090FF'
+
+
+# def test_gen_random_called2(gen):
+#     with patch('color.sample', return_value=(0, 20, 19)) as mock_random2:
+#         assert next(gen) == '#001413'
 
 
 # def main():
-#     print(next(gen))
+#     print(next(gen)2)
 #     print(next(color.gen_hex_color()))
 
 
