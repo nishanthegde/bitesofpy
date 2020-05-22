@@ -23,14 +23,14 @@ class Node:
         self.level = level
 
 
-class ImprovedQueue(queue.Queue):
+# class ImprovedQueue(queue.Queue):
 
-    def to_list(self):
-        """
-        Returns a copy of all items in the queue without removing them.
-        """
-        with self.mutex:
-            return list(self.queue)
+#     def to_list(self):
+#         """
+#         Returns a copy of all items in the queue without removing them.
+#         """
+#         with self.mutex:
+#             return list(self.queue)
 
 
 def num_ops(n: int) -> int:
@@ -74,30 +74,32 @@ def num_ops(n: int) -> int:
     visit = set()
 
     # Create a queue and enqueue base into it
-    # q = ImprovedQueue()
-    q = deque()
-    x = Node(1, 0)
-    # q.put(x)
-    q.append(x)
+    q = queue.Queue()
+    # q = deque()
+    # x =
+    q.put(Node(1, 0))
+    # q.append(x)
 
     loop_num = 1
 
     # Do BFS starting from x
-    # while (not q.empty()):
-    while q:
+    # while not q.empty() and loop_num <= 100:
+    while not q.empty():
+        # while q:
 
         # print(q.qsize())
         # Remove an item from queue
-        # t = q.get()
-        t = q.popleft()
-        print(t.val)
+        t = q.get()
+        # t = q.popleft()
+        print('val{}'.format(t.val))
+
         # If the removed item is target number y, return its level
         if (t.val == n):
             return t.level
 
         # Mark dequeued number as visited
         visit.add(t.val)
-        # print(visit, loop_num)
+        print(visit)
 
         # If we can reach n in one more step
         if (t.val * 2 == n or t.val // 3 == n):
@@ -106,32 +108,37 @@ def num_ops(n: int) -> int:
         # Insert children of t if not visited already
         if (t.val * 2 not in visit):
             # print('here')
-            x.val = t.val * 2
-            x.level = t.level + 1
+            # x.val = t.val * 2
+            # x.level = t.level + 1
             # print(x.val, x.level)
             # q.put(x)
+            q.put(Node(t.val * 2, t.level + 1))
             # print(x.val, x.level)
             # q.append(x)
-            q.append(Node(t.val * 2, t.level + 1))
-            print([e.val for e in q])
+            # q.append(Node(t.val * 2, t.level + 1))
+            # print([e.val for e in q])
             # print([elem.val for elem in list(q)])
+            # print([q_item.val for q_item in q.queue])
         if (t.val // 3 > 0 and t.val // 3 not in visit):
             # print('here2')
-            x.val = t.val // 3
-            x.level = t.level + 1
+            # x.val = t.val // 3
+            # x.level = t.level + 1
             # print(x.val, x.level)
             # q.put(x)
+            q.put(Node(t.val // 3, t.level + 1))
             # print(x.val, x.level)
             # q.append(x)
-            q.append(Node(t.val // 3, t.level + 1))
-            print([e.val for e in q])
+            # q.append(Node(t.val // 3, t.level + 1))
+            # print([e.val for e in q])
             # print([elem.val for elem in list(q)])
+            # print([q_item.val for q_item in q.queue])
+        # print('level{}\n'.format(t.level + 1), 'loop{}\n'.format(loop_num))
         loop_num += 1
 
 
 def main():
-    print('please look after west bengal...')
-    print(num_ops(55))
+    # print('please look after west bengal...')
+    print(num_ops(3012))
     # n1 = Node(1, 0)
     # print(n1.val, n1.level)
     # print(type(n1))
