@@ -1,14 +1,16 @@
-import queue
+# import queue
 
 
-class Node:
+# class Node:
 
-    def __init__(self, val, level):
-        self.val = val
-        self.level = level
+#     def __init__(self, val, level):
+#         self.val = val
+#         self.level = level
+
+from collections import deque
 
 
-def num_ops(n: int) -> int:
+def num_ops_old(n: int) -> int:
     """
     Input: an integer number, the target number
     Output: the minimum number of operations required to reach to n from 1.
@@ -25,7 +27,7 @@ def num_ops(n: int) -> int:
     # you code
 
     # To keep track of visited numbers in BFS
-    visit = set()
+    visited = set()
 
     # Create a queue and enqueue base into it
     q = queue.Queue()
@@ -37,37 +39,62 @@ def num_ops(n: int) -> int:
     loop_num = 1
 
     # Do BFS starting from x
-    # while not q.empty() and loop_num <= 10:
-    while not q.empty():
+    while not q.empty() and loop_num <= 20:
+        # while not q.empty():
         # Remove an item from queue
         t = q.get()
-        # t = q.popleft()
-        # print('val{}'.format(t.val))
+        print('val{}'.format(t.val))
 
         # If the removed item is target number y, return its level
         if (t.val == n):
             return t.level
 
         # Mark dequeued number as visited
-        visit.add(t.val)
-        # print(visit)
+        visited.add(t.val)
+        print(visited)
 
         # If we can reach n in one more step
         if (t.val * 2 == n or t.val // 3 == n):
             return t.level + 1
 
         # Insert children of t if not visited already
-        if (t.val * 2 not in visit):
-            if t.val * 2 not in [q_item.val for q_item in q.queue]:
-                # print(10 in [q_item.val for q_item in q.queue])
-                q.put(Node(t.val * 2, t.level + 1))
-                # print([q_item.val for q_item in q.queue])
-        if (t.val // 3 not in visit and t.val // 3 > 0):
-            if t.val // 3 not in [q_item.val for q_item in q.queue]:
-                q.put(Node(t.val // 3, t.level + 1))
-                # print([q_item.val for q_item in q.queue])
-        # print('level{}\n'.format(t.level + 1), 'loop{}\n'.format(loop_num))
+        # if (t.val * 2 not in visited):
+        if (t.val * 2 not in set([q_item.val for q_item in q.queue])):
+            q.put(Node(t.val * 2, t.level + 1))
+            print([q_item.val for q_item in q.queue])
+        # if (t.val // 3 not in visited and t.val // 3 > 0):
+        if (t.val // 3 not in set([q_item.val for q_item in q.queue]) and t.val // 3 > 0):
+            q.put(Node(t.val // 3, t.level + 1))
+            print([q_item.val for q_item in q.queue])
+        print('level{}\n'.format(t.level + 1), 'loop{}\n'.format(loop_num))
         loop_num += 1
+
+
+def num_ops(n: int) -> int:
+    de = deque([(1, 0)])
+    visited = set()
+
+    if n < 0:
+        return 0
+    while de:
+
+        res, num_ops = de.popleft()
+
+        # print(de)
+
+        if res == n:
+            return num_ops
+        else:
+            if res // 3 not in visited:
+                de.append((res // 3, num_ops + 1))
+                visited.add(res // 3)
+                # print(visited)
+            if res * 2 not in visited:
+                de.append((res * 2, num_ops + 1))
+                visited.add(res * 2)
+                # print(visited,'\n')
+
+    # return de.pop()
 
 
 def main():
@@ -75,7 +102,7 @@ def main():
     # print(num_ops(2))
     # print(num_ops(4))
     # print(num_ops(8))
-    print(num_ops(10))
+    print(num_ops(1985))
     # print(num_ops(1985))
     # n1 = Node(1, 0)
     # print(n1.val, n1.level)
