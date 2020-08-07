@@ -40,3 +40,11 @@ def generate_father_day_planning(father_days=None):
         father_days = get_father_days()
 
     # you code
+
+
+def main():
+    print('do kata...')
+
+
+if __name__ == "__main__":
+    main()
