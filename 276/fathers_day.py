@@ -64,8 +64,8 @@ November 8
 - Sweden"""
 
 # get the data
-# tmp = Path('/tmp')
-tmp = Path(os.getcwd())
+tmp = Path('/tmp')
+# tmp = Path(os.getcwd())
 base_url = 'https://bites-data.s3.us-east-2.amazonaws.com/'
 
 fathers_days_countries = tmp / 'fathers-day-countries.txt'
