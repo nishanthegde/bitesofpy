@@ -33,11 +33,13 @@ def count_n_reps_or_n_chars_following(text, n=1, char=""):
 
     if char:
         # print(char)
-        regex = r'(.)' + re.escape(char) + '{' + re.escape(str(n)) + '}'
+        regex = r'(.)(' + re.escape(char) + '{' + re.escape(str(n)) + '})'
         match = re.findall(regex, text)
         # print(regex)
         if match:
-            ret += len(match)
+            for m in match:
+                if m[0][:1] != m[1][:1]:
+                    ret += 1
 
     return ret
 
@@ -60,9 +62,9 @@ def main():
     # print(count_n_repetitions('111', 2))
     # print(count_n_repetitions('ßßß', 1))
     # print(count_n_repetitions("\n\n\nAs are newlines\n\n\n", 2))
-
-    print(count_n_reps_or_n_chars_following('4455???', n=2, char='?'))
-
+    # print(count_n_reps_or_n_chars_following("zz Don't count double!", n=1, char='z'))
+    # print(count_n_reps_or_n_chars_following('????[[[?]]]', n=1, char=']'))
+    # print(count_n_reps_or_n_chars_following('Hello^there', n=1, char='^'))
 
 if __name__ == '__main__':
     main()
