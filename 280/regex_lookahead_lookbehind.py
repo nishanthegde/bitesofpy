@@ -19,14 +19,7 @@ def count_n_repetitions(text, n=1):
 
 
 def count_n_reps_or_n_chars_following(text, n=1, char=""):
-    """
-    Counts how often characters are repeated for n times, or
-    followed by char n times.
-
-    text: UTF-8 compliant input text
-    n: How often character should be repeated, defaults to 1
-    char: Character which also counts if repeated n times
-    """
+    text = re.sub(r"\n", " ", text)
 
     # first count n repetitions
     ret = count_n_repetitions(text, n)
@@ -56,4 +49,3 @@ def check_surrounding_chars(text, surrounding_chars):
             ret += 1
 
     return ret
-
