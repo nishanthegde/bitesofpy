@@ -45,26 +45,15 @@ def count_n_reps_or_n_chars_following(text, n=1, char=""):
 
 
 def check_surrounding_chars(text, surrounding_chars):
-    """
-    Count the number of times a character is surrounded by
-    characters from the surrounding_chars list.
+    print(text)
+    ret = 0
+    surrounding = '|'.join([re.escape(c) for c in surrounding_chars])
+    regex = r'(?<=' + surrounding + ')(\w)(?=' + surrounding + ')'
+    print(regex)
+    match = re.findall(regex, text)
+    if match:
+        for m in match:
+            ret += 1
 
-    text: UTF-8 compliant input text
-    surrounding_chars: List of characters
-    """
+    return ret
 
-
-def main():
-    print('please look after my mama. i love her very much...')
-    # print(count_n_repetitions('3444553333', 2))
-    # print(count_n_repetitions('333', 1))
-    # print(count_n_repetitions('', 1))
-    # print(count_n_repetitions('111', 2))
-    # print(count_n_repetitions('ßßß', 1))
-    # print(count_n_repetitions("\n\n\nAs are newlines\n\n\n", 2))
-    # print(count_n_reps_or_n_chars_following("zz Don't count double!", n=1, char='z'))
-    # print(count_n_reps_or_n_chars_following('????[[[?]]]', n=1, char=']'))
-    # print(count_n_reps_or_n_chars_following('Hello^there', n=1, char='^'))
-
-if __name__ == '__main__':
-    main()
