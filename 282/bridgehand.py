@@ -1,6 +1,6 @@
 from enum import Enum
 import typing
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 from collections.abc import Sequence
 import random
 
@@ -29,19 +29,29 @@ class BridgeHand:
         elif not all(isinstance(x, Card) for x in cards):
             raise ValueError("Card sequence can have only card objects")
         else:
-            pass
+            self.cards = cards
 
-    # def __str__(self) -> str:
-    #     """
-    #     Return a string representing this hand, in the following format:
-    #     "S:AK3 H:T987 D:KJ98 C:QJ"
-    #     List the suits in SHDC order, and the cards within each suit in
-    #     AKQJT..2 order.
-    #     Separate the suit symbol from its cards with a colon, and
-    #     the suits with a single space.
-    #     Note that a "10" should be represented with a capital 'T'
-    #     """
-    #
+    def __str__(self) -> str:
+        """
+        Return a string representing this hand, in the following format:
+        "S:AK3 H:T987 D:KJ98 C:QJ"
+        List the suits in SHDC order, and the cards within each suit in
+        AKQJT..2 order.
+        Separate the suit symbol from its cards with a colon, and
+        the suits with a single space.
+        Note that a "10" should be represented with a capital 'T'
+        """
+        ret = ''
+        ret_dict = defaultdict(list)
+
+        for c in self.cards:
+            ret_dict[str(c.suit.name)].append(str(c.rank.name))
+
+        for s in sorted(ret_dict, key=lambda x: Suit[x].value):
+            ret += "{}:{} ".format(s, ''.join(sorted(ret_dict[s], key=lambda x: Rank[x].value)))
+
+        return "{}".format(ret.strip())
+
     # @property
     # def hcp(self) -> int:
     #     """ Return the number of high card points contained in this hand """
@@ -79,17 +89,18 @@ class BridgeHand:
 
 
 def main():
-    print("thank you for everything you have given me...")
+    print("please look after my mom...")
 
     cards = list()
+    random.seed(9878)
     for i in range(13):
         suit = Suit[random.choice(suits)]
         rank = Rank[random.choice(ranks)]
         cards.append(Card(suit, rank))
 
-    print([type(c) for c in cards])
+    # print([c for c in cards][0])
     hand = BridgeHand(cards)
-    print(hand)
+    print(str(hand))
 
 
 if __name__ == "__main__":
