@@ -9,6 +9,7 @@ import requests
 URL: str = "https://bites-data.s3.us-east-2.amazonaws.com/MonthlySales.csv"
 STATS: List[str] = ["sum", "mean", "max"]
 local = os.getcwd()
+local = "/tmp"
 # TMP: Path = Path(os.getenv("TMP", "/tmp")) / "MonthlySales.csv"
 TMP: Path = Path(os.getenv("TMP", local)) / "MonthlySales.csv"
 
