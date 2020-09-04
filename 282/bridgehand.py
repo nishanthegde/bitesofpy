@@ -52,10 +52,23 @@ class BridgeHand:
 
         return "{}".format(ret.strip())
 
-    # @property
-    # def hcp(self) -> int:
-    #     """ Return the number of high card points contained in this hand """
-    #
+    @property
+    def hcp(self) -> int:
+        """ Return the number of high card points contained in this hand """
+        hcp = 0
+        for suit_holding in self.__str__().split():
+            for c in suit_holding.strip().split(':')[1]:
+                if c == 'A':
+                    hcp += 4
+                if c == 'K':
+                    hcp += 3
+                if c == 'Q':
+                    hcp += 2
+                if c == 'J':
+                    hcp += 1
+
+        return hcp
+
     @property
     def doubletons(self) -> int:
         """ Return the number of doubletons contained in this hand """
@@ -108,6 +121,7 @@ def main():
     hand = BridgeHand(cards)
     print(str(hand))
     print(hand.doubletons)
+    print(hand.hcp)
 
 
 if __name__ == "__main__":
