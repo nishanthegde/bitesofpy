@@ -2,14 +2,16 @@ from abc import ABC, abstractmethod
 from collections import namedtuple
 from dataclasses import dataclass
 from datetime import date
-from os import getenv
+from os import getenv, getcwd
 from pathlib import Path
 from typing import Any, List, Optional
 from urllib.request import urlretrieve
 
 from bs4 import BeautifulSoup as Soup  # type: ignore
 
-TMP = getenv("TMP", "/tmp")
+local = getcwd()
+# local = '/tmp'
+TMP = getenv("TMP", local)
 TODAY = date.today()
 Candidate = namedtuple("Candidate", "name votes")
 LeaderBoard = namedtuple(
@@ -34,7 +36,18 @@ class File:
         data: -> Optional[str] -- If the file exists, it returns its contents.
             If it does not exists, it returns None.
     """
-    pass
+
+    def __init__(self, file_name: str):
+        self.name = file_name
+        self.path = Path("{}/{}_{}".format(TMP, TODAY, file_name))
+
+    @property
+    def data(self):
+        if self.path.exists():
+            with open(self.name) as f:
+                return f.read()
+        else:
+            return None
 
 
 @dataclass
@@ -256,8 +269,7 @@ class RealClearPolitics(Site):
 class NYTimes(Site):
     """NYTimes object.
 
-    RealClearPolitics is a custom class to parse a Web instance from the
-    realclearpolitics website.
+    NYTimes is a custom class to parse a Web instance from the nytimes website.
 
     Variables:
         web: Web -- The web object stores the information needed to process
@@ -351,5 +363,13 @@ def gather_data():
     nyt.stats()
 
 
+def main():
+    print("thank you for looking after my Mama...")
+    file = File("git.txt")
+    print(str(file.path))
+    print(type(file.data))
+
+
 if __name__ == "__main__":
-    gather_data()
+    # gather_data()
+    main()
