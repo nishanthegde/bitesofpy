@@ -7,7 +7,6 @@ import random
 from typing import List
 from random import shuffle
 
-
 suits = list("SHDC")
 ranks = list("AKQJT98765432")
 Suit = Enum("Suit", suits)
@@ -61,7 +60,7 @@ test_hands = [
     TestHand("S:J873 H:KJ62 D:A96 C:K8", 1, 0, 0, 12, 1, 13, 8),
     TestHand("S:T732 H:T2 D:JT8 C:AK96", 1, 0, 0, 8, 1, 9, 9),
     TestHand("S:KT H:AK975 D:QJT2 C:KJ", 2, 0, 0, 17, 2, 19, 5),
-    TestHand("S:KJT97 H:AQ843 D:86 C:5", 1, 1, 0, 10, 3, 13, 6),
+    TestHand("S:KJT97 H:AQ843 D:86 C:5", 1, 1, 0, 10, 3, 13, 6)
 ]
 
 
@@ -172,6 +171,7 @@ class BridgeHand:
         ltc = 0
 
         for suit_holding in self.__str__().split():
+
             #  singletons
             if len(suit_holding.strip().split(':')[1]) == 1:
                 for c in suit_holding.strip().split(':')[1]:
@@ -194,8 +194,8 @@ class BridgeHand:
                     ltc += 2
 
             # 3 card suit
-            if len(suit_holding.strip().split(':')[1]) == 3:
-                t_cards = suit_holding.strip().split(':')[1]
+            if len(suit_holding.strip().split(':')[1]) >= 3:
+                t_cards = suit_holding.strip().split(':')[1][:3]
 
                 if t_cards == 'AKQ':
                     ltc += 0
@@ -208,31 +208,3 @@ class BridgeHand:
 
         return ltc
 
-
-def main():
-    print("please look after my mom...")
-
-    # cards = list()
-    # # random.seed(100)
-    # for i in range(13):
-    #     suit = Suit[random.choice(suits)]
-    #     rank = Rank[random.choice(ranks)]
-    #     cards.append(Card(suit, rank))
-    #
-    # hand = BridgeHand(cards)
-    # print(str(hand))
-    # print(hand.doubletons)
-    # print(hand.hcp)
-    # print(hand.singletons)
-    # print(hand.voids)
-    # print(hand.ssp)
-    # print(hand.total_points)
-    # print(hand.ltc)
-
-    for hand in test_hands:
-        print(BridgeHand(hand.card_list).ltc, BridgeHand(hand.card_list))
-
-
-
-if __name__ == "__main__":
-    main()
