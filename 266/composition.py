@@ -102,8 +102,7 @@ class Web:
         Returns:
             Soup -- BeautifulSoup object created from the File.
         """
-        soup = Soup(self.file.data, 'html.parser')
-        return soup
+        return Soup(self.data, 'html.parser')
 
 
 class Site(ABC):
@@ -135,7 +134,9 @@ class Site(ABC):
         stats: -- Formats the results from polls into a more user friendly
             representation.
     """
-    pass
+
+    def __init__(self, web: Web):
+        self.web = web
 
     def find_table(self, loc: int = 0) -> str:
         """Finds the table elements from the Soup object
@@ -148,7 +149,10 @@ class Site(ABC):
         Returns:
             str -- The html table
         """
-        pass
+        tables = self.web.soup.findAll("table")
+
+        if tables:
+            return tables[loc]
 
     def parse_rows(self, table: Soup) -> List[Any]:
         """Abstract Method
@@ -226,15 +230,16 @@ class RealClearPolitics(Site):
             RealClearPolitics
             =================
                 Biden: 214.0
-              Sanders: 142.0
-              Gabbard: 6.0
+                Sanders: 142.0
+                Gabbard: 6.0
 
     """
 
-    pass
+    def __init__(self, web: Web):
+        self.web = web
 
     def parse_rows(self, table: Soup) -> List[Poll]:
-        """Parses the row data from the html table.
+        """Parses the row data from the html table.pytest
 
         Arguments:
             table {Soup} -- Parses a BeautifulSoup table element and
@@ -374,11 +379,26 @@ def gather_data():
 
 def main():
     print("thank you for looking after my Mama...")
-    url = "https://projects.fivethirtyeight.com/polls/"
-    test_file = File("test.html")
-    test_web = Web(url, test_file)
+    # url = "https://projects.fivethirtyeight.com/polls/"
+    # test_file = File("test.html")
+    # test_web = Web(url, test_file)
+    # print(type(test_web.soup))
 
-    print(type(test_web.soup))
+    # file = File("clamytoe.html")
+    # url = "https://clamytoe.dev"
+    # test_web = Web(url, file)
+    # print(test_web.data)
+
+    rcp_file = File("realclearpolitics.html")
+    rcp_url = (
+        "https://bites-data.s3.us-east-2.amazonaws.com/"
+        "2020-03-10_realclearpolitics.html"
+    )
+    rcp_web = Web(rcp_url, rcp_file)
+    r = RealClearPolitics(rcp_web)
+    # print(r.web.soup)
+    print(r.find_table())
+
 
 if __name__ == "__main__":
     # gather_data()
