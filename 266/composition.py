@@ -37,14 +37,14 @@ class File:
             If it does not exists, it returns None.
     """
 
-    def __init__(self, file_name: str):
-        self.name = file_name
-        self.path = Path("{}/{}_{}".format(TMP, TODAY, file_name))
+    def __init__(self, name: str):
+        self.name = name
+        self.path = Path("{}/{}_{}".format(TMP, TODAY, name))
 
     @property
     def data(self):
         if self.path.exists():
-            with open(self.name) as f:
+            with open(self.path) as f:
                 return f.read()
         else:
             return None
@@ -72,7 +72,10 @@ class Web:
         soup: -> Soup -- Parses the data from File and turns it into a BeautifulSoup
             object.
     """
-    pass
+
+    def __init__(self, url: str, file: File):
+        self.url = url
+        self.file = file
 
     @property
     def data(self) -> Optional[str]:
@@ -85,7 +88,12 @@ class Web:
         Returns:
             Optional[str] -- The string data from the File object.
         """
-        pass
+        if self.file.data:
+            return self.file.data
+        else:
+            urlretrieve(self.url, self.file.path)
+            with open(self.file.path) as f:
+                return f.read()
 
     @property
     def soup(self) -> Soup:
@@ -94,7 +102,8 @@ class Web:
         Returns:
             Soup -- BeautifulSoup object created from the File.
         """
-        pass
+        soup = Soup(self.file.data, 'html.parser')
+        return soup
 
 
 class Site(ABC):
@@ -365,10 +374,11 @@ def gather_data():
 
 def main():
     print("thank you for looking after my Mama...")
-    file = File("git.txt")
-    print(str(file.path))
-    print(type(file.data))
+    url = "https://projects.fivethirtyeight.com/polls/"
+    test_file = File("test.html")
+    test_web = Web(url, test_file)
 
+    print(type(test_web.soup))
 
 if __name__ == "__main__":
     # gather_data()
