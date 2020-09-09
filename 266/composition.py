@@ -154,6 +154,7 @@ class Site(ABC):
         if tables:
             return tables[loc]
 
+    # @abstractmethod
     def parse_rows(self, table: Soup) -> List[Any]:
         """Abstract Method
         
@@ -167,7 +168,13 @@ class Site(ABC):
             List[NamedTuple] -- List of NamedTuple that were created from the
                 table data.
         """
-        pass
+        tds = []
+        rows = table.findAll('tr')
+        for tr in rows:
+            t = tuple(td.text for td in tr.findAll('td'))
+            tds.append(t)
+
+        return [t for t in tds if t]
 
     def polls(self, table: int = 0) -> List[Any]:
         """Abstract Method
@@ -236,7 +243,7 @@ class RealClearPolitics(Site):
     """
 
     def __init__(self, web: Web):
-        self.web = web
+        super().__init__(web)
 
     def parse_rows(self, table: Soup) -> List[Poll]:
         """Parses the row data from the html table.pytest
@@ -249,7 +256,8 @@ class RealClearPolitics(Site):
             List[Poll] -- List of Poll namedtuples that were created from the
                 table data.
         """
-        pass
+        rows = super().parse_rows(table)
+        return [Poll(r[0], r[1], r[2], float(r[3].replace('--','0.0')), float(r[4].replace('--','0.0')), float(r[5].replace('--','0.0')), r[6]) for r in rows]
 
     def polls(self, table: int = 0) -> List[Poll]:
         """Parses the data
@@ -395,9 +403,18 @@ def main():
         "2020-03-10_realclearpolitics.html"
     )
     rcp_web = Web(rcp_url, rcp_file)
+
     r = RealClearPolitics(rcp_web)
-    # print(r.web.soup)
-    print(r.find_table())
+    # table = r.find_table()
+    # rows = r.parse_rows(table)
+    # print(rows)
+
+    table = r.find_table()
+    rows = r.parse_rows(table)
+    poll = rows[0]
+    assert isinstance(rows, list)
+    assert isinstance(poll, Poll)
+    assert isinstance(poll.Sanders, float)
 
 
 if __name__ == "__main__":
