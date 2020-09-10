@@ -193,7 +193,8 @@ class Site(ABC):
             List[NamedTuple] -- List of NamedTuple that were created from the
                 table data.
         """
-        pass
+        t = self.find_table(table)
+        return self.parse_rows(t)
 
     def stats(self, loc: int = 0):
         """Abstract Method
@@ -257,7 +258,8 @@ class RealClearPolitics(Site):
                 table data.
         """
         rows = super().parse_rows(table)
-        return [Poll(r[0], r[1], r[2], float(r[3].replace('--','0.0')), float(r[4].replace('--','0.0')), float(r[5].replace('--','0.0')), r[6]) for r in rows]
+        return [Poll(r[0], r[1], r[2], float(r[3].replace('--', '0.0')), float(r[4].replace('--', '0.0')),
+                     float(r[5].replace('--', '0.0')), r[6]) for r in rows]
 
     def polls(self, table: int = 0) -> List[Poll]:
         """Parses the data
@@ -274,7 +276,7 @@ class RealClearPolitics(Site):
             List[Poll] -- List of Poll namedtuples that were created from the
                 table data.
         """
-        pass
+        return super().polls(table)
 
     def stats(self, loc: int = 0):
         """Produces the stats from the polls.
@@ -327,6 +329,9 @@ class NYTimes(Site):
 
     web: Web
 
+    def __init__(self, web: Web):
+        super().__init__(web)
+
     def parse_rows(self, table: Soup) -> List[LeaderBoard]:
         """Parses the row data from the html table.
 
@@ -338,33 +343,36 @@ class NYTimes(Site):
             List[LeaderBoard] -- List of LeaderBoard namedtuples that were created from
             the table data.
         """
-        pass
+        rows = super().parse_rows(table)
+        return [LeaderBoard(r[0].strip(), r[1], int(r[2]), r[3], int(r[4].replace('#',''))) for r in rows[:3]]
 
-    def polls(self, table: int = 0) -> List[LeaderBoard]:
-        """Parses the data
 
-        The find_table and parse_rows methods are called for you and the table index
-        that is passed to it is used to get the correct table from the soup object.
+def polls(self, table: int = 0) -> List[LeaderBoard]:
+    """Parses the data
 
-        Keyword Arguments:
-            table {int} -- Does the parsing of the table and rows for you.
-                It takes the table index number if given, otherwise parses table 0.
-                (default: {0})
+    The find_table and parse_rows methods are called for you and the table index
+    that is passed to it is used to get the correct table from the soup object.
 
-        Returns:
-            List[LeaderBoard] -- List of LeaderBoard namedtuples that were created from
-                the table data.
-        """
-        pass
+    Keyword Arguments:
+        table {int} -- Does the parsing of the table and rows for you.
+            It takes the table index number if given, otherwise parses table 0.
+            (default: {0})
 
-    def stats(self, loc: int = 0):
-        """Produces the stats from the polls.
+    Returns:
+        List[LeaderBoard] -- List of LeaderBoard namedtuples that were created from
+            the table data.
+    """
+    pass
 
-        Keyword Arguments:
-            loc {int} -- Formats the results from polls into a more user friendly
-            representation.
-        """
-        pass
+
+def stats(self, loc: int = 0):
+    """Produces the stats from the polls.
+
+    Keyword Arguments:
+        loc {int} -- Formats the results from polls into a more user friendly
+        representation.
+    """
+    pass
 
 
 def gather_data():
@@ -397,24 +405,41 @@ def main():
     # test_web = Web(url, file)
     # print(test_web.data)
 
-    rcp_file = File("realclearpolitics.html")
-    rcp_url = (
-        "https://bites-data.s3.us-east-2.amazonaws.com/"
-        "2020-03-10_realclearpolitics.html"
-    )
-    rcp_web = Web(rcp_url, rcp_file)
-
-    r = RealClearPolitics(rcp_web)
+    # rcp_file = File("realclearpolitics.html")
+    # rcp_url = (
+    #     "https://bites-data.s3.us-east-2.amazonaws.com/"
+    #     "2020-03-10_realclearpolitics.html"
+    # )
+    # rcp_web = Web(rcp_url, rcp_file)
+    #
+    # r = RealClearPolitics(rcp_web)
     # table = r.find_table()
     # rows = r.parse_rows(table)
     # print(rows)
 
-    table = r.find_table()
-    rows = r.parse_rows(table)
-    poll = rows[0]
+    # table = r.find_table()
+    # rows = r.parse_rows(table)
+    # poll = rows[0]
+    # print(type(r.polls()))
+    # assert isinstance(rows, list)
+    # assert isinstance(poll, Poll)
+    # assert isinstance(poll.Sanders, float)
+
+    nyt_file = File("nytimes.html")
+    nyt_url = ("https://bites-data.s3.us-east-2.amazonaws.com/"
+               "2020-03-10_nytimes.html")
+    nyt_web = Web(nyt_url, nyt_file)
+
+    n = NYTimes(nyt_web)
+
+    table = n.find_table()
+    rows = n.parse_rows(table)
+    leaderboard = rows[0]
+    print(leaderboard)
     assert isinstance(rows, list)
-    assert isinstance(poll, Poll)
-    assert isinstance(poll.Sanders, float)
+    assert isinstance(leaderboard, LeaderBoard)
+    assert isinstance(leaderboard.Delegates, int)
+    assert isinstance(leaderboard.Coverage, int)
 
 
 if __name__ == "__main__":
