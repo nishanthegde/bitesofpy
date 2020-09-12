@@ -286,11 +286,19 @@ class RealClearPolitics(Site):
             representation.
 
         """
-        p = super().polls(loc)
-        print("\n")
+        polls = super().polls(loc)
+        biden_total = sum([p.Biden for p in polls])
+        sanders_total = sum([p.Sanders for p in polls])
+        gabbard_total = sum([p.Gabbard for p in polls])
+
+        print()
         print("RealClearPolitics")
-        print("="*len("RealClearPolitics"))
-        print("\n")
+        print("=" * len("RealClearPolitics"))
+        print("  Biden: {}".format(biden_total))
+        print("Sanders: {}".format(sanders_total))
+        print("Gabbard: {}".format(gabbard_total))
+        print()
+
 
 @dataclass
 class NYTimes(Site):
@@ -347,8 +355,7 @@ class NYTimes(Site):
             the table data.
         """
         rows = super().parse_rows(table)
-        return [LeaderBoard(r[0].strip(), r[1], int(r[2]), r[3], int(r[4].replace('#',''))) for r in rows[:3]]
-
+        return [LeaderBoard(r[0].strip(), r[1], int(r[2]), r[3], int(r[4].replace('#', ''))) for r in rows[:3]]
 
     def polls(self, table: int = 0) -> List[LeaderBoard]:
         """Parses the data
@@ -366,7 +373,6 @@ class NYTimes(Site):
                 the table data.
         """
         pass
-
 
     def stats(self, loc: int = 0):
         """Produces the stats from the polls.
@@ -417,6 +423,7 @@ def main():
 
     rcp = RealClearPolitics(rcp_web)
     rcp.stats(3)
+
     # table = r.find_table()
     # rows = r.parse_rows(table)
     # print(rows)
