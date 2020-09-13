@@ -372,7 +372,7 @@ class NYTimes(Site):
             List[LeaderBoard] -- List of LeaderBoard namedtuples that were created from
                 the table data.
         """
-        pass
+        return self.parse_rows(super().find_table(table))
 
     def stats(self, loc: int = 0):
         """Produces the stats from the polls.
@@ -381,7 +381,24 @@ class NYTimes(Site):
             loc {int} -- Formats the results from polls into a more user friendly
             representation.
         """
-        pass
+        leaders = self.polls(loc)
+        print()
+        print("NYTimes")
+        print("=" * 33)
+        print()
+        for l in leaders:
+            candidate = l.Candidate
+            avg = l.Average
+            delegates = l.Delegates
+            contributions = l.Contributions
+            coverage = l.Coverage
+            print(f" " * (33 - len(candidate)) + candidate)
+            print("-" * 33)
+            print(f"National Polling Average: " + avg.strip())
+            print(f" " * 7 + "Pledged Delegates: " + str(delegates).strip())
+            print(f"Individual Contributions: " + contributions.strip())
+            print(f" " * 4 + "Weekly News Coverage: " + str(coverage).strip())
+            print()
 
 
 def gather_data():
@@ -414,15 +431,15 @@ def main():
     # test_web = Web(url, file)
     # print(test_web.data)
 
-    rcp_file = File("realclearpolitics.html")
-    rcp_url = (
-        "https://bites-data.s3.us-east-2.amazonaws.com/"
-        "2020-03-10_realclearpolitics.html"
-    )
-    rcp_web = Web(rcp_url, rcp_file)
-
-    rcp = RealClearPolitics(rcp_web)
-    rcp.stats(3)
+    # rcp_file = File("realclearpolitics.html")
+    # rcp_url = (
+    #     "https://bites-data.s3.us-east-2.amazonaws.com/"
+    #     "2020-03-10_realclearpolitics.html"
+    # )
+    # rcp_web = Web(rcp_url, rcp_file)
+    #
+    # rcp = RealClearPolitics(rcp_web)
+    # rcp.stats(3)
 
     # table = r.find_table()
     # rows = r.parse_rows(table)
@@ -436,13 +453,13 @@ def main():
     # assert isinstance(poll, Poll)
     # assert isinstance(poll.Sanders, float)
 
-    # nyt_file = File("nytimes.html")
-    # nyt_url = ("https://bites-data.s3.us-east-2.amazonaws.com/"
-    #            "2020-03-10_nytimes.html")
-    # nyt_web = Web(nyt_url, nyt_file)
-    #
-    # n = NYTimes(nyt_web)
-    #
+    nyt_file = File("nytimes.html")
+    nyt_url = ("https://bites-data.s3.us-east-2.amazonaws.com/"
+               "2020-03-10_nytimes.html")
+    nyt_web = Web(nyt_url, nyt_file)
+
+    nyt = NYTimes(nyt_web)
+    nyt.stats()
     # table = n.find_table()
     # rows = n.parse_rows(table)
     # leaderboard = rows[0]
