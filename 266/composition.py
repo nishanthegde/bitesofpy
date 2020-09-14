@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, ABCMeta
 from collections import namedtuple
 from dataclasses import dataclass
 from datetime import date
@@ -105,7 +105,7 @@ class Web:
         return Soup(self.data, 'html.parser')
 
 
-class Site(ABC):
+class Site(metaclass=ABCMeta):
     """Site Abstract Base Class.
 
     Defines the structure for the objects based on this class and defines the interfaces
@@ -149,12 +149,13 @@ class Site(ABC):
         Returns:
             str -- The html table
         """
-        tables = self.web.soup.findAll("table")
+        # tables = self.web.soup.findAll("table")
+        #
+        # if tables:
+        #     return tables[loc]
+        pass
 
-        if tables:
-            return tables[loc]
-
-    # @abstractmethod
+    @abstractmethod
     def parse_rows(self, table: Soup) -> List[Any]:
         """Abstract Method
         
@@ -168,14 +169,16 @@ class Site(ABC):
             List[NamedTuple] -- List of NamedTuple that were created from the
                 table data.
         """
-        tds = []
-        rows = table.findAll('tr')
-        for tr in rows:
-            t = tuple(td.text for td in tr.findAll('td'))
-            tds.append(t)
+        # tds = []
+        # rows = table.findAll('tr')
+        # for tr in rows:
+        #     t = tuple(td.text for td in tr.findAll('td'))
+        #     tds.append(t)
+        #
+        # return [t for t in tds if t]
+        pass
 
-        return [t for t in tds if t]
-
+    @abstractmethod
     def polls(self, table: int = 0) -> List[Any]:
         """Abstract Method
 
@@ -193,9 +196,11 @@ class Site(ABC):
             List[NamedTuple] -- List of NamedTuple that were created from the
                 table data.
         """
-        t = self.find_table(table)
-        return self.parse_rows(t)
+        # t = self.find_table(table)
+        # return self.parse_rows(t)
+        pass
 
+    @abstractmethod
     def stats(self, loc: int = 0):
         """Abstract Method
         
@@ -205,6 +210,10 @@ class Site(ABC):
             loc {int} -- Formats the results from polls into a more user friendly
             representation.
         """
+        # polls = self.polls(loc)
+        #
+        # for p in polls:
+        #     print(p)
         pass
 
 
@@ -401,6 +410,12 @@ class NYTimes(Site):
             print()
 
 
+@dataclass
+class Dummy(Site):
+    Site.__abstractmethods__ = set()
+    web: Web
+
+
 def gather_data():
     rcp_file = File("realclearpolitics.html")
     rcp_url = (
@@ -453,13 +468,13 @@ def main():
     # assert isinstance(poll, Poll)
     # assert isinstance(poll.Sanders, float)
 
-    nyt_file = File("nytimes.html")
-    nyt_url = ("https://bites-data.s3.us-east-2.amazonaws.com/"
-               "2020-03-10_nytimes.html")
-    nyt_web = Web(nyt_url, nyt_file)
-
-    nyt = NYTimes(nyt_web)
-    nyt.stats()
+    # nyt_file = File("nytimes.html")
+    # nyt_url = ("https://bites-data.s3.us-east-2.amazonaws.com/"
+    #            "2020-03-10_nytimes.html")
+    # nyt_web = Web(nyt_url, nyt_file)
+    #
+    # nyt = NYTimes(nyt_web)
+    # nyt.stats()
     # table = n.find_table()
     # rows = n.parse_rows(table)
     # leaderboard = rows[0]
@@ -469,6 +484,18 @@ def main():
     # assert isinstance(leaderboard.Delegates, int)
     # assert isinstance(leaderboard.Coverage, int)
 
+    Site.__abstractmethods__ = set()
+    url = "https://projects.fivethirtyeight.com/polls/"
+    test_file = File("test.html")
+    test_web = Web(url, test_file)
+    d = Dummy(test_web)
+    table = d.find_table()
+    rows = d.parse_rows(table)
+    print(rows)
+    # polls = d.polls()
+    # stats = d.stats()
+    # print(d.web.file.name)
+    # assert isinstance(Site, ABCMeta)
 
 if __name__ == "__main__":
     # gather_data()
