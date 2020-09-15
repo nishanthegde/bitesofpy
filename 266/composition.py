@@ -9,8 +9,8 @@ from urllib.request import urlretrieve
 
 from bs4 import BeautifulSoup as Soup  # type: ignore
 
-local = getcwd()
-# local = '/tmp'
+# local = getcwd()
+local = '/tmp'
 TMP = getenv("TMP", local)
 TODAY = date.today()
 Candidate = namedtuple("Candidate", "name votes")
@@ -149,11 +149,11 @@ class Site(metaclass=ABCMeta):
         Returns:
             str -- The html table
         """
-        # tables = self.web.soup.findAll("table")
-        #
-        # if tables:
-        #     return tables[loc]
-        pass
+        tables = self.web.soup.findAll("table")
+
+        if tables:
+            return tables[loc]
+        # pass
 
     @abstractmethod
     def parse_rows(self, table: Soup) -> List[Any]:
@@ -266,7 +266,17 @@ class RealClearPolitics(Site):
             List[Poll] -- List of Poll namedtuples that were created from the
                 table data.
         """
-        rows = super().parse_rows(table)
+        # table = super().find_table()
+
+        tds = []
+        rows = table.findAll('tr')
+
+        for tr in rows:
+            t = tuple(td.text for td in tr.findAll('td'))
+            tds.append(t)
+
+        rows = [t for t in tds if t]
+
         return [Poll(r[0], r[1], r[2], float(r[4].replace('--', '0.0')), float(r[3].replace('--', '0.0')),
                      float(r[5].replace('--', '0.0')), r[6]) for r in rows[1:]]
 
@@ -285,7 +295,9 @@ class RealClearPolitics(Site):
             List[Poll] -- List of Poll namedtuples that were created from the
                 table data.
         """
-        return super().polls(table)
+        t = super().find_table(table)
+
+        return self.parse_rows(t)
 
     def stats(self, loc: int = 0):
         """Produces the stats from the polls.
@@ -295,7 +307,7 @@ class RealClearPolitics(Site):
             representation.
 
         """
-        polls = super().polls(loc)
+        polls = self.polls(loc)
         biden_total = sum([p.Biden for p in polls])
         sanders_total = sum([p.Sanders for p in polls])
         gabbard_total = sum([p.Gabbard for p in polls])
@@ -363,7 +375,16 @@ class NYTimes(Site):
             List[LeaderBoard] -- List of LeaderBoard namedtuples that were created from
             the table data.
         """
-        rows = super().parse_rows(table)
+        tds = []
+
+        rows = table.findAll('tr')
+
+        for tr in rows:
+            t = tuple(td.text for td in tr.findAll('td'))
+            tds.append(t)
+
+        rows = [t for t in tds if t]
+
         return [LeaderBoard(r[0].strip(), r[1], int(r[2]), r[3], int(r[4].replace('#', ''))) for r in rows[:3]]
 
     def polls(self, table: int = 0) -> List[LeaderBoard]:
@@ -381,7 +402,8 @@ class NYTimes(Site):
             List[LeaderBoard] -- List of LeaderBoard namedtuples that were created from
                 the table data.
         """
-        return self.parse_rows(super().find_table(table))
+        t = super().find_table(table)
+        return self.parse_rows(t)
 
     def stats(self, loc: int = 0):
         """Produces the stats from the polls.
@@ -434,69 +456,5 @@ def gather_data():
     nyt.stats()
 
 
-def main():
-    print("thank you for looking after my Mama...")
-    # url = "https://projects.fivethirtyeight.com/polls/"
-    # test_file = File("test.html")
-    # test_web = Web(url, test_file)
-    # print(type(test_web.soup))
-
-    # file = File("clamytoe.html")
-    # url = "https://clamytoe.dev"
-    # test_web = Web(url, file)
-    # print(test_web.data)
-
-    # rcp_file = File("realclearpolitics.html")
-    # rcp_url = (
-    #     "https://bites-data.s3.us-east-2.amazonaws.com/"
-    #     "2020-03-10_realclearpolitics.html"
-    # )
-    # rcp_web = Web(rcp_url, rcp_file)
-    #
-    # rcp = RealClearPolitics(rcp_web)
-    # rcp.stats(3)
-
-    # table = r.find_table()
-    # rows = r.parse_rows(table)
-    # print(rows)
-
-    # table = r.find_table()
-    # rows = r.parse_rows(table)
-    # poll = rows[0]
-    # print(type(r.polls()))
-    # assert isinstance(rows, list)
-    # assert isinstance(poll, Poll)
-    # assert isinstance(poll.Sanders, float)
-
-    # nyt_file = File("nytimes.html")
-    # nyt_url = ("https://bites-data.s3.us-east-2.amazonaws.com/"
-    #            "2020-03-10_nytimes.html")
-    # nyt_web = Web(nyt_url, nyt_file)
-    #
-    # nyt = NYTimes(nyt_web)
-    # nyt.stats()
-    # table = n.find_table()
-    # rows = n.parse_rows(table)
-    # leaderboard = rows[0]
-    # print(leaderboard)
-    # assert isinstance(rows, list)
-    # assert isinstance(leaderboard, LeaderBoard)
-    # assert isinstance(leaderboard.Delegates, int)
-    # assert isinstance(leaderboard.Coverage, int)
-
-    Site.__abstractmethods__ = set()
-    url = "https://projects.fivethirtyeight.com/polls/"
-    test_file = File("test.html")
-    test_web = Web(url, test_file)
-    d = Dummy(test_web)
-    table = d.find_table()
-    rows = d.parse_rows(table)
-    print(rows)
-    # polls = d.polls()
-    # stats = d.stats()
-    # print(d.web.file.name)
-    # assert isinstance(Site, ABCMeta)
-
 if __name__ == "__main__":
-    # gather_data()
-    main()
+    gather_data()
