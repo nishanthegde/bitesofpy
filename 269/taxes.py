@@ -56,6 +56,15 @@ BRACKET = [
     Bracket(510_301, 0.37),
 ]
 
+bracket_2020 = [
+    Bracket(9_875, 0.1),
+    Bracket(40_125, 0.12),
+    Bracket(85_525, 0.22),
+    Bracket(163_300, 0.24),
+    Bracket(207_350, 0.32),
+    Bracket(518_400, 0.35),
+    Bracket(518_401, 0.37),
+]
 
 class Taxes:
     """Taxes class
@@ -99,7 +108,7 @@ class Taxes:
         Returns:
             float -- The amount of taxes owed
         """
-        pass
+        return self.total
 
     @property
     def total(self) -> float:
@@ -108,14 +117,28 @@ class Taxes:
         Returns:
             float -- Total taxes owed
         """
-        start_val = self.income
-        taxed = 0
 
-        # for b in self.bracket:
-        #     if start_val > b.end:
-        #         taxed =  start_val * b.rate
-        #     start_val -= b.end
-        #     if start_val < 0
+        remained_to_be_taxed = self.income
+        taxed = list()
+        start_tax_range = 0
+        end_tax_range = self.bracket
+
+        for i, b in enumerate(self.bracket):
+
+            amount_to_tax = b.end - start_tax_range
+            taxed.append(min(amount_to_tax, remained_to_be_taxed) * b.rate)
+            # print(i, start_tax_range, b.end, amount_to_tax, b.rate)
+
+            remained_to_be_taxed -= amount_to_tax
+            # print(remained_to_be_taxed)
+
+            if b.end > self.income:
+                break
+
+            start_tax_range = b.end
+
+        # print(taxed)
+        return sum(taxed)
 
     @property
     def tax_rate(self) -> float:
@@ -124,7 +147,7 @@ class Taxes:
         Returns:
             float -- Tax rate
         """
-        pass
+        return round((self.total / self.income) * 100, 2)
 
 
 def main():
@@ -132,8 +155,11 @@ def main():
 
 
 if __name__ == "__main__":
-    salary = 40_000
-    t = Taxes(salary)
-    print(t.total)
+    # salary = 40_000
+    # t = Taxes(salary)
+    # print(t.bracket)
+    # print(t.total)
     # t.report()
+    income = 8_000
+    t = Taxes(income, bracket_2020)
     main()
