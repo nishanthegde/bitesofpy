@@ -66,6 +66,7 @@ bracket_2020 = [
     Bracket(518_401, 0.37),
 ]
 
+
 class Taxes:
     """Taxes class
 
@@ -74,9 +75,11 @@ class Taxes:
 
     """
 
-    def __init__(self, income: int, bracket: List[Bracket] = BRACKET):
+    def __init__(self, income: int, bracket: List[Bracket] = BRACKET, tax_amounts: List[Taxed] = []):
         self.income = income
         self.bracket = bracket
+        self.tax_amounts = tax_amounts
+        self.total
 
     def __str__(self) -> str:
         """Summary Report
@@ -92,7 +95,16 @@ class Taxes:
                  Taxes Owed:         4,658.50
                    Tax Rate:           11.65%
         """
-        pass
+        taxable_income_str = "{0:,.2f}".format(self.income)
+        taxes_owed_str = "{0:,.2f}".format(self.total)
+
+        output = "           Summary Report\n"
+        output += "==================================\n"
+        output += " Taxable Income:{}{}\n".format(" " * (17 - len(taxable_income_str)), taxable_income_str)
+        output += "     Taxes Owed:{}{}\n".format(" " * (17 - len(taxes_owed_str)), taxes_owed_str)
+        output += "       Tax Rate:{}{}%".format(" " * (16 - len(str(self.tax_rate))), self.tax_rate)
+
+        return output
 
     def report(self):
         """Prints taxes breakdown report"""
@@ -119,15 +131,18 @@ class Taxes:
         """
 
         remained_to_be_taxed = self.income
-        taxed = list()
+        # taxed = list()
+        self.tax_amounts = []
         start_tax_range = 0
         end_tax_range = self.bracket
 
         for i, b in enumerate(self.bracket):
 
             amount_to_tax = b.end - start_tax_range
-            taxed.append(min(amount_to_tax, remained_to_be_taxed) * b.rate)
-            # print(i, start_tax_range, b.end, amount_to_tax, b.rate)
+            t = Taxed(min(amount_to_tax, remained_to_be_taxed), b.rate,
+                      min(amount_to_tax, remained_to_be_taxed) * b.rate)
+            self.tax_amounts.append(t)
+            # print(i, start_t      ax_range, b.end, amount_to_tax, b.rate)
 
             remained_to_be_taxed -= amount_to_tax
             # print(remained_to_be_taxed)
@@ -138,7 +153,7 @@ class Taxes:
             start_tax_range = b.end
 
         # print(taxed)
-        return sum(taxed)
+        return sum([t.tax for t in self.tax_amounts])
 
     @property
     def tax_rate(self) -> float:
@@ -155,11 +170,16 @@ def main():
 
 
 if __name__ == "__main__":
-    # salary = 40_000
-    # t = Taxes(salary)
+    salary = 40_000
+    t = Taxes(salary)
+    print(t)
+    print(len("=================================="))
     # print(t.bracket)
     # print(t.total)
+    # print(t.tax_amounts)
     # t.report()
-    income = 8_000
-    t = Taxes(income, bracket_2020)
+    # income = 8_000
+    # t = Taxes(income, bracket_2020)
+    # print(t.total)
+    # print(t.tax_amounts)
     main()
