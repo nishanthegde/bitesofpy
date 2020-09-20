@@ -108,7 +108,23 @@ class Taxes:
 
     def report(self):
         """Prints taxes breakdown report"""
-        pass
+
+        print(str(self))
+        total_str = "{0:,.2f}".format(self.total)
+
+        print()
+        report = "           Taxes Breakdown\n"
+        report += "==================================\n"
+        for i, t in enumerate(self.tax_amounts):
+            t_amount_str = "{0:,.2f}".format(t.amount)
+            t_rate_str = "{0:,.2f}".format(t.rate)
+            t_tax_str = "{0:,.2f}".format(t.tax)
+            report += "{}{} X {} ={}{}\n".format(" " * (12 - len(t_amount_str)), t_amount_str, t_rate_str,
+                                               " " * (13 - len(t_tax_str)), t_tax_str)
+
+        report += "----------------------------------\n"
+        report += "              Total ={}{}".format(" " * (13 - len(total_str)), total_str)
+        print(report)
 
     @property
     def taxes(self) -> float:
@@ -165,21 +181,21 @@ class Taxes:
         return round((self.total / self.income) * 100, 2)
 
 
-def main():
-    print("thank you for looking after my mama...")
-
-
-if __name__ == "__main__":
-    salary = 40_000
-    t = Taxes(salary)
-    print(t)
-    print(len("=================================="))
-    # print(t.bracket)
-    # print(t.total)
-    # print(t.tax_amounts)
-    # t.report()
-    # income = 8_000
-    # t = Taxes(income, bracket_2020)
-    # print(t.total)
-    # print(t.tax_amounts)
-    main()
+# def main():
+#     # print("thank you for looking after my mama...")
+#     salary = 1_000_000
+#     t = Taxes(salary,bracket_2020)
+#     t.report()
+#
+#
+# if __name__ == "__main__":
+#     # print(len("=================================="))
+#     # print(t.bracket)
+#     # print(t.total)
+#     # print(t.tax_amounts)
+#     # t.report()
+#     # income = 8_000
+#     # t = Taxes(income, bracket_2020)
+#     # print(t.total)
+#     # print(t.tax_amounts)
+#     main()
