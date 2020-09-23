@@ -5,8 +5,8 @@ import json
 
 filename = "my_code.json"
 url = "https://bites-data.s3.us-east-2.amazonaws.com/{filename}"
-local = os.getcwd()
-# local = "/tmp"
+# local = os.getcwd()
+local = "/tmp"
 tmp = Path(os.getenv("TMP", local))
 json_input_file = tmp / filename
 
