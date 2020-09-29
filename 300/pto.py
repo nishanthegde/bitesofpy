@@ -1,10 +1,18 @@
 import calendar
-from datetime import date
+from datetime import date, timedelta
+
+# import holidays
 
 ERROR_MSG = (
     "Unambiguous value passed, please specify either start_month or show_workdays"
 )
 FEDERAL_HOLIDAYS = (
+    date(2020, 1, 1),
+    date(2020, 1, 20),
+    date(2020, 2, 17),
+    date(2020, 5, 25),
+    date(2020, 7, 3),
+    date(2020, 7, 4),
     date(2020, 9, 7),
     date(2020, 10, 12),
     date(2020, 11, 11),
@@ -45,16 +53,48 @@ def four_day_weekends(
     if len(args) > 0:
         raise ValueError(ERROR_MSG)
 
+    if show_workdays == False:
+        # generate weekend report
+
+        # get number of weekends to subtract because holiday of US holidays for year
+
+        holidays = list()
+
+        # for hol in holidays.UnitedStates(years=year).items():
+        for i, hol in enumerate(FEDERAL_HOLIDAYS):
+            print(hol, calendar.day_name[hol.weekday()])
+            if calendar.day_name[hol.weekday()] in ('Friday', 'Monday'):
+                holidays.append(hol)
+
+        print(holidays)
+
+        # get number of weekends left in year from start_month
+        weekends = list()
+
+        # day_range = calendar.monthrange(year, start_month)
+        start_date = date(year, start_month, 1)
+        end_date = date(year,12,31)
+
+        for i in range((end_date - start_date).days):
+            if calendar.day_name[(start_date + timedelta(days=i)).weekday()] in ('Friday', 'Monday'):
+                weekends.append(start_date + timedelta(days=i))
+
+        if calendar.day_name[weekends[0].weekday()] == 'Monday':
+            weekends = weekends[1:]
+
+        if calendar.day_name[weekends[-1].weekday()] == 'Friday':
+            weekends = weekends[:-1]
+
+        print(weekends)
+
+    else:
+        print('weekday report')
+
+
 def main():
     print("thank you for looking after my mama...")
 
+
 if __name__ == "__main__":
-    # four_day_weekends()
     four_day_weekends()
-    four_day_weekends(start_month=9)
-    four_day_weekends(paid_time_off=80)
-    four_day_weekends(show_workdays=True)
-    four_day_weekends(start_month=7, show_workdays=True)
-    four_day_weekends(8)
-    four_day_weekends(True)
     main()
