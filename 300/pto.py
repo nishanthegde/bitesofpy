@@ -102,17 +102,28 @@ def four_day_weekends(
         # print(take_out_days)
 
         four_day_weekends = [w for w in weekends if w not in take_out_days]
+        ast = four_day_weekends[:-paid_time_off // 8][-1]
+        # print(ast)
         print("  {} Four-Day Weekends".format(len(four_day_weekends) // 2))
         print("========================")
         print("    PTO: {} ({} days)".format(paid_time_off, paid_time_off // 8))
-        print("    BALANCE: {} ({} days)".format(paid_time_off - (len(four_day_weekends)*8),
-                                                 abs((paid_time_off - (len(four_day_weekends)*8)) // 8)))
+        print("    BALANCE: {} ({} days)".format(paid_time_off - (len(four_day_weekends) * 8),
+                                                 abs((paid_time_off - (len(four_day_weekends) * 8)) // 8)))
+        print()
+        it = iter(four_day_weekends)
+        for x in it:
+            next_date = next(it)
+            if ast in (x, next_date):
+                print('{} - {} *'.format(x, next_date))
+            else:
+                print('{} - {}'.format(x, next_date))
     else:
         print('weekday report')
 
 
 def main():
-    print("thank you for looking after my mama...")
+    # print("thank you for looking after my mama...")
+    pass
 
 
 if __name__ == "__main__":
