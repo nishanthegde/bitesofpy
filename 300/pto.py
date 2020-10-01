@@ -62,18 +62,18 @@ def four_day_weekends(
 
         # for hol in holidays.UnitedStates(years=year).items():
         for i, hol in enumerate(FEDERAL_HOLIDAYS):
-            print(hol, calendar.day_name[hol.weekday()])
+            # print(hol, calendar.day_name[hol.weekday()])
             if calendar.day_name[hol.weekday()] in ('Friday', 'Monday'):
                 holidays.append(hol)
 
-        print(holidays)
+        # print(holidays)
 
         # get number of weekends left in year from start_month
         weekends = list()
 
         # day_range = calendar.monthrange(year, start_month)
         start_date = date(year, start_month, 1)
-        end_date = date(year,12,31)
+        end_date = date(year, 12, 31)
 
         for i in range((end_date - start_date).days):
             if calendar.day_name[(start_date + timedelta(days=i)).weekday()] in ('Friday', 'Monday'):
@@ -85,8 +85,28 @@ def four_day_weekends(
         if calendar.day_name[weekends[-1].weekday()] == 'Friday':
             weekends = weekends[:-1]
 
-        print(weekends)
+        # print(weekends)
 
+        take_out_days = list()
+
+        for i, w in enumerate(weekends):
+            if w in holidays:
+                if (w - weekends[i - 1]).days == 3:
+                    take_out_days.append(weekends[i - 1])
+                    take_out_days.append(w)
+                if (weekends[i + 1] - w).days == 3:
+                    take_out_days.append(w)
+                    take_out_days.append(weekends[i + 1])
+                # print(w, weekends[i - 1], (w - weekends[i - 1]).days, weekends[i + 1], (weekends[i + 1]-w).days)
+
+        # print(take_out_days)
+
+        four_day_weekends = [w for w in weekends if w not in take_out_days]
+        print("  {} Four-Day Weekends".format(len(four_day_weekends) // 2))
+        print("========================")
+        print("    PTO: {} ({} days)".format(paid_time_off, paid_time_off // 8))
+        print("    BALANCE: {} ({} days)".format(paid_time_off - (len(four_day_weekends)*8),
+                                                 abs((paid_time_off - (len(four_day_weekends)*8)) // 8)))
     else:
         print('weekday report')
 
