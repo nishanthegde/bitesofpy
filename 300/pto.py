@@ -102,7 +102,12 @@ def four_day_weekends(
         # print(take_out_days)
 
         four_day_weekends = [w for w in weekends if w not in take_out_days]
-        ast = four_day_weekends[:-paid_time_off // 8][-1]
+
+        if (paid_time_off // 8) + 1 < len(four_day_weekends):
+            ast = four_day_weekends[:(-paid_time_off // 8) + 1][-1]
+        else:
+            ast = None
+
         # print(ast)
         print("  {} Four-Day Weekends".format(len(four_day_weekends) // 2))
         print("========================")
@@ -113,7 +118,7 @@ def four_day_weekends(
         it = iter(four_day_weekends)
         for x in it:
             next_date = next(it)
-            if ast in (x, next_date):
+            if ast and ast in (x, next_date):
                 print('{} - {} *'.format(x, next_date))
             else:
                 print('{} - {}'.format(x, next_date))
@@ -128,4 +133,9 @@ def main():
 
 if __name__ == "__main__":
     four_day_weekends()
+    # four_day_weekends(show_workdays=True)
+    # four_day_weekends(start_month=10)
+    # four_day_weekends(start_month=10, paid_time_off=120)
+    # four_day_weekends(start_month=10, paid_time_off=284)
+    # four_day_weekends(paid_time_off=160)
     main()
