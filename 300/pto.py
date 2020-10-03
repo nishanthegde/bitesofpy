@@ -52,62 +52,60 @@ def four_day_weekends(
     """
     if len(args) > 0:
         raise ValueError(ERROR_MSG)
+    # get number of weekends to subtract because holiday of US holidays for year
+
+    holidays = list()
+
+    # for hol in holidays.UnitedStates(years=year).items():
+    for i, hol in enumerate(FEDERAL_HOLIDAYS):
+        # print(hol, calendar.day_name[hol.weekday()])
+        if calendar.day_name[hol.weekday()] in ('Friday', 'Monday'):
+            holidays.append(hol)
+
+    # print(holidays)
+
+    # get number of weekends left in year from start_month
+    weekends = list()
+
+    # day_range = calendar.monthrange(year, start_month)
+    start_date = date(year, start_month, 1)
+    end_date = date(year, 12, 31)
+
+    for i in range((end_date - start_date).days + 1):
+        if calendar.day_name[(start_date + timedelta(days=i)).weekday()] in ('Friday', 'Monday'):
+            weekends.append(start_date + timedelta(days=i))
+
+    if calendar.day_name[weekends[0].weekday()] == 'Monday':
+        weekends = weekends[1:]
+
+    if calendar.day_name[weekends[-1].weekday()] == 'Friday':
+        weekends = weekends[:-1]
+
+    # print(weekends)
+
+    take_out_days = list()
+
+    for i, w in enumerate(weekends):
+        if w in holidays:
+            if (w - weekends[i - 1]).days == 3:
+                take_out_days.append(weekends[i - 1])
+                take_out_days.append(w)
+            if (weekends[i + 1] - w).days == 3:
+                take_out_days.append(w)
+                take_out_days.append(weekends[i + 1])
+            # print(w, weekends[i - 1], (w - weekends[i - 1]).days, weekends[i + 1], (weekends[i + 1]-w).days)
+
+    # print(take_out_days)
+    # print(AT_HOME)
+
+    four_day_weekends = [w for w in weekends if w not in take_out_days]
+
+    if (paid_time_off // 8) + 1 < len(four_day_weekends):
+        ast = four_day_weekends[:(-paid_time_off // 8) + 1][-1]
+    else:
+        ast = None
 
     if show_workdays == False:
-        # generate weekend report
-
-        # get number of weekends to subtract because holiday of US holidays for year
-
-        holidays = list()
-
-        # for hol in holidays.UnitedStates(years=year).items():
-        for i, hol in enumerate(FEDERAL_HOLIDAYS):
-            # print(hol, calendar.day_name[hol.weekday()])
-            if calendar.day_name[hol.weekday()] in ('Friday', 'Monday'):
-                holidays.append(hol)
-
-        # print(holidays)
-
-        # get number of weekends left in year from start_month
-        weekends = list()
-
-        # day_range = calendar.monthrange(year, start_month)
-        start_date = date(year, start_month, 1)
-        end_date = date(year, 12, 31)
-
-        for i in range((end_date - start_date).days):
-            if calendar.day_name[(start_date + timedelta(days=i)).weekday()] in ('Friday', 'Monday'):
-                weekends.append(start_date + timedelta(days=i))
-
-        if calendar.day_name[weekends[0].weekday()] == 'Monday':
-            weekends = weekends[1:]
-
-        if calendar.day_name[weekends[-1].weekday()] == 'Friday':
-            weekends = weekends[:-1]
-
-        # print(weekends)
-
-        take_out_days = list()
-
-        for i, w in enumerate(weekends):
-            if w in holidays:
-                if (w - weekends[i - 1]).days == 3:
-                    take_out_days.append(weekends[i - 1])
-                    take_out_days.append(w)
-                if (weekends[i + 1] - w).days == 3:
-                    take_out_days.append(w)
-                    take_out_days.append(weekends[i + 1])
-                # print(w, weekends[i - 1], (w - weekends[i - 1]).days, weekends[i + 1], (weekends[i + 1]-w).days)
-
-        # print(take_out_days)
-
-        four_day_weekends = [w for w in weekends if w not in take_out_days]
-
-        if (paid_time_off // 8) + 1 < len(four_day_weekends):
-            ast = four_day_weekends[:(-paid_time_off // 8) + 1][-1]
-        else:
-            ast = None
-
         # print(ast)
         print("  {} Four-Day Weekends".format(len(four_day_weekends) // 2))
         print("========================")
@@ -123,19 +121,20 @@ def four_day_weekends(
             else:
                 print('{} - {}'.format(x, next_date))
     else:
-        print('weekday report')
-
-
-def main():
-    # print("thank you for looking after my mama...")
-    pass
+        work_days = list()
+        for i in range((end_date - start_date).days + 1):
+            if (start_date + timedelta(days=i)).weekday() not in AT_HOME and start_date + timedelta(
+                    days=i) not in four_day_weekends and start_date + timedelta(
+                days=i) not in holidays and start_date + timedelta(
+                days=i) not in FEDERAL_HOLIDAYS:
+                work_days.append(start_date + timedelta(days=i))
+        # print(work_days)
+        work_days_remaining = len(work_days)
+        print("Remaining Work Days: {} ({} days)".format(work_days_remaining * 8, work_days_remaining))
+        it = iter(work_days)
+        for x in it:
+            print(x)
 
 
 if __name__ == "__main__":
     four_day_weekends()
-    # four_day_weekends(show_workdays=True)
-    # four_day_weekends(start_month=10)
-    # four_day_weekends(start_month=10, paid_time_off=120)
-    # four_day_weekends(start_month=10, paid_time_off=284)
-    # four_day_weekends(paid_time_off=160)
-    main()
