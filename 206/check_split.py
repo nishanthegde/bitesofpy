@@ -1,15 +1,3 @@
-import re
-
-
-class newfloat(float):
-
-    def __str__(self):
-        return "%.2f" % self
-
-    # def __add__(self, other):
-    #     return self.__class__(self + other)
-
-
 def check_split(item_total, tax_rate, tip, people):
     """Calculate check value and evenly split.
 
@@ -21,64 +9,39 @@ def check_split(item_total, tax_rate, tip, people):
        :return: tuple of (grand_total: str, splits: list)
                 e.g. ('$10.00', [3.34, 3.33, 3.33])
     """
+    item_total_float = float(item_total.strip('$'))
+    tax_rate_float = float(tax_rate.strip('%'))
+    tip_float = float(tip.strip('%'))
 
-    splits = list()
+    total = item_total_float * (1 + (tax_rate_float / 100))
+    grand_total = round(total * (1 + (tip_float / 100)), 2)
 
-    item_total_float = newfloat(re.sub(r'(\$)([\d.]+)', r'\2', item_total))
-    tax_rate_float = newfloat(re.sub(r'([\d.]+)(%)', r'\1', tax_rate)) / 100
-    tip_float = newfloat(re.sub(r'([\d.]+)(%)', r'\1', tip)) / 100
+    if len(f'${grand_total}'.split('.')[1]) == 1:
+        ret_val = f'${grand_total}0'
+    else:
+        ret_val = f'${grand_total}'
 
-    # total_w_tax = round(item_total_float + (item_total_float * tax_rate_float), 2)
-    total_w_tax = newfloat(round(item_total_float + (item_total_float * tax_rate_float), 2))
-    # grand_total_pre = total_w_tax + (total_w_tax * tip_float)
-    grand_total = newfloat(round(total_w_tax + (total_w_tax * tip_float), 2))
+    s = [round(float(ret_val.strip('$')) / people, 4) for i in range(0, people)]
 
-    for i in range(0, people):
-        splits.append(newfloat(grand_total / people))
-
-    # if len('${}'.format(grand_total).split('.')[-1]) < 2:
-    #     ret = '${}0'.format(grand_total)
-    #     # print('here')
-    #     # splits[-1] = splits[-1] + .1
-    # else:
-    #     ret = '${}'.format(grand_total)
-
-    ret = '${}'.format(grand_total)
-
-    # if sum(splits) > grand_total:
-    #     # print(sum(splits) - grand_total)
-    #     splits[-1] = splits[-1] - (sum(splits) - grand_total)
-
-    # if sum(splits) < grand_total:
-    #     # print(grand_total - sum(splits))
-    #     splits[-1] = splits[-1] + (grand_total - sum(splits))
-
-    # print(type(sum(splits)))
-
-    # for s in splits:
-    #     print(s)
-    s = sum(splits)
-    ret1 = [newfloat(s)]
-    return (ret, ret1)
+    return ret_val, sum(s)
 
 
 def main():
+    print("thank you for looking after my family...")
+    print(check_split('$8.68', '4.75%', '10%', 3))
+    print(check_split('$9.99', '3.25%', '10%', 2))
+    print(check_split('$8.44', '6.75%', '11%', 3))
+    print(check_split('$186.70', '6.75%', '18%', 6))
+    print(check_split('$191.57', '6.75%', '15%', 6))
+    print(check_split('$141.86', '2%', '18%', 9))
+    print(check_split('$16.99', '10%', '20%', 2))
+    print(check_split('$100.03', '0%', '0%', 4))
+    print(check_split('$141.86', '2%', '18%', 9))
+    print(check_split('$16.99', '10%', '20%', 1))
+    print(check_split('$16.99', '10%', '20%', 2))
+    print(check_split('$16.99', '10%', '20%', 3))
+    print(check_split('$16.99', '10%', '20%', 4))
 
-    print('thank you for the waves and for all that you have given me...')
 
-    # grand_total, splits = check_split('$191.57', '6.75% ', '15%', 6)
-    # grand_total, splits = check_split('$100.03', '0%', '0%', 4)
-    # grand_total, splits = check_split('$141.86', '2%', '18%', 9)
-    # grand_total, splits = check_split('$191.57', '6.75% ', '15%', 6)
-    grand_total, splits = check_split('$8.68', '4.75%', '10%', 3)
-    print(grand_total, f'${sum(splits)}')
-
-    grand_total, splits = check_split('$8.44', '6.75%', '11%', 3)
-    print(grand_total, f'${sum(splits)}')
-
-    grand_total, splits = check_split('$0.00', '0%', '0%', 1)
-    print(grand_total, f'${sum(splits)}')
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
