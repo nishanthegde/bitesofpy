@@ -44,6 +44,11 @@ def convert_to_unique_genes(filename_in, filename_out):
     with open(filename_in, "r") as f:
         all_lines = f.readlines()
 
+    for i in range(len(all_lines) - 2, -1, -1):
+        if all_lines[i][0].strip() != '>' and all_lines[i + 1][0].strip() != '>':
+            all_lines[i] = all_lines[i].strip() + all_lines.pop(i + 1).strip()
+            # print(all_lines[i].strip()+all_lines[i+1].strip())
+
     genes = [l.strip() for l in all_lines[::2]]
     # print(genes)
 
@@ -60,7 +65,7 @@ def convert_to_unique_genes(filename_in, filename_out):
             return_str += '{}\n{}\n'.format(genes[group_indices[0]], g)
         else:
             # multi index group
-            gene_comb_str = genes[group_indices[0]].split(']')[0].replace('tag','tags')
+            gene_comb_str = genes[group_indices[0]].split(']')[0].replace('tag', 'tags')
             for i in group_indices[1:]:
                 gene_comb_str += ',{}'.format(genes[group_indices[i]].split('=')[1].replace(']', ''))
             gene_comb_str += ']'
@@ -97,9 +102,17 @@ def main():
     # print(simple_fasta)
 
     # Regular 2-line FASTA file (1 line header, one line sequence)
-    filename = os.path.join(local, 'simple_test.fasta')
-    filename_o = os.path.join(local, 'output.fasta')
-    write_test_file(filename, simple_fasta)
+    # filename = os.path.join(local, 'simple_test.fasta')
+    # filename_o = os.path.join(local, 'output.fasta')
+    # write_test_file(filename, simple_fasta)
+    # convert_to_unique_genes(filename, filename_o)
+
+    # FASTA File where the sequence is spread over more than one line
+    simple_multi_fasta = simple_fasta.copy()
+    simple_multi_fasta[0] = (">gene [locus_tag=AA11]", "AAA\nAAA")
+    filename = os.path.join(local, 'simple_multi_fasta.fasta')
+    filename_o = os.path.join(local, 'output1.fasta')
+    # write_test_file(filename, simple_multi_fasta)
     convert_to_unique_genes(filename, filename_o)
 
 
