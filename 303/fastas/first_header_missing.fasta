@@ -1,0 +1,8 @@
+gene [locus_tag=AA11]
+AAAAAA
+>gene [locus_tag=BB22]
+AAAAAA
+>gene [locus_tag=CC33]
+AAAAAA
+>gene [locus_tag=DD44]
+GAAAAC

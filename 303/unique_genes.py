@@ -45,15 +45,23 @@ def convert_to_unique_genes(filename_in, filename_out):
         all_lines = f.readlines()
 
     for i in range(len(all_lines) - 2, -1, -1):
-        if all_lines[i][0].strip() != '>' and all_lines[i + 1][0].strip() != '>':
+        if all_lines[i][0:5].strip().replace('>', '').lower() != 'gene' and all_lines[i + 1][0:5].strip().replace('>',
+                                                                                                                  '').lower() != 'gene':
             all_lines[i] = all_lines[i].strip() + all_lines.pop(i + 1).strip()
             # print(all_lines[i].strip()+all_lines[i+1].strip())
 
     genes = [l.strip() for l in all_lines[::2]]
-    # print(genes)
+    # genes = ['>{}'.format(g) if not g.startswith('>') else g for g in genes]
+
 
     fastas = [l.strip().upper() for l in all_lines[1::2]]
-    # print(fastas)
+
+    for i,g in enumerate(genes):
+        if not g.startswith('>'):
+            genes.pop(i)
+            fastas.pop(i)
+    print(genes)
+    print(fastas)
 
     groups = [i for i, j in groupby(fastas)]
     # print(groups)
@@ -66,6 +74,7 @@ def convert_to_unique_genes(filename_in, filename_out):
         else:
             # multi index group
             gene_comb_str = genes[group_indices[0]].split(']')[0].replace('tag', 'tags')
+            # print(gene_comb_str)
             for i in group_indices[1:]:
                 gene_comb_str += ',{}'.format(genes[group_indices[i]].split('=')[1].replace(']', ''))
             gene_comb_str += ']'
@@ -116,13 +125,22 @@ def main():
     # convert_to_unique_genes(filename, filename_o)
 
     # FASTA with upper and lower case variation in sequence
-    seq_case_variation = simple_fasta.copy()
-    seq_case_variation[0] = (">gene [locus_tag=AA11]", "AaAaAa")
+    # seq_case_variation = simple_fasta.copy()
+    # seq_case_variation[0] = (">gene [locus_tag=AA11]", "AaAaAa")
     # print(seq_case_variation)
-    filename = os.path.join(local, 'seq_case_variation.fasta')
+    # filename = os.path.join(local, 'seq_case_variation.fasta')
     # write_test_file(filename, seq_case_variation)
-    filename_o = os.path.join(local, 'output2.fasta')
-    convert_to_unique_genes(filename, filename_o)
+    # filename_o = os.path.join(local, 'output2.fasta')
+    # convert_to_unique_genes(filename, filename_o)
+
+    # FASTA File with first header missing
+    # missing_header = simple_fasta.copy()
+    # missing_header[0] = ("gene [locus_tag=AA11]", "AAAAAA")
+    # # print(missing_header)
+    # filename = os.path.join(local, 'first_header_missing.fasta')
+    # write_test_file(filename, missing_header)
+    # filename_o = os.path.join(local, 'output3.fasta')
+    # convert_to_unique_genes(filename, filename_o)
 
 
 if __name__ == "__main__":
