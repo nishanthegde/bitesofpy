@@ -52,7 +52,7 @@ def convert_to_unique_genes(filename_in, filename_out):
     genes = [l.strip() for l in all_lines[::2]]
     # print(genes)
 
-    fastas = [l.strip() for l in all_lines[1::2]]
+    fastas = [l.strip().upper() for l in all_lines[1::2]]
     # print(fastas)
 
     groups = [i for i, j in groupby(fastas)]
@@ -108,11 +108,20 @@ def main():
     # convert_to_unique_genes(filename, filename_o)
 
     # FASTA File where the sequence is spread over more than one line
-    simple_multi_fasta = simple_fasta.copy()
-    simple_multi_fasta[0] = (">gene [locus_tag=AA11]", "AAA\nAAA")
-    filename = os.path.join(local, 'simple_multi_fasta.fasta')
-    filename_o = os.path.join(local, 'output1.fasta')
-    # write_test_file(filename, simple_multi_fasta)
+    # simple_multi_fasta = simple_fasta.copy()
+    # simple_multi_fasta[0] = (">gene [locus_tag=AA11]", "AAA\nAAA")
+    # filename = os.path.join(local, 'simple_multi_fasta.fasta')
+    # filename_o = os.path.join(local, 'output1.fasta')
+    # # write_test_file(filename, simple_multi_fasta)
+    # convert_to_unique_genes(filename, filename_o)
+
+    # FASTA with upper and lower case variation in sequence
+    seq_case_variation = simple_fasta.copy()
+    seq_case_variation[0] = (">gene [locus_tag=AA11]", "AaAaAa")
+    # print(seq_case_variation)
+    filename = os.path.join(local, 'seq_case_variation.fasta')
+    # write_test_file(filename, seq_case_variation)
+    filename_o = os.path.join(local, 'output2.fasta')
     convert_to_unique_genes(filename, filename_o)
 
 
