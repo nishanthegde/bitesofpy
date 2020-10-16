@@ -51,20 +51,33 @@ def convert_to_unique_genes(filename_in, filename_out):
             # print(all_lines[i].strip()+all_lines[i+1].strip())
 
     genes = [l.strip() for l in all_lines[::2]]
-    # genes = ['>{}'.format(g) if not g.startswith('>') else g for g in genes]
-
 
     fastas = [l.strip().upper() for l in all_lines[1::2]]
 
-    for i,g in enumerate(genes):
+    for i, g in enumerate(genes):
         if not g.startswith('>'):
             genes.pop(i)
             fastas.pop(i)
-    print(genes)
-    print(fastas)
+
+    # print(genes)
+    # print(fastas)
+
+    # check for multiple genes
+    genes_splits = [g.split(' [')[0].lower() for g in genes]
+    gene_groups = [i for i, j in groupby(genes_splits)]
+
+    s = ""
+
+    for gg in gene_groups:
+        s += "'{}' vs. ".format(gg[1:].strip())
+
+    s = s[:-5]
+
+    if len(gene_groups) > 1:
+        raise NameError('Gene names differ between entries: {}'.format(s))
 
     groups = [i for i, j in groupby(fastas)]
-    # print(groups)
+    print(groups)
 
     group_indices = []
     for g in groups:
@@ -141,6 +154,15 @@ def main():
     # write_test_file(filename, missing_header)
     # filename_o = os.path.join(local, 'output3.fasta')
     # convert_to_unique_genes(filename, filename_o)
+
+    # FASTA file with more than one gene
+    two_different_genes = simple_fasta.copy()
+    two_different_genes[0] = (">gene2 [locus_tag=AA11]", "AAAAAA")
+    print(two_different_genes)
+    filename = os.path.join(local, 'two_gene_names.fasta')
+    write_test_file(filename, two_different_genes)
+    filename_o = os.path.join(local, 'output4.fasta')
+    convert_to_unique_genes(filename, filename_o)
 
 
 if __name__ == "__main__":
