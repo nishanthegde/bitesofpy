@@ -121,7 +121,7 @@ def main():
         (">gene [locus_tag=DD44]", "GAAAAC"),
     ]
 
-    # print(simple_fasta)
+    print(simple_fasta)
 
     # Regular 2-line FASTA file (1 line header, one line sequence)
     # filename = os.path.join(local, 'simple_test.fasta')
