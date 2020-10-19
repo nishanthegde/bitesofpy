@@ -3,7 +3,11 @@ import os
 from Bio import SeqIO, SeqRecord  # Recommended
 from urllib.request import urlretrieve
 from itertools import groupby
+import binascii
 
+def is_gz_file(filepath):
+    with open(filepath, 'rb') as test_f:
+        return binascii.hexlify(test_f.read(2)) == b'1f8b'
 
 def make_fasta_from_tuple(content):
     """
@@ -29,7 +33,6 @@ def write_test_file(filename, content, zip=False):
 
 
 
-
 def convert_to_unique_genes(filename_in, filename_out):
     """
     Takes a standard FASTA file or gzipped FASTA file,
@@ -43,9 +46,13 @@ def convert_to_unique_genes(filename_in, filename_out):
     """
     return_str = ''
 
-    with open(filename_in, "r") as f:
-        all_lines = f.readlines()
-    # print(all_lines)
+    if is_gz_file(filename_in):
+        with gzip.open(filename_in, 'rt') as f:
+            all_lines = f.readlines()
+    else:
+        with open(filename_in, "r") as f:
+            all_lines = f.readlines()
+
 
     if all_lines[0][0:5].strip().replace('>', '').lower() == 'gene':
 
@@ -128,87 +135,100 @@ def convert_to_unique_genes(filename_in, filename_out):
     return_str = ''
     return_str = '\n'.join(res)
 
-    with open(filename_out, "w") as f:
-        f.write(return_str)
+    if filename_out[-3:] == '.gz':
+        with gzip.open(filename_out, "wt") as f:
+            f.write(return_str)
+    else:
+        with open(filename_out, "w") as f:
+            f.write(return_str)
 
 
-def main():
-    print("thank you for looking after my mama!")
-
-    local = os.getcwd()
-    NARI_URL = "https://bites-data.s3.us-east-2.amazonaws.com/narI.fna"
-    directory = "fastas"
-
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-
-    local = os.path.join(local, directory)
-    p = os.path.join(local, 'narI.fasta')
-
-    if not os.path.isfile(p):
-        urlretrieve(url=NARI_URL, filename=p)
-
-    # mimic fasta_dir function from test_unique_genes.py
-    # simple_fasta = [
-    #     (">gene [locus_tag=AA11]", "AAAAAA"),
-    #     (">gene [locus_tag=BB22]", "AAAAAA"),
-    #     (">gene [locus_tag=CC33]", "AAAAAA"),
-    #     (">gene [locus_tag=DD44]", "GAAAAC"),
-    # ]
-
-    # print(simple_fasta)
-
-    # Regular 2-line FASTA file (1 line header, one line sequence)
-    # filename = os.path.join(local, 'simple_test.fasta')
-    # filename_o = os.path.join(local, 'output.fasta')
-    # write_test_file(filename, simple_fasta)
-    # convert_to_unique_genes(filename, filename_o)
-
-    # FASTA File where the sequence is spread over more than one line
-    # simple_multi_fasta = simple_fasta.copy()
-    # simple_multi_fasta[0] = (">gene [locus_tag=AA11]", "AAA\nAAA")
-    # filename = os.path.join(local, 'simple_multi_fasta.fasta')
-    # filename_o = os.path.join(local, 'output1.fasta')
-    # # write_test_file(filename, simple_multi_fasta)
-    # convert_to_unique_genes(filename, filename_o)
-
-    # FASTA with upper and lower case variation in sequence
-    # seq_case_variation = simple_fasta.copy()
-    # seq_case_variation[0] = (">gene [locus_tag=AA11]", "AaAaAa")
-    # print(seq_case_variation)
-    # filename = os.path.join(local, 'seq_case_variation.fasta')
-    # write_test_file(filename, seq_case_variation)
-    # filename_o = os.path.join(local, 'output2.fasta')
-    # convert_to_unique_genes(filename, filename_o)
-
-    # FASTA File with first header missing
-    # missing_header = simple_fasta.copy()
-    # missing_header[0] = ("gene [locus_tag=AA11]", "AAAAAA")
-    # # print(missing_header)
-    # filename = os.path.join(local, 'first_header_missing.fasta')
-    # write_test_file(filename, missing_header)
-    # filename_o = os.path.join(local, 'output3.fasta')
-    # convert_to_unique_genes(filename, filename_o)
-
-    # FASTA file with more than one gene
-    # two_different_genes = simple_fasta.copy()
-    # two_different_genes[0] = (">gene2 [locus_tag=AA11]", "AAAAAA")
-    # print(two_different_genes)
-    # filename = os.path.join(local, 'two_gene_names.fasta')
-    # write_test_file(filename, two_different_genes)
-    # filename_o = os.path.join(local, 'output4.fasta')
-    # convert_to_unique_genes(filename, filename_o)
-
-    # filename = os.path.join(local, 'narI.fasta')
-    # filename_o = os.path.join(local, 'output5.fasta')
-    # convert_to_unique_genes(filename, filename_o)
-    #
-    # with open(filename_o, "r") as f:
-    #     all_lines = f.readlines()
-    #
-    # print(sum([1 for line in all_lines if line[0] == ">"]))
-    # print(all_lines[0].strip().upper())
-
-
-if __name__ == "__main__":
-    main()
+# def main():
+#     print("thank you for looking after my mama!")
+#
+#     local = os.getcwd()
+#     NARI_URL = "https://bites-data.s3.us-east-2.amazonaws.com/narI.fna"
+#     directory = "fastas"
+#
+#     if not os.path.exists(directory):
+#         os.makedirs(directory)
+#
+#     local = os.path.join(local, directory)
+#     p = os.path.join(local, 'narI.fasta')
+#
+#     if not os.path.isfile(p):
+#         urlretrieve(url=NARI_URL, filename=p)
+#
+#     # mimic fasta_dir function from test_unique_genes.py
+#     simple_fasta = [
+#         (">gene [locus_tag=AA11]", "AAAAAA"),
+#         (">gene [locus_tag=BB22]", "AAAAAA"),
+#         (">gene [locus_tag=CC33]", "AAAAAA"),
+#         (">gene [locus_tag=DD44]", "GAAAAC"),
+#     ]
+#
+#     # print(simple_fasta)
+#
+#     # Regular 2-line FASTA file (1 line header, one line sequence)
+#     # filename = os.path.join(local, 'simple_test.fasta')
+#     filename = os.path.join(local, 'simple_test.fasta.gz')
+#     filename_o = os.path.join(local, 'output.fasta.gz')
+#     write_test_file(filename, simple_fasta, zip=True)
+#     # write_test_file(filename, simple_fasta)
+#     convert_to_unique_genes(filename, filename_o)
+#
+#     with gzip.open(filename_o, "rt") as f:
+#         assert (
+#             f.readlines()[0].strip().upper()
+#             == ">gene [locus_tags=AA11,BB22,CC33]".upper()
+#         )
+#
+#
+#     # FASTA File where the sequence is spread over more than one line
+#     # simple_multi_fasta = simple_fasta.copy()
+#     # simple_multi_fasta[0] = (">gene [locus_tag=AA11]", "AAA\nAAA")
+#     # filename = os.path.join(local, 'simple_multi_fasta.fasta')
+#     # filename_o = os.path.join(local, 'output1.fasta')
+#     # # write_test_file(filename, simple_multi_fasta)
+#     # convert_to_unique_genes(filename, filename_o)
+#
+#     # FASTA with upper and lower case variation in sequence
+#     # seq_case_variation = simple_fasta.copy()
+#     # seq_case_variation[0] = (">gene [locus_tag=AA11]", "AaAaAa")
+#     # print(seq_case_variation)
+#     # filename = os.path.join(local, 'seq_case_variation.fasta')
+#     # write_test_file(filename, seq_case_variation)
+#     # filename_o = os.path.join(local, 'output2.fasta')
+#     # convert_to_unique_genes(filename, filename_o)
+#
+#     # FASTA File with first header missing
+#     # missing_header = simple_fasta.copy()
+#     # missing_header[0] = ("gene [locus_tag=AA11]", "AAAAAA")
+#     # # print(missing_header)
+#     # filename = os.path.join(local, 'first_header_missing.fasta')
+#     # write_test_file(filename, missing_header)
+#     # filename_o = os.path.join(local, 'output3.fasta')
+#     # convert_to_unique_genes(filename, filename_o)
+#
+#     # FASTA file with more than one gene
+#     # two_different_genes = simple_fasta.copy()
+#     # two_different_genes[0] = (">gene2 [locus_tag=AA11]", "AAAAAA")
+#     # print(two_different_genes)
+#     # filename = os.path.join(local, 'two_gene_names.fasta')
+#     # write_test_file(filename, two_different_genes)
+#     # filename_o = os.path.join(local, 'output4.fasta')
+#     # convert_to_unique_genes(filename, filename_o)
+#
+#     # filename = os.path.join(local, 'narI.fasta')
+#     # filename_o = os.path.join(local, 'output5.fasta')
+#     # convert_to_unique_genes(filename, filename_o)
+#     #
+#     # with open(filename_o, "r") as f:
+#     #     all_lines = f.readlines()
+#     #
+#     # print(sum([1 for line in all_lines if line[0] == ">"]))
+#     # print(all_lines[0].strip().upper())
+#
+#
+# if __name__ == "__main__":
+#     main()
