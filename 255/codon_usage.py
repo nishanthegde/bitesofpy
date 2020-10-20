@@ -5,6 +5,7 @@ from urllib.request import urlretrieve
 # https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi#SG11
 # Each column represents one entry. Codon = {Base1}{Base2}{Base3}
 # All Base 'T's need to be converted to 'U's to convert DNA to RNA
+
 TRANSL_TABLE_11 = """
     AAs  = FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG
   Starts = ---M------**--*----M------------MMMM---------------M------------
@@ -28,14 +29,16 @@ def _preload_sequences(url=URL):
     local = os.getcwd()
     # filename = os.path.join(os.getenv("TMP", "/tmp"), "NC_009641.txt")
     filename = os.path.join(os.getenv("TMP", local), "NC_009641.txt")
+
     if not os.path.isfile(filename):
         urlretrieve(url, filename)
+
     with open(filename, "r") as f:
         return f.readlines()
 
 
 def return_codon_usage_table(
-    sequences=_preload_sequences(), translation_table_str=TRANSL_TABLE_11
+        sequences=_preload_sequences(), translation_table_str=TRANSL_TABLE_11
 ):
     """
     Receives a list of gene sequences and a translation table string
@@ -49,6 +52,10 @@ def return_codon_usage_table(
     return sequences
 
 
+def main():
+    print('thank you for looking after my loved ones...')
+
+
 if __name__ == "__main__":
-    print(type(return_codon_usage_table()))
-    print(len(return_codon_usage_table()))
+    print([len(ele) for ele in return_codon_usage_table()])
+    main()
