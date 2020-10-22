@@ -53,7 +53,7 @@ def return_codon_usage_table(
 
 
 def main():
-    print('thank you for looking after my loved ones...')
+    print('thank you for looking after my loved ones... and my mama')
 
 
 if __name__ == "__main__":
