@@ -57,5 +57,5 @@ def main():
 
 
 if __name__ == "__main__":
-    print([len(ele) for ele in return_codon_usage_table()])
+    print(len([len(ele) for ele in return_codon_usage_table()]))
     main()
