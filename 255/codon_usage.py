@@ -53,9 +53,11 @@ def return_codon_usage_table(
 
 
 def main():
-    print('thank you for looking after my loved ones... and my mama too')
+    print('thank you for looking after my loved ones... and my mama')
 
 
 if __name__ == "__main__":
-    print(len([len(ele) for ele in return_codon_usage_table()]))
+    # print(len([len(ele) for ele in return_codon_usage_table()]))
+    print(return_codon_usage_table()[0])
     main()
+
