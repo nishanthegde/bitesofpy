@@ -9,7 +9,7 @@ simple = {
 }
 
 
-def shortest_path(graph: dict, start: str, end: str) -> tuple():
+def shortest_path(graph, start, end):
     """
        Input: graph: a dictionary of dictionary
               start: starting city   Ex. a
@@ -18,37 +18,12 @@ def shortest_path(graph: dict, start: str, end: str) -> tuple():
        Output: tuple of (distance, [path of cites])
        Ex.   (distance, ['a', 'c', 'd', 'b])
     """
-    distance = 0
-    explored = []
-
-    queue = [[start]]
-    # heapq.heapify(queue)
-
-    if start == end:
-        return (distance, explored)
-
-    while queue:
-        path = queue.pop(0)
-        # print(path)
-        node = path[-1]
-
-        if node not in explored:
-            neighbours = graph[node]
-
-            for neighbour in neighbours:
-                new_path = list(path)
-                new_path.append(neighbour)
-                queue.append(new_path)
-
-                if neighbour == end:
-                    print("Shortest path = ", new_path)
-                    for p in list(zip(new_path, new_path[1:])):
-                        n = graph[p[0]]
-                        print(n)
-                        distance += n[p[1]]
-                    return (distance, new_path)
-
-            explored.append(node)
+    # Dict with shortest distances from start to all the nodes
+    # Initialized to infinity for all other vertices and 0 for start vertex
+    distances = {vertex: float('infinity') for vertex in graph}
+    distances[start] = 0
+    print(distances)
+    return graph
 
 
 def main():
