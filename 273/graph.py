@@ -22,8 +22,27 @@ def shortest_path(graph, start, end):
     # Initialized to infinity for all other vertices and 0 for start vertex
     distances = {vertex: float('infinity') for vertex in graph}
     distances[start] = 0
-    print(distances)
-    return graph
+
+    pq = [(0, start)]
+
+    # While there is something in the priority queue keep doing
+    # while len(pq) > 0:
+    current_distance, current_vertex = heapq.heappop(pq)
+    #     if current_distance > distances[current_vertex]:
+    #         continue
+
+    for neighbor, weight in graph[current_vertex].items():
+        distance = current_distance + weight
+        if distance < distances[neighbor]:
+            distances[neighbor] = distance
+            heapq.heappush(pq, (distance, neighbor))
+    
+    print(pq)
+
+    current_distance, current_vertex = heapq.heappop(pq)
+    print(current_distance, current_vertex)
+    
+    return distances
 
 
 def main():
