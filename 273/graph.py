@@ -1,6 +1,24 @@
 import heapq
 import networkx as nx
 
+simple = {
+    'a': {'b': 2, 'c': 4, 'e': 1},
+    'b': {'a': 2, 'd': 3},
+    'c': {'a': 4, 'd': 6},
+    'd': {'c': 6, 'b': 3, 'e': 2},
+    'e': {'a': 1, 'd': 2}
+}
+
+major = {
+    'a': {'w': 14, 'x': 7, 'y': 9},
+    'b': {'w': 9, 'z': 6},
+    'w': {'a': 14, 'b': 9, 'y': 2},
+    'x': {'a': 7, 'y': 10, 'z': 15},
+    'y': {'a': 9, 'w': 2, 'x': 10, 'z': 11},
+    'z': {'b': 6, 'x': 15, 'y': 11},
+}
+
+
 def shortest_path(graph, start, end):
     """
        Input: graph: a dictionary of dictionary
@@ -34,20 +52,44 @@ def shortest_path(graph, start, end):
                 distances[neighbor] = distance
                 heapq.heappush(pq, (distance, neighbor))
 
-    G = nx.Graph()
+    print(shortest_edges)
 
-    for e in shortest_edges:
-        G.add_edge(e[0], e[1], distance=e[2])
+    """simple = {
+          'a': {'b': 2, 'c': 4, 'e': 1},
+          'b': {'a': 2, 'd': 3},
+          'c': {'a': 4, 'd': 6},
+          'd': {'c': 6, 'b': 3, 'e': 2},
+          'e': {'a': 1, 'd': 2}
+          }
+    """
+    o = get_paths(start, end, shortest_edges)
+    print(list(o))
+    # G = nx.Graph()
 
-    path = nx.shortest_path(G, start, end, 'distance')
+    # for e in shortest_edges:
+    #     G.add_edge(e[0], e[1], distance=e[2])
+    #
+    # path = nx.shortest_path(G, start, end, 'distance')
+    #
+    # return (distances[end], path)
 
-    return (distances[end], path)
+    return distances
 
-# def main():
-#     print('thank you for looking after my mama...')
-#     print(shortest_path(simple, 'a', 'd'))
-#     print(shortest_path(major, 'a', 'b'))
-#
-#
-# if __name__ == '__main__':
-#     main()
+
+def get_paths(start, end, shortest_edges, p=[]):
+    r = [(a, b) for a, b, c in shortest_edges if a == start]
+    if r:
+        for i in r:
+            yield from get_paths(i[0], i[1], shortest_edges, p + [i])
+    else:
+        yield p
+
+
+def main():
+    print('thank you for looking after my mama...')
+    print(shortest_path(simple, 'a', 'd'))
+    # print(shortest_path(major, 'a', 'b'))
+
+
+if __name__ == '__main__':
+    main()
