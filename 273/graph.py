@@ -52,44 +52,28 @@ def shortest_path(graph, start, end):
                 distances[neighbor] = distance
                 heapq.heappush(pq, (distance, neighbor))
 
-    print(shortest_edges)
+    d = []
+    get_paths(start, end, shortest_edges, 0, distances[end], d)
+    path = [end] + d
 
-    """simple = {
-          'a': {'b': 2, 'c': 4, 'e': 1},
-          'b': {'a': 2, 'd': 3},
-          'c': {'a': 4, 'd': 6},
-          'd': {'c': 6, 'b': 3, 'e': 2},
-          'e': {'a': 1, 'd': 2}
-          }
-    """
-    o = get_paths(start, end, shortest_edges)
-    print(list(o))
-    # G = nx.Graph()
-
-    # for e in shortest_edges:
-    #     G.add_edge(e[0], e[1], distance=e[2])
-    #
-    # path = nx.shortest_path(G, start, end, 'distance')
-    #
-    # return (distances[end], path)
-
-    return distances
+    return distances[end], path[::-1]
 
 
-def get_paths(start, end, shortest_edges, p=[]):
-    r = [(a, b) for a, b, c in shortest_edges if a == start]
-    if r:
-        for i in r:
-            yield from get_paths(i[0], i[1], shortest_edges, p + [i])
-    else:
-        yield p
+def get_paths(start, end, l, cost, total_cost, path):
+    for j in [x for x in l if x[1] == end]:
+        cost_to_next = cost + j[2]
+        if cost_to_next <= total_cost:
+            cost += j[2]
+            # print(j[0], cost)
+            path.append(j[0])
+            get_paths(start, j[0], l, cost, total_cost, path)
 
 
-def main():
-    print('thank you for looking after my mama...')
-    print(shortest_path(simple, 'a', 'd'))
-    # print(shortest_path(major, 'a', 'b'))
-
-
-if __name__ == '__main__':
-    main()
+# def main():
+#     print('thank you for looking after my mama...')
+#     print(shortest_path(simple, 'a', 'd'))
+#     print(shortest_path(major, 'a', 'b'))
+#
+#
+# if __name__ == '__main__':
+#     main()
