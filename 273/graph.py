@@ -1,5 +1,4 @@
 import heapq
-import networkx as nx
 
 simple = {
     'a': {'b': 2, 'c': 4, 'e': 1},
