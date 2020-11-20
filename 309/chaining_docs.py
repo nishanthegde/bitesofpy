@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import string
+import re
 
 EOL_PUNCTUATION = ".!?"
-
 
 class Document:
     def __init__(self, lines=[]) -> None:
@@ -94,12 +94,24 @@ class Document:
 
     def word_count(self) -> int:
         """Return the total number of words in the document."""
-        pass
+        word_count = 0
+
+        for l in self.lines:
+            print(re.findall(r'\w+', l))
+            word_count += len(re.findall(r'\w+', l))
+
+        return word_count
 
     @property
     def words(self) -> list:
         """Return a list of unique words, sorted and case insensitive."""
-        pass
+
+        words = []
+
+        for l in self.lines:
+            words += re.findall(r'\w+', l)
+
+        return sorted(list(set([w.lower() for w in words])))
 
     def _remove_puctuation(line: str) -> str:
         """Remove punctuation from a line."""
@@ -126,6 +138,7 @@ if __name__ == "__main__":
 
     # this part is only execute when you run the file and is ignored by the tests
     # you can use this section for debugging and testing
+    #
     # d = (
     #     Document()
     #         .add_line("My second sentence.")
@@ -137,6 +150,7 @@ if __name__ == "__main__":
     #         .add_line("My second paragraph.")
     #         .merge_lines([1, 2])
     # )
+
     # d = (
     #     Document()
     #         .add_line("1")  # 1
@@ -171,16 +185,16 @@ if __name__ == "__main__":
     #         .add_line("Yes, a dwarf and not any dwarf, so you know!")
     # )
 
-    d = (
-        Document()
-            .add_line("first")
-            .add_line("fourth")
-            .add_line("third", 1)
-            .add_line("second", 1)
-
-    )
-
-    print(d)
-    print(len(d))
+    # d = (
+    #     Document()
+    #         .add_line("first")
+    #         .add_line("fourth")
+    #         .add_line("third", 1)
+    #         .add_line("second", 1)
+    #
+    # )
+    #
+    # print(d)
+    # print(len(d))
     # print(d.word_count())
     # print(d.words)
