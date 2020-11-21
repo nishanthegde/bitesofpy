@@ -6,9 +6,11 @@ import re
 EOL_PUNCTUATION = ".!?"
 
 class Document:
-    def __init__(self, lines=[]) -> None:
+    def __init__(self, lines=None) -> None:
         # it is up to you how to implement this method
         # feel free to alter this method and its parameters to your liking
+        if lines is None:
+            lines=[]
         self.lines = lines
 
     def add_line(self, line: str, index: int = None) -> Document:
@@ -133,8 +135,8 @@ class Document:
         return ret.strip()
 
 
-if __name__ == "__main__":
-    print('thank you for looking after my mama!')
+# if __name__ == "__main__":
+    # print('thank you for looking after my mama!')
 
     # this part is only execute when you run the file and is ignored by the tests
     # you can use this section for debugging and testing
