@@ -34,6 +34,7 @@ def db(request):
         https://docs.pytest.org/en/latest/fixture.html (hint: yield)
     """
     db = MovieDb(DB, DATA, TABLE)
+    db.init()
 
     def quit():
         db.drop_table()
@@ -43,19 +44,19 @@ def db(request):
     yield db
 
 
-def test_create_table(db):
-    db._create_table()
-    sql = f'SELECT name FROM sqlite_master WHERE name={repr(TABLE)};'
-    db.cur.execute(sql)
-    ret = db.cur.fetchall()
-    assert len(ret) == 1
-
-def test_insert_sample(db):
-    db._insert_sample_data()
-    sql = f'SELECT count(*) FROM {TABLE};'
-    db.cur.execute(sql)
-    ret = db.cur.fetchall()
-    assert ret[0][0] == 10
+# def test_create_table(db):
+#     db._create_table()
+#     sql = f'SELECT name FROM sqlite_master WHERE name={repr(TABLE)};'
+#     db.cur.execute(sql)
+#     ret = db.cur.fetchall()
+#     assert len(ret) == 1
+#
+# def test_insert_sample(db):
+#     db._insert_sample_data()
+#     sql = f'SELECT count(*) FROM {TABLE};'
+#     db.cur.execute(sql)
+#     ret = db.cur.fetchall()
+#     assert ret[0][0] == 10
 
 # write tests for all MovieDb's query / add / delete
 def test_query_with_title(db):
