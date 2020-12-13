@@ -2,6 +2,7 @@ import os
 import random
 import string
 import pytest
+from unittest import TestCase
 
 from movies import MovieDb
 
@@ -36,27 +37,14 @@ def db(request):
     db = MovieDb(DB, DATA, TABLE)
     db.init()
 
-    def quit():
-        db.drop_table()
-
-    request.addfinalizer(quit)
-
     yield db
 
+    def fin():
+        # db.drop_table()
+        db.con.close()
 
-# def test_create_table(db):
-#     db._create_table()
-#     sql = f'SELECT name FROM sqlite_master WHERE name={repr(TABLE)};'
-#     db.cur.execute(sql)
-#     ret = db.cur.fetchall()
-#     assert len(ret) == 1
-#
-# def test_insert_sample(db):
-#     db._insert_sample_data()
-#     sql = f'SELECT count(*) FROM {TABLE};'
-#     db.cur.execute(sql)
-#     ret = db.cur.fetchall()
-#     assert ret[0][0] == 10
+    request.addfinalizer(fin)
+
 
 # write tests for all MovieDb's query / add / delete
 def test_query_with_title(db):
@@ -81,3 +69,9 @@ def test_delete(db):
     assert len(db.query(title='raging')) == 1
     db.delete(4)
     assert len(db.query(title='raging')) == 0
+
+def test_drop(db):
+    db.drop_table()
+    db.cur.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{db.table}';")
+    ret = db.cur.fetchall()
+    assert len(ret) == 0
