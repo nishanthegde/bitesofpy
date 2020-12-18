@@ -203,10 +203,11 @@ stop_words = [
 ]
 
 # local = os.getcwd()
-TMP = Path(os.getenv("TMP", "/tmp"))
-
 # TMP = Path(os.getenv("TMP", local))
+
+TMP = Path(os.getenv("TMP", "/tmp"))
 S3 = "https://bites-data.s3.us-east-2.amazonaws.com"
+
 
 df_samples = pd.read_pickle(TMP / "samples.pkl")
 
@@ -364,7 +365,6 @@ def calculate_tfidf(x_df):
     tfidf_obj = TFIDF(x_df["text"])
     return tfidf_obj()
 
-
 def sort_columns(x_df):
     # Depending on how the earlier functions are implemented
     #   it's possible that the order of the columns may be different
@@ -391,23 +391,23 @@ def get_tdidf():
     )
     return df
 
-def main():
-    print('thank you for looking after my family...')
-    # print(get_df_column("text"))
-    # print(get_df_column("strip_url_email"))
-    # print(load_data())
-    # print(strip_url_email(load_data()))
-    # d = pd.DataFrame(
-    #             [
-    #                 "i me my myself we our ours ourselves you",
-    #                 "i me my myself we our ours ourselves you hello world",
-    #                 "lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    #             ]
-    #     ,columns = ["text"]
-    # )
-    # print(strip_stopwords(d))
-    print(get_tdidf())
-
-
-if __name__ == '__main__':
-    main()
+# def main():
+#     print('thank you for looking after my family...')
+#     # print(get_df_column("text"))
+#     # print(get_df_column("strip_url_email"))
+#     # print(load_data())
+#     # print(strip_url_email(load_data()))
+#     # d = pd.DataFrame(
+#     #             [
+#     #                 "i me my myself we our ours ourselves you",
+#     #                 "i me my myself we our ours ourselves you hello world",
+#     #                 "lorem ipsum dolor sit amet, consectetur adipiscing elit",
+#     #             ]
+#     #     ,columns = ["text"]
+#     # )
+#     # print(strip_stopwords(d))
+#     print(get_tdidf())
+#
+#
+# if __name__ == '__main__':
+#     main()
