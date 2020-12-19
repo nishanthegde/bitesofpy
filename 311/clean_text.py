@@ -12,15 +12,10 @@ import pandas as pd
 from stop_words import stop_words
 from tf_idf import TFIDF
 
+TMP = Path(os.getenv("TMP", "/tmp"))
 # local = os.getcwd()
 # TMP = Path(os.getenv("TMP", local))
-
-TMP = Path(os.getenv("TMP", "/tmp"))
 S3 = "https://bites-data.s3.us-east-2.amazonaws.com"
-
-def get_df_column(column_name):
-    return df_samples[[column_name]].rename(columns={column_name: "text"})
-
 
 def _setup():
     data_zipfile = '311-data.zip'
