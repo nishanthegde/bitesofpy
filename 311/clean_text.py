@@ -9,7 +9,7 @@ from zipfile import ZipFile
 
 import pandas as pd
 
-import stop_words
+from stop_words import stop_words
 from tf_idf import TFIDF
 
 # local = os.getcwd()
@@ -60,7 +60,7 @@ def strip_stopwords(x_df):
     # Drop all stop words from the 'text' column
     # Return the Dataframe with the 'text' stripped of stop words
     x_df["text"] = x_df["text"].str.split()
-    x_df['text'] = x_df['text'].apply(lambda x: [word for word in x if word not in stop_words.stop_words])
+    x_df['text'] = x_df['text'].apply(lambda x: [word for word in x if word not in stop_words])
     x_df["text"] = x_df["text"].str.join(" ")
     return x_df
 
