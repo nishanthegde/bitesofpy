@@ -9,13 +9,13 @@ from zipfile import ZipFile
 
 import pandas as pd
 
-from stop_words import stop_words
-from tf_idf import TFIDF
-
 TMP = Path(os.getenv("TMP", "/tmp"))
 # local = os.getcwd()
 # TMP = Path(os.getenv("TMP", local))
 S3 = "https://bites-data.s3.us-east-2.amazonaws.com"
+
+from stop_words import stop_words
+from tf_idf import TFIDF
 
 def _setup():
     data_zipfile = '311-data.zip'
@@ -38,7 +38,7 @@ def load_data():
 def strip_url_email(x_df):
     # Strip all URLs (http://...) and Emails (somename@email.address)
     # The 'text' column should be modified to remove
-    #   all URls and Emails
+    # all URls and Emails
     x_df['text'] = x_df['text'].replace(to_replace=r'(?i)http\S+', value='', regex=True)
     x_df['text'] = x_df['text'].replace(to_replace=r'\S+@\S+', value='', regex=True)
     return x_df
