@@ -1,6 +1,7 @@
 import re
 from urllib import parse
 
+
 class DomainException(Exception):
     """Raised when an invalid is created."""
 
