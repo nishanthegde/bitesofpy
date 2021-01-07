@@ -105,12 +105,14 @@ class DB:
             if column == primary_key:
                 create_str += f'{column} {data_type.name} PRIMARY KEY, '
             else:
-                create_str += f'{column} {data_type.name}'
+                create_str += f'{column} {data_type.name}, '
 
         create_str = create_str[:-2]
         create_str += ')'
 
         self.cursor.execute(create_str)
+
+        self.table_schemas[table] = schema
 
     def delete(self, table: str, target: Tuple[str, Any]):
         """Deletes rows from the table.
@@ -134,7 +136,7 @@ class DB:
             a SchemaError should be raised with the message:
             "Table <table-name> expects items with <table-columns-count> values."
 
-        If the type of a value does not respect the type of the column,
+       If the type of a value does not respect the type of the column,
             a SchemaError should be raised with the message:
             "Column <column-name> expects values of type <column-type>."
 
@@ -153,7 +155,43 @@ class DB:
                 if there are more values than columns for the given table.
         """
 
-        raise NotImplementedError("You have to implement this method first.")
+        # check if number of values to insert is equal to number of columns in table
+        col_query = "PRAGMA table_info(%s)" % table
+        self.cursor.execute(col_query)
+        num_columns = len(self.cursor.fetchall())
+        num_values = [len(t) for t in values]
+
+        for val_length in num_values:
+            if val_length != num_columns:
+                raise SchemaError(f'Table {table} expects items with {num_columns} values.')
+
+        # check if type of value respects schema type
+        for value in values:
+            for i in range(len(value)):
+                if not isinstance(value[i], self.table_schemas[table][i][1].value):
+                    raise SchemaError(
+                        f'Column {self.table_schemas[table][i][0]} expects values of type {self.table_schemas[table][i][1].value}')
+        # insert values
+        for value in values:
+            insert_str = f'INSERT INTO {table} ('
+
+            for column, data_type in self.table_schemas[table]:
+                insert_str += f'{column}, '
+
+            insert_str = insert_str[:-2]
+            insert_str += ') VALUES ('
+
+            for i in range(len(value)):
+                if isinstance(value[i], str):
+                    insert_str += f"'{value[i]}', "
+                else:
+                    insert_str += f"{value[i]}, "
+
+            insert_str = insert_str[:-2]
+            insert_str += ')'
+
+            self.cursor.execute(insert_str)
+
 
     def select(
             self,
@@ -213,6 +251,8 @@ def main():
 
     with DB() as db:
         db.create("ninjas", DB_SCHEMA, "ninja")
+        # print(db.table_schemas)
+        db.insert("ninjas", NINJAS)
 
 
 if __name__ == '__main__':
