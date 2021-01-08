@@ -58,6 +58,7 @@ class DB:
     connection = None
     cursor = None
     table_schemas = {}
+    rows_affected = 0
 
     def __init__(self, location: Optional[str] = ":memory:"):
         self.location = location
@@ -97,7 +98,7 @@ class DB:
         """
 
         if not [c for c in schema[0] if c == primary_key]:
-            raise SchemaError
+            raise SchemaError('The provided primary key must be part of the schema.')
 
         create_str = f'CREATE TABLE {table} ('
 
@@ -170,7 +171,8 @@ class DB:
             for i in range(len(value)):
                 if not isinstance(value[i], self.table_schemas[table][i][1].value):
                     raise SchemaError(
-                        f'Column {self.table_schemas[table][i][0]} expects values of type {self.table_schemas[table][i][1].value}')
+                        f'Column {self.table_schemas[table][i][0]} expects values of type {self.table_schemas[table][i][1].value.__name__}.'
+                    )
         # insert values
         for value in values:
             insert_str = f'INSERT INTO {table} ('
@@ -191,7 +193,7 @@ class DB:
             insert_str += ')'
 
             self.cursor.execute(insert_str)
-
+            self.rows_affected += self.cursor.rowcount
 
     def select(
             self,
@@ -216,7 +218,20 @@ class DB:
         Returns:
             list: The output returned from the sql command
         """
-        raise NotImplementedError("You have to implement this method first.")
+
+        if columns is None:
+            rows = self.cursor.execute(f'SELECT * FROM {table}').fetchall()
+        else:
+            select_str = f'SELECT '
+            for col_name in columns:
+                select_str += f'{col_name}, '
+
+            select_str = select_str[:-2]
+            select_str += f' FROM {table}'
+            print(select_str)
+            rows = self.cursor.execute(select_str).fetchall()
+
+        return rows
 
     def update(self, table: str, new_value: Tuple[str, Any], target: Tuple[str, Any]):
         """Update a record in the database.
@@ -236,7 +251,7 @@ class DB:
         Returns:
             int: Returns the total number of database rows that have been modified.
         """
-        raise NotImplementedError("You have to implement this method first.")
+        return self.rows_affected
 
 
 def main():
@@ -253,7 +268,13 @@ def main():
         db.create("ninjas", DB_SCHEMA, "ninja")
         # print(db.table_schemas)
         db.insert("ninjas", NINJAS)
+        # print(db.num_transactions)
+        # print(db.select("ninjas", None))
+        print(db.select("ninjas", ["ninja"]))
+        print(db.select("ninjas", ["bitecoins"]))
 
+    print(sorted([(e[0],) for e in NINJAS]))
+    print([(e[1],) for e in NINJAS])
 
 if __name__ == '__main__':
     main()
