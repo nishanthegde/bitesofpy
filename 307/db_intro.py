@@ -220,7 +220,7 @@ class DB:
         """
 
         if columns is None:
-            rows = self.cursor.execute(f'SELECT * FROM {table}').fetchall()
+            select_str = f'SELECT * FROM {table}'
         else:
             select_str = f'SELECT '
             for col_name in columns:
@@ -229,7 +229,23 @@ class DB:
             select_str = select_str[:-2]
             select_str += f' FROM {table}'
             print(select_str)
-            rows = self.cursor.execute(select_str).fetchall()
+
+        if target:
+            if len(target) < 3:
+                col_type = [t[1].name for t in self.table_schemas.get(table) if t[0] == target[0]]
+                if col_type[0] == 'TEXT':
+                    select_str += f" WHERE {target[0]} = '{target[1]}' "
+                else:
+                    select_str += f" WHERE {target[0]} = {target[1]} "
+            else:
+                col_type = [t[1].name for t in self.table_schemas.get(table) if t[0] == target[0]]
+                if col_type[0] == 'TEXT':
+                    select_str += f" WHERE {target[0]} {target[1]} '{target[2]}' "
+                else:
+                    select_str += f" WHERE {target[0]}  {target[1]} {target[2]} "
+
+        print(select_str)
+        rows = self.cursor.execute(select_str).fetchall()
 
         return rows
 
@@ -255,7 +271,7 @@ class DB:
 
 
 def main():
-    print('thank you for looking after my mama!')
+    print('thank you for looking after my mama very much')
     DB_SCHEMA = [("ninja", SQLiteType.TEXT), ("bitecoins", SQLiteType.INTEGER)]
     #
     # for s in DB_SCHEMA:
@@ -269,12 +285,15 @@ def main():
         # print(db.table_schemas)
         db.insert("ninjas", NINJAS)
         # print(db.num_transactions)
-        # print(db.select("ninjas", None))
-        print(db.select("ninjas", ["ninja"]))
-        print(db.select("ninjas", ["bitecoins"]))
+        print(db.select("ninjas", None, target=("ninja", "clamytoe")))
+        print(db.select("ninjas", None, target=("bitecoins", 906)))
+        print(db.select("ninjas", None, target=("bitecoins", ">", 100)))
+        # print(db.select("ninjas", ["ninja"]))
+        # print(db.select("ninjas", ["bitecoins"]))
 
-    print(sorted([(e[0],) for e in NINJAS]))
-    print([(e[1],) for e in NINJAS])
+    # print(sorted([(e[0],) for e in NINJAS]))
+    # print([(e[1],) for e in NINJAS])
+
 
 if __name__ == '__main__':
     main()
