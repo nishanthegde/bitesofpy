@@ -125,7 +125,16 @@ class DB:
                 wanted to remove the row(s) with the year 1999, you would pass it
                 ("year", 1999). Only supports "=" operator in this bite.
         """
-        raise NotImplementedError("You have to implement this method first.")
+        col_type = [t[1].name for t in self.table_schemas.get(table) if t[0] == target[0]]
+
+        delete_str = f'DELETE FROM {table}'
+
+        if col_type[0] == 'TEXT':
+            delete_str += f" WHERE {target[0]} = '{target[1]}'"
+        else:
+            delete_str += f" WHERE {target[0]} = '{target[1]}'"
+
+        self.cursor.execute(delete_str)
 
     def insert(self, table: str, values: List[Tuple]):
         """Inserts one or multiple new records into the database.
@@ -228,7 +237,7 @@ class DB:
 
             select_str = select_str[:-2]
             select_str += f' FROM {table}'
-            print(select_str)
+            # print(select_str)
 
         if target:
             if len(target) < 3:
@@ -244,7 +253,7 @@ class DB:
                 else:
                     select_str += f" WHERE {target[0]}  {target[1]} {target[2]} "
 
-        print(select_str)
+        # print(select_str)
         rows = self.cursor.execute(select_str).fetchall()
 
         return rows
@@ -258,7 +267,23 @@ class DB:
                 if you wanted to change "year" to 2001 you would pass it ("year", 2001).
             target (tuple): The row/record to modify. Example ("year", 1991)
         """
-        raise NotImplementedError("You have to implement this method first.")
+        col_type_new = [t[1].name for t in self.table_schemas.get(table) if t[0] == new_value[0]]
+        col_type_target = [t[1].name for t in self.table_schemas.get(table) if t[0] == target[0]]
+
+        update_str = f'UPDATE {table} SET'
+
+        if col_type_new[0] == 'TEXT':
+            update_str += f"  {new_value[0]} = '{new_value[1]}'"
+        else:
+            update_str += f"  {new_value[0]} = {new_value[1]}"
+
+        if col_type_target[0] == 'TEXT':
+            update_str += f"  WHERE {target[0]} = '{target[1]}'"
+        else:
+            update_str += f"  WHERE {target[0]} = {target[1]}"
+
+        self.cursor.execute(update_str)
+        self.rows_affected += self.cursor.rowcount
 
     @property
     def num_transactions(self) -> int:
@@ -268,32 +293,3 @@ class DB:
             int: Returns the total number of database rows that have been modified.
         """
         return self.rows_affected
-
-
-def main():
-    print('thank you for looking after my mama very much')
-    DB_SCHEMA = [("ninja", SQLiteType.TEXT), ("bitecoins", SQLiteType.INTEGER)]
-    #
-    # for s in DB_SCHEMA:
-    #     print(s[1].name)
-    # db = DB()
-    # print(db.location)
-    # print(db.cursor)
-
-    with DB() as db:
-        db.create("ninjas", DB_SCHEMA, "ninja")
-        # print(db.table_schemas)
-        db.insert("ninjas", NINJAS)
-        # print(db.num_transactions)
-        print(db.select("ninjas", None, target=("ninja", "clamytoe")))
-        print(db.select("ninjas", None, target=("bitecoins", 906)))
-        print(db.select("ninjas", None, target=("bitecoins", ">", 100)))
-        # print(db.select("ninjas", ["ninja"]))
-        # print(db.select("ninjas", ["bitecoins"]))
-
-    # print(sorted([(e[0],) for e in NINJAS]))
-    # print([(e[1],) for e in NINJAS])
-
-
-if __name__ == '__main__':
-    main()
