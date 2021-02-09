@@ -1,55 +1,49 @@
 import os
-import urllib.request as ur
+import urllib.request
 import re
 
 local = '/tmp'
-# local = os.getcwd()
+local = os.getcwd()
 stopwords_file = os.path.join(local, 'stopwords')
 harry_text = os.path.join(local, 'harry')
 
-ur.urlretrieve('http://bit.ly/2EuvyHB', stopwords_file)
-ur.urlretrieve('http://bit.ly/2C6RzuR', harry_text)
-
-def strip_word(w):
-    """accepts a word as a string and returns
-        lowercase of the word with non-alpha numeric characters stripped out"""
-    w = w.lower()
-    w = re.sub("[^a-zA-Z0-9]+", "", w)
-
-    return w
+# data provided
+tmp = os.getenv("TMP", "/tmp")
+# tmp = os.getenv("TMP", local)
+stopwords_file = os.path.join(tmp, 'stopwords')
+harry_text = os.path.join(tmp, 'harry')
+urllib.request.urlretrieve(
+    'https://bites-data.s3.us-east-2.amazonaws.com/stopwords.txt',
+    stopwords_file
+)
+urllib.request.urlretrieve(
+    'https://bites-data.s3.us-east-2.amazonaws.com/harry.txt',
+    harry_text
+)
 
 
 def get_harry_most_common_word():
-    """Open script file and stopwords file and read
-        words into a dictionary, exclude stopwords"""
-    stop = []
-    freq = {}
+    text = open("harry", "r")
+    stop = open("stopwords", "r")
 
-    with open(stopwords_file, 'r') as f:
-        for line in f:
-            stop.append(line)
+    stop_words = []
+    for line in stop:
+        line = line.lower().strip()
+        stop_words.append(line)
 
-    f.close()
+    d = dict()
 
-    stop = [strip_word(s) for s in stop]
-
-    with open(harry_text, 'r') as f:
-        reader = f.read()
-
-        for w in reader.split():
-            w = strip_word(w)
-
-            if w and w not in stop:
-                if w not in freq:
-                    freq[w] = 1
+    for line in text:
+        line = line.lower().strip()
+        words = []
+        for w in line.split():
+            words.append(re.sub(r'\W', '', w))
+        words = [w for w in words if w and w not in stop_words]
+        if words:
+            for w in words:
+                if w in d:
+                    d[w] += 1
                 else:
-                    freq[w] += 1
+                    d[w] = 1
 
-        freq = sorted(freq.items(), key=lambda x:x[1], reverse=True)
-
-    f.close()
-
-    return freq[0]
-
-
-
+    return sorted(d.items(), key=lambda item: item[1], reverse=True)[0]
