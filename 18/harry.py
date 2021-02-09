@@ -23,8 +23,8 @@ urllib.request.urlretrieve(
 
 
 def get_harry_most_common_word():
-    text = open("harry", "r")
-    stop = open("stopwords", "r")
+    text = open("harry_text", "r")
+    stop = open("stopwords_file", "r")
 
     stop_words = []
     for line in stop:
