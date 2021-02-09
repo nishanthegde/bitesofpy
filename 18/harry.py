@@ -3,7 +3,7 @@ import urllib.request
 import re
 
 local = '/tmp'
-local = os.getcwd()
+# local = os.getcwd()
 stopwords_file = os.path.join(local, 'stopwords')
 harry_text = os.path.join(local, 'harry')
 
@@ -23,8 +23,8 @@ urllib.request.urlretrieve(
 
 
 def get_harry_most_common_word():
-    text = open("harry_text", "r")
-    stop = open("stopwords_file", "r")
+    text = open("harry", "r")
+    stop = open("stopwords", "r")
 
     stop_words = []
     for line in stop:
