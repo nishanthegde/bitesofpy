@@ -12,6 +12,7 @@ tmp = os.getenv("TMP", "/tmp")
 # tmp = os.getenv("TMP", local)
 stopwords_file = os.path.join(tmp, 'stopwords')
 harry_text = os.path.join(tmp, 'harry')
+
 urllib.request.urlretrieve(
     'https://bites-data.s3.us-east-2.amazonaws.com/stopwords.txt',
     stopwords_file
@@ -23,8 +24,8 @@ urllib.request.urlretrieve(
 
 
 def get_harry_most_common_word():
-    text = open("harry", "r")
-    stop = open("stopwords", "r")
+    text = open(harry_text, "r")
+    stop = open(stopwords_file, "r")
 
     stop_words = []
     for line in stop:
