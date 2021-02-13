@@ -1,6 +1,5 @@
 IMPOSSIBLE = 'Mission impossible. No one can contribute.'
 
-village = [0, -3, 2, 1, -7, 5, 3, -1, 6]
 extreme = [-1, -2, -3, -4, -5, -1, -2, -3]
 one = [0, 1, -1, -5, 0, 4, -3, -2]
 penniless = [0, 0, 0, 0, 1, -5, -2, -1, -3]
@@ -21,11 +20,12 @@ def max_fund(village: list):
     # Hint: while iterating, you could save the best_sum collected so far
     # return total, starting, ending
 
-    max_ending_here = 0
-    max_so_far = 0
-    start = 0
-    end = 0
-    reset = False
+    sum_ending_here = 0
+    best_sum = 0
+    start_position = 0
+    end_position = 0
+    sum_reset = False
+    best_sums = []
 
     if all(i < 0 for i in village):
         print(IMPOSSIBLE)
@@ -33,40 +33,25 @@ def max_fund(village: list):
     else:
         for i in range(0, len(village)):
 
-            print(i, village[i])
-            max_ending_here += village[i]
+            # print(i, village[i])
+            sum_ending_here += village[i]
 
-            if max_so_far < max_ending_here:
-                max_so_far = max_ending_here
-                if reset and max_so_far == 0:
-                    start = i
-                end = i
-                print('max swap', start)
-                reset = False
+            if sum_reset:
+                best_sums.append((best_sum, start_position + 1, end_position + 1))
+                start_position = i
+                end_position = i
+                sum_reset = False
 
-            if max_ending_here < 0:
-                max_ending_here = 0
-                reset = True
-                if i < len(village) - 1:
-                    start = i + 1
-                print('max reset', start)
+            if sum_ending_here <= 0:
+                sum_ending_here = 0
+                sum_reset = True
+            elif (best_sum < sum_ending_here):
+                best_sum = sum_ending_here
+                end_position = i
 
-            print('max_so_far:{}, max_ending_here:{}'.format(max_so_far, max_ending_here))
-            print('')
+            # print('sum_ending_here:{}, start:{}, end:{}, best_sum:{}'.format(sum_ending_here, start_position,
+            #                                                                  end_position, best_sum))
+            # print('')
+        best_sums.append((best_sum, start_position + 1, end_position + 1))
 
-        return (max_so_far, min(start + 1, end + 1), end + 1)
-
-
-def main():
-    print('thank you for looking after my mama :-)...')
-    # print(max_fund(village))
-    # print(max_fund(extreme))
-    print(max_fund(one))
-    # print(max_fund(penniless))
-    # print(max_fund(poverty))
-    # print(max_fund(some))
-    # print(max_fund(community))
-
-
-if __name__ == '__main__':
-    main()
+    return(max(sorted(best_sums, key=lambda x: (x[0], x[1], x[2])),key=lambda item:item[0]))
