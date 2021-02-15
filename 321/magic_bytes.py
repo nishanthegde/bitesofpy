@@ -29,7 +29,7 @@ class FileNotRecognizedException(Exception):
     """
     File cannot be identified using a magic table
     """
-
+    pass
 
 def determine_filetype_by_magic_bytes(
         file_name: Union[str, pathlib.Path],
@@ -42,6 +42,11 @@ def determine_filetype_by_magic_bytes(
     Returns: file format based on the magic bytes
     """
 
+    no_matches = True
+
+    bytes = open(file_name, "rb").read(32)
+    hex_bytes = " ".join(['{:02X}'.format(byte) for byte in bytes])
+
     magic = StringIO(lookup_table_string)
     reader = csv.reader(magic, delimiter=',')
 
@@ -52,12 +57,14 @@ def determine_filetype_by_magic_bytes(
         parsed_row = [element.split('\n') for element in row]
         parsed_row.insert(0, [re.sub("\s*[\(].*?[\)\]]", "", byte_seq) for byte_seq in parsed_row[0]])
         parsed_row.pop(1)
-        print(parsed_row)
+        # print(parsed_row)
+        for byte_seq in parsed_row[0]:
+            if byte_seq in hex_bytes:
+                no_matches = False
+                return parsed_row[4][0]
 
-    bytes = open(file_name, "rb").read(8)
-    hex_bytes = " ".join(['{:02X}'.format(byte) for byte in bytes])
-
-    return hex_bytes
+    if no_matches:
+        raise FileNotRecognizedException('File format not recognized')
 
 
 def main():
@@ -70,14 +77,52 @@ def main():
 #  - prints out file type
 
 if __name__ == "__main__":
-    test_filename = "test_image.gif"
+    # test_filename = "test_image.gif"
+    # print(f"Script invoked directly. Writing out test file {test_filename}")
+    # with open(test_filename, "wb") as f:
+    #     f.write(
+    #         b"\x47\x49\x46\x38\x37\x61\x01\x00x01\x00\x80\x00\x00\xff\xff\xff"
+    #         b"\xff\xff\xff\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02"
+    #         b"\x44\x01\x00\x3b"
+    #     )
+    # print("Testing file format")
+    # print(determine_filetype_by_magic_bytes(test_filename))
+
+    # test_filename = "test_image.png"
+    # print(f"Script invoked directly. Writing out test file {test_filename}")
+    # with open(test_filename, "wb") as f:
+    #     f.write(
+    #             b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00"
+    #             b"\x00\x01\x08\x04\x00\x00\x00\xb5\x1c\x0c\x02\x00\x00\x00"
+    #             b"\x0bIDATx\xdac\xfc\xff\x1f\x00\x03\x03\x02\x00\xef\xa2\xa7["
+    #             b"\x00\x00\x00\x00IEND\xaeB`\x82"
+    #     )
+    # print("Testing file format")
+    # print(determine_filetype_by_magic_bytes(test_filename))
+
+    test_filename = "test_image.tif"
     print(f"Script invoked directly. Writing out test file {test_filename}")
     with open(test_filename, "wb") as f:
         f.write(
-            b"\x47\x49\x46\x38\x37\x61\x01\x00x01\x00\x80\x00\x00\xff\xff\xff"
-            b"\xff\xff\xff\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02"
-            b"\x44\x01\x00\x3b"
+                b"II*\x00\x0c\x00\x00\x00\xff\xff\xff\x00\x10\x00\x00\x01\x03"
+                b"\x00\x01\x00\x00\x00\x01\x00\x00\x00\x01\x01\x03\x00\x01"
+                b"\x00\x00x00\x01\x00\x00\x00\x02\x01\x03\x00\x03\x00\x00\x00"
+                b"\xe2\x00\x00\x00\x03\x01\x03\x00\x01\x00\x00\x00\x01\x00"
+                b"\x00\x00\x06\x01\x03\x00\x01\x00\x00\x00\x02\x00\x00\x00"
+                b"\x11\x01\x04\x00\x01\x00\x00\x00\x08\x00\x00\x00\x12\x01"
+                b"\x03\x00\x01\x00\x00\x00\x01\x00\x00\x00\x15\x01\x03\x00"
+                b"\x01\x00\x00\x00\x03\x00\x00\x00\x16\x01\x03\x00\x01\x00"
+                b"\x00\x00\x80\x00\x00\x00\x17\x01\x04\x00\x01\x00\x00\x00"
+                b"\x03\x00\x00\x00\x1a\x01\x05\x00\x01\x00\x00\x00\xd2\x00"
+                b"\x00\x00\x1b\x01\x05\x00\x01\x00\x00\x00\xda\x00\x00\x00"
+                b"\x1c\x01\x03\x00\x01\x00\x00\x00\x01\x00\x00\x00\x1d\x01"
+                b"\x02\x00\x0b\x00\x00\x00\xee\x00\x00\x00(\x01\x03\x00\x01"
+                b"\x00\x00\x00\x02\x00\x00\x00S\x01\x03\x00\x03\x00\x00\x00"
+                b"\xe8\x00\x00\x00\x00\x00\x00\x00,\x01\x00\x00\x01\x00\x00"
+                b"\x00,\x01\x00\x00\x01\x00\x00\x00\x08\x00\x08\x00\x08\x00"
+                b"\x01\x00\x01\x00\x01\x00Background\x00"
         )
     print("Testing file format")
     print(determine_filetype_by_magic_bytes(test_filename))
+
     main()
