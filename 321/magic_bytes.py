@@ -116,10 +116,10 @@ if __name__ == "__main__":
     print(f"Script invoked directly. Writing out test file {test_filename}")
     with open(test_filename, "wb") as f:
         f.write(
-            b'\xee\x01pybites\x00\x01"\x00\xec\xedformat\x01\x00\x00\x00'
-            b"\x00\x01"
+            b"PYBITES FILE http://codechalleng.es\n"
         )
     print("Testing file format")
-    print(determine_filetype_by_magic_bytes(test_filename, CUSTOM_MAGIC_TABLE2))
+    print(determine_filetype_by_magic_bytes(test_filename))
+    # print(determine_filetype_by_magic_bytes(test_filename, CUSTOM_MAGIC_TABLE2))
 
     main()
