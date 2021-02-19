@@ -11,7 +11,16 @@ TITLES = 'f-string,sum numbers,scrape holidays,regex fun'.split(',')
 # values = 1 2 3 4
 # make sure they can be sorted by int value
 
-class BiteLevel(enum.Enum):
+class EnumMetaSubClass(enum.EnumMeta):
+
+    def __getattribute__(cls, name):
+        value = super().__getattribute__(name)
+        if isinstance(value, cls):
+            value = value.value
+        return value
+
+
+class BiteLevel(enum.Enum, metaclass=EnumMetaSubClass):
     INTRO = 1
     BEGINNER = 2
     INTERMEDIATE = 3
@@ -38,10 +47,13 @@ def create_bites(numbers: List[int], titles: List[str],
     for (a, b, c) in zip(numbers, titles, levels):
         yield Bite(a, b, c)
 
+
 def main():
     print('thank you for looking after my mama :-)')
     # print(list(BiteLevel.__members__.values())[0].name)
-    print(list(create_bites(NUMBERS, TITLES, BiteLevel.__members__.values())))
+    # print(list(create_bites(NUMBERS, TITLES, BiteLevel.__members__.values())))
+    print(BiteLevel.__members__.keys())
+    print(getattr(BiteLevel, 'INTRO'))
 
 
 if __name__ == '__main__':
