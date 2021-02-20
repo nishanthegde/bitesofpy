@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 import enum
 from typing import List  # TODO: can remove >= 3.9
+import operator
+from ordered_enum import ValueOrderedEnum
 
 NUMBERS = [101, 1, 97, 2]
 TITLES = 'f-string,sum numbers,scrape holidays,regex fun'.split(',')
@@ -20,17 +22,23 @@ class EnumMetaSubClass(enum.EnumMeta):
         return value
 
 
-class BiteLevel(enum.Enum, metaclass=EnumMetaSubClass):
+class BiteLevel(ValueOrderedEnum, metaclass=EnumMetaSubClass):
+# class BiteLevel(ValueOrderedEnum):
     INTRO = 1
     BEGINNER = 2
     INTERMEDIATE = 3
     ADVANCED = 4
 
+    # def __str__(self):
+    #     return str(self.value)
+
+    # def __repr__(self):
+    #     return str(self._value_)
 
 # 2. make a dataclass that can be ordered
 # attributes: number (int), title (str), level (BiteLevel)
 
-@dataclass
+@dataclass(order=True)
 class Bite:
     number: int
     title: str
@@ -51,9 +59,20 @@ def create_bites(numbers: List[int], titles: List[str],
 def main():
     print('thank you for looking after my mama :-)')
     # print(list(BiteLevel.__members__.values())[0].name)
-    # print(list(create_bites(NUMBERS, TITLES, BiteLevel.__members__.values())))
-    print(BiteLevel.__members__.keys())
-    print(getattr(BiteLevel, 'INTRO'))
+    print(list(zip(BiteLevel.__members__.keys(), range(1, 5))))
+    test = getattr(BiteLevel, 'BEGINNER')
+    print(test)
+    assert test == 2
+    # some_bites = list(create_bites(NUMBERS, TITLES, BiteLevel.__members__.values()))
+    # getattr(BiteLevel, level)
+    # print(some_bites)
+    # first, *_, last = sorted(some_bites,  key=operator.attrgetter('level'), reverse=True)
+    # print(first.level, BiteLevel.ADVANCED)
+    # assert str(4) == 4
+    # print(BiteLevel.INTRO >= BiteLevel.INTERMEDIATE)
+    # a = Bite(1, 'a', list(BiteLevel.__members__.values())[0])
+    # b = Bite(1, 'b', list(BiteLevel.__members__.values())[1])
+    # print(a, b, a > b)
 
 
 if __name__ == '__main__':
