@@ -22,12 +22,17 @@ class EnumMetaSubClass(enum.EnumMeta):
         return value
 
 
-class BiteLevel(ValueOrderedEnum, metaclass=EnumMetaSubClass):
-# class BiteLevel(ValueOrderedEnum):
+# class BiteLevel(ValueOrderedEnum, metaclass=EnumMetaSubClass):
+class BiteLevel(enum.Enum):
     INTRO = 1
     BEGINNER = 2
     INTERMEDIATE = 3
     ADVANCED = 4
+
+    def __getattribute__(self, name):
+        ob = object.__getattribute__(self, name)
+        print(type(ob))
+        return ob
 
     # def __str__(self):
     #     return str(self.value)
@@ -51,21 +56,22 @@ def create_bites(numbers: List[int], titles: List[str],
                  levels: List[BiteLevel]):
     """Generate a generator of Bite dataclass objects"""
     # return create_bites(numbers[0], titles[0], list(levels))
-    bite_levels = list(levels)
-    for (a, b, c) in zip(numbers, titles, levels):
-        yield Bite(a, b, c)
+    # bite_levels = list(levels)
+    # for (a, b, c) in zip(numbers, titles, levels):
+    #     yield Bite(a, b, c)
+    for i in range(len(numbers)):
+        yield Bite(numbers[i], titles[i], list(levels)[i].value)
 
 
 def main():
     print('thank you for looking after my mama :-)')
-    # print(list(BiteLevel.__members__.values())[0].name)
+
+    some_bites = create_bites(NUMBERS, TITLES, BiteLevel.__members__.values())
+    # print(list(some_bites))
     print(list(zip(BiteLevel.__members__.keys(), range(1, 5))))
-    test = getattr(BiteLevel, 'BEGINNER')
-    print(test)
-    assert test == 2
-    # some_bites = list(create_bites(NUMBERS, TITLES, BiteLevel.__members__.values()))
-    # getattr(BiteLevel, level)
-    # print(some_bites)
+    print(getattr(BiteLevel, 'INTERMEDIATE'))
+    # assert getattr(BiteLevel, 'INTRO').value == 1
+
     # first, *_, last = sorted(some_bites,  key=operator.attrgetter('level'), reverse=True)
     # print(first.level, BiteLevel.ADVANCED)
     # assert str(4) == 4
