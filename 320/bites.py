@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-import enum
+from enum import IntEnum
 from typing import List  # TODO: can remove >= 3.9
 import operator
 
@@ -12,19 +12,7 @@ TITLES = 'f-string,sum numbers,scrape holidays,regex fun'.split(',')
 # values = 1 2 3 4
 # make sure they can be sorted by int value
 
-class BiteLevelParent(enum.Enum):
-
-    def __getattribute__(cls, name):
-        value = super().__getattribute__(name)
-        if isinstance(value, cls):
-            value = value.value
-        return value
-
-    def __repr__(self):
-        return self.value
-
-# class BiteLevel(ValueOrderedEnum, metaclass=EnumMetaSubClass):
-class BiteLevel(BiteLevelParent):
+class BiteLevel(IntEnum):
     INTRO = 1
     BEGINNER = 2
     INTERMEDIATE = 3
@@ -61,9 +49,9 @@ def main():
     some_bites = create_bites(NUMBERS, TITLES, BiteLevel.__members__.values())
 
     # print(list(zip(BiteLevel.__members__.keys(), range(1, 5))))
-    print(BiteLevel.INTERMEDIATE)
-    # print(getattr(BiteLevel, 'ADVANCED'))
-    print(type(BiteLevel))
+    print(BiteLevel.ADVANCED)
+    print(getattr(BiteLevel, 'INTRO')==1)
+    # print(type(BiteLevel))
     # assert getattr(BiteLevel, 'INTRO').value == 1
     # first, *_, last = sorted(some_bites,  key=operator.attrgetter('level'), reverse=True)
     # print(first.level, BiteLevel.ADVANCED)
