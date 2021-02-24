@@ -1,10 +1,6 @@
 from dataclasses import dataclass
 from enum import IntEnum
 from typing import List  # TODO: can remove >= 3.9
-import operator
-
-NUMBERS = [101, 1, 97, 2]
-TITLES = 'f-string,sum numbers,scrape holidays,regex fun'.split(',')
 
 
 # 1. make a BiteLevel enum class
@@ -34,33 +30,6 @@ class Bite:
 def create_bites(numbers: List[int], titles: List[str],
                  levels: List[BiteLevel]):
     """Generate a generator of Bite dataclass objects"""
-    # return create_bites(numbers[0], titles[0], list(levels))
-    # bite_levels = list(levels)
-    # for (a, b, c) in zip(numbers, titles, levels):
-    #     yield Bite(a, b, c)
-
-    for i in range(len(numbers)):
-        yield Bite(numbers[i], titles[i], list(levels)[i].value)
-
-
-def main():
-    print('thank you for looking after my mama :-)')
-
-    some_bites = create_bites(NUMBERS, TITLES, BiteLevel.__members__.values())
-
-    # print(list(zip(BiteLevel.__members__.keys(), range(1, 5))))
-    print(BiteLevel.ADVANCED)
-    print(getattr(BiteLevel, 'INTRO')==1)
-    # print(type(BiteLevel))
-    # assert getattr(BiteLevel, 'INTRO').value == 1
-    # first, *_, last = sorted(some_bites,  key=operator.attrgetter('level'), reverse=True)
-    # print(first.level, BiteLevel.ADVANCED)
-    # assert str(4) == 4
-    # print(BiteLevel.INTRO >= BiteLevel.INTERMEDIATE)
-    # a = Bite(1, 'a', list(BiteLevel.__members__.values())[0])
-    # b = Bite(1, 'b', list(BiteLevel.__members__.values())[1])
-    # print(a, b, a > b)
-
-
-if __name__ == '__main__':
-    main()
+    bite_levels = list(levels)
+    for (a, b, c) in zip(numbers, titles, levels):
+        yield Bite(a, b, c)
