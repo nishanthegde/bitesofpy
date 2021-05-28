@@ -11,16 +11,9 @@ blog = dict(name='PyBites',
 
 
 def dict2nt(dict_):
-    pass
+    nt = namedtuple('x', dict_.keys())(*dict_.values())
+    return nt
 
 
 def nt2json(nt):
-    pass
-
-
-def main():
-    print('thank you for looking after naia and mama!')
-
-
-if __name__ == '__main__':
-    main()
+    return json.dumps(nt._asdict(), default=str)
