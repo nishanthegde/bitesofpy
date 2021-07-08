@@ -1,6 +1,6 @@
 import json
 from dateutil.tz import gettz
-from datetime import date, timedelta, tzinfo
+from datetime import date, timedelta, tzinfo, datetime
 from pathlib import Path
 from typing import Tuple, Optional, List
 import os
@@ -17,6 +17,20 @@ MY_TZ = gettz("America/New York")
 UTC = gettz("UTC")
 S3 = "https://bites-data.s3.us-east-2.amazonaws.com"
 
+RESULTS = [
+    (date(2019, 10, 10), date(2019, 10, 11)),
+    (date(2019, 10, 13), date(2019, 10, 14)),
+    None,
+    (date(2019, 10, 1), date(2019, 10, 1)),
+]
+
+RESULTS_UTC = [
+    (date(2019, 10, 9), date(2019, 10, 13)),
+    (date(2019, 10, 9), date(2019, 10, 14)),
+    None,
+    (date(2019, 10, 2), date(2019, 10, 2)),
+]
+PATHS = [TMP / f"test{x}.json" for x in range(1, 5)]
 
 def longest_streak(
         data_file: Path = DATA_PATH, my_tz: Optional[tzinfo] = MY_TZ
@@ -42,15 +56,19 @@ def longest_streak(
         data = json.load(f)
 
     # You code from here
-    pass
+
+    commit_dates = [datetime.strptime(c['date'].strip(),"%Y-%m-%d %H:%M:%S.%f%z") for c in data['commits'] if c['passed'] == True]
+    return(commit_dates)
 
 
 if __name__ == "__main__":
-    # streak = longest_streak()
+    streak = longest_streak()
+    for s in streak:
+        print(s)
     # print(f"My longest streak went from {streak[0]} through {streak[1]}")
     # print(f"The streak lasted {(streak[1] - streak[0]).days + 1} days")
 
     print("thank you for looking after my loved ones...")
-    data_zipfile = 'bite328_test_data.zip'
-    urlretrieve(f'{S3}/{data_zipfile}', TMP / data_zipfile)
-    ZipFile(TMP / data_zipfile).extractall(TMP)
+    # data_zipfile = 'bite328_test_data.zip'
+    # urlretrieve(f'{S3}/{data_zipfile}', TMP / data_zipfile)
+    # ZipFile(TMP / data_zipfile).extractall(TMP)
