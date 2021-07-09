@@ -13,6 +13,7 @@ local = os.getcwd()
 # TMP = Path(os.getenv("TMP", "/tmp"))
 TMP = Path(os.getenv("TMP", local))
 DATA_PATH = TMP / DATA_FILE_NAME
+from_zone = gettz('UTC')
 MY_TZ = gettz("America/New York")
 UTC = gettz("UTC")
 S3 = "https://bites-data.s3.us-east-2.amazonaws.com"
@@ -31,6 +32,7 @@ RESULTS_UTC = [
     (date(2019, 10, 2), date(2019, 10, 2)),
 ]
 PATHS = [TMP / f"test{x}.json" for x in range(1, 5)]
+
 
 def longest_streak(
         data_file: Path = DATA_PATH, my_tz: Optional[tzinfo] = MY_TZ
@@ -56,19 +58,35 @@ def longest_streak(
         data = json.load(f)
 
     # You code from here
+    commit_dates = [datetime.strptime(c['date'].strip(), "%Y-%m-%d %H:%M:%S.%f%z").replace(tzinfo=from_zone) for c in
+                    data['commits'] if c['passed'] == True]
+    commit_dates = [d.astimezone(MY_TZ).date() for d in commit_dates]
 
-    commit_dates = [datetime.strptime(c['date'].strip(),"%Y-%m-%d %H:%M:%S.%f%z") for c in data['commits'] if c['passed'] == True]
-    return(commit_dates)
+    return sorted(commit_dates)
 
 
 if __name__ == "__main__":
+    print("thank you for looking after my mama...")
     streak = longest_streak()
-    for s in streak:
-        print(s)
+    print(streak)
+    # for i in range(0, len(streak)-1):
+    #     for j in range(i+1, len(streak)):
+    #         if (streak[j]-streak[i]).days != 1:
+    #             continue
+    #         print(i, streak[i], streak[j], streak[j]-streak[i])
+    i = 0
+    while i < len(streak)-1:
+        curr_start = streak[i]
+        if (streak[i + 1] - streak[i]).days == 1:
+            end = streak[i + 1]
+        # elif (streak[i + 1] - streak[i]).days > 1:
+        #     continue
+        print(streak[i], (streak[i + 1] - streak[i]).days)
+        i += 1
+
+
     # print(f"My longest streak went from {streak[0]} through {streak[1]}")
     # print(f"The streak lasted {(streak[1] - streak[0]).days + 1} days")
-
-    print("thank you for looking after my loved ones...")
     # data_zipfile = 'bite328_test_data.zip'
     # urlretrieve(f'{S3}/{data_zipfile}', TMP / data_zipfile)
     # ZipFile(TMP / data_zipfile).extractall(TMP)
