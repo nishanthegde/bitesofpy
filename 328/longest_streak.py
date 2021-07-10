@@ -8,7 +8,7 @@ import sys
 from urllib.request import urlretrieve
 from zipfile import ZipFile
 
-DATA_FILE_NAME = "test1.json"
+DATA_FILE_NAME = "test4.json"
 local = os.getcwd()
 # TMP = Path(os.getenv("TMP", "/tmp"))
 TMP = Path(os.getenv("TMP", local))
@@ -62,29 +62,34 @@ def longest_streak(
                     data['commits'] if c['passed'] == True]
     commit_dates = [d.astimezone(MY_TZ).date() for d in commit_dates]
 
-    return sorted(commit_dates)
+    unique_dates = sorted(list(set(commit_dates)))
+
+    i = 0
+    max_days = 0
+    day_count = 0
+
+    if unique_dates:
+        prev_date = unique_dates[0]
+        for curr_date in unique_dates:
+
+            if (curr_date - prev_date).days == 1:
+                day_count += 1
+            else:
+                day_count = 0
+
+            if day_count >= max_days:
+                max_days = day_count
+                end_date = curr_date
+            prev_date = curr_date
+
+        start_idx = unique_dates.index(end_date) - max_days
+        end_idx = unique_dates.index(end_date)
+
+        return unique_dates[start_idx], unique_dates[end_idx]
 
 
 if __name__ == "__main__":
     print("thank you for looking after my mama...")
-    streak = longest_streak()
-    print(streak)
-    # for i in range(0, len(streak)-1):
-    #     for j in range(i+1, len(streak)):
-    #         if (streak[j]-streak[i]).days != 1:
-    #             continue
-    #         print(i, streak[i], streak[j], streak[j]-streak[i])
-    i = 0
-    while i < len(streak)-1:
-        curr_start = streak[i]
-        if (streak[i + 1] - streak[i]).days == 1:
-            end = streak[i + 1]
-        # elif (streak[i + 1] - streak[i]).days > 1:
-        #     continue
-        print(streak[i], (streak[i + 1] - streak[i]).days)
-        i += 1
-
-
     # print(f"My longest streak went from {streak[0]} through {streak[1]}")
     # print(f"The streak lasted {(streak[1] - streak[0]).days + 1} days")
     # data_zipfile = 'bite328_test_data.zip'
