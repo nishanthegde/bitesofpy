@@ -5,15 +5,27 @@ from pathlib import Path
 from typing import Tuple, Optional, List
 import os
 
+from urllib.request import urlretrieve
+from zipfile import ZipFile
+
+S3 = "https://bites-data.s3.us-east-2.amazonaws.com"
+data_zipfile = 'bite328_test_data.zip'
+
 DATA_FILE_NAME = "test1.json"
-TMP = Path(os.getenv("TMP", "/tmp"))
+# TMP = Path(os.getenv("TMP", "/tmp"))
+TMP = Path(os.getenv("TMP", os.getcwd()))
 DATA_PATH = TMP / DATA_FILE_NAME
 MY_TZ = gettz("America/New York")
 UTC = gettz("UTC")
 
 
+def download_test_files():
+    urlretrieve(f'{S3}/{data_zipfile}', TMP / data_zipfile)
+    ZipFile(TMP / data_zipfile).extractall(TMP)
+
+
 def longest_streak(
-    data_file: Path = DATA_PATH, my_tz: Optional[tzinfo] = MY_TZ
+        data_file: Path = DATA_PATH, my_tz: Optional[tzinfo] = MY_TZ
 ) -> Optional[Tuple[date, date]]:
     """Retrieve datetime strings of passed commits and calculate the longest
     streak from the user's data
@@ -32,14 +44,23 @@ def longest_streak(
     Return a tuple containing start and end date for the longest streak
     or None
     """
+
+    download_test_files()
+
     with open(data_file) as f:
         data = json.load(f)
 
     # You code from here
-    pass
+    return data
+
 
 def main():
     print('thank you for looking after mama and Naia!')
+
+    PATHS = [TMP / f"test{x}.json" for x in range(1, 5)]
+    for p in PATHS:
+        print(longest_streak(data_file=p))
+
 
 if __name__ == "__main__":
     main()
