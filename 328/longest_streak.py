@@ -1,9 +1,10 @@
 import json
 from dateutil.tz import gettz
-from datetime import date, timedelta, tzinfo
+from datetime import date, timedelta, tzinfo, datetime
 from pathlib import Path
 from typing import Tuple, Optional, List
 import os
+from dateutil.parser import parse
 
 from urllib.request import urlretrieve
 from zipfile import ZipFile
@@ -50,14 +51,15 @@ def longest_streak(
     with open(data_file) as f:
         data = json.load(f)
 
-    # You code from here
-    return data
+    passes = [type(datetime.strptime(b['date'], '%Y-%m-%d %H:%M:%S.%f%z')) for b in data['commits'] if b['passed']]
+    # passes = [parse(b['date']) for b in data['commits'] if b['passed']]
+    return passes
 
 
 def main():
-    print('thank you for looking after mama and Naia!')
+    print("thank you for looking after mama and Nai'a!")
 
-    PATHS = [TMP / f"test{x}.json" for x in range(1, 5)]
+    PATHS = [TMP / f"test{x}.json" for x in range(1, 2)]
     for p in PATHS:
         print(longest_streak(data_file=p))
 
