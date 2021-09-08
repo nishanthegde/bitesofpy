@@ -51,17 +51,34 @@ def longest_streak(
     with open(data_file) as f:
         data = json.load(f)
 
-    passes = [type(datetime.strptime(b['date'], '%Y-%m-%d %H:%M:%S.%f%z')) for b in data['commits'] if b['passed']]
-    # passes = [parse(b['date']) for b in data['commits'] if b['passed']]
+    passes = sorted([datetime.strptime(b['date'], '%Y-%m-%d %H:%M:%S.%f%z') for b in data['commits'] if b['passed']])
+    print(passes)
+    passes = [p.astimezone(my_tz) for p in passes]
+    print(passes)
+
+    #
+    # if not passes:
+    #     return None
+    #
+    # deltas = []
+    #
+    # start_date = passes[0]
+    # for idx in range(1, len(passes)):
+    #     if (passes[idx] - passes[idx - 1]).days < 1:
+    #         start_date = passes[idx - 1]
+    #     # else:
+    #     #     end_date = passes[idx - 1]
+    #     deltas.append((passes[idx] - passes[idx - 1]))
+
     return passes
 
 
 def main():
     print("thank you for looking after mama and Nai'a!")
 
-    PATHS = [TMP / f"test{x}.json" for x in range(1, 2)]
+    PATHS = [TMP / f"test{x}.json" for x in range(1, 5)]
     for p in PATHS:
-        print(longest_streak(data_file=p))
+        longest_streak(data_file=p)
 
 
 if __name__ == "__main__":
