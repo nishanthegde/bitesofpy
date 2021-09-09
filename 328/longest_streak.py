@@ -52,37 +52,37 @@ def longest_streak(
         data = json.load(f)
 
     passes = sorted([datetime.strptime(b['date'], '%Y-%m-%d %H:%M:%S.%f%z') for b in data['commits'] if b['passed']])
-    print(passes)
-    passes = [p.astimezone(my_tz) for p in passes]
-    print(passes)
+    passes = [datetime.date(p.astimezone(my_tz)) for p in passes]
+    # print(passes)
 
-    #
-    # if not passes:
-    #     return None
-    #
-    # deltas = []
-    #
-    # start_date = passes[0]
-    # for idx in range(1, len(passes)):
-    #     if (passes[idx] - passes[idx - 1]).days < 1:
-    #         start_date = passes[idx - 1]
-    #     # else:
-    #     #     end_date = passes[idx - 1]
-    #     deltas.append((passes[idx] - passes[idx - 1]))
+    if not passes:
+        return None
 
-    return passes
+    streaks = []
+
+    start_date = passes[0]
+    end_date = None
+    for idx in range(1, len(passes)):
+        if (passes[idx] - passes[idx - 1]).days > 1:
+            start_date = passes[idx]
+        else:
+            end_date = passes[idx]
+            streaks.append((start_date, end_date, (end_date - start_date).days))
+
+    return sorted(streaks, key=lambda x: (x[2], x[1]), reverse=True)[0][0], \
+           sorted(streaks, key=lambda x: (x[2], x[1]), reverse=True)[0][1]
 
 
 def main():
     print("thank you for looking after mama and Nai'a!")
 
-    PATHS = [TMP / f"test{x}.json" for x in range(1, 5)]
+    PATHS = [TMP / f"test{x}.json" for x in range(2, 3)]
     for p in PATHS:
-        longest_streak(data_file=p)
+        print(longest_streak(data_file=p))
 
 
 if __name__ == "__main__":
     main()
     # streak = longest_streak()
     # print(f"My longest streak went from {streak[0]} through {streak[1]}")
-    # print(f"The streak lasted {(streak[1]-streak[0]).days + 1} days")
+    # print(f"The streak lasted {(streak[1]-streak[0]   ).days + 1} days")
