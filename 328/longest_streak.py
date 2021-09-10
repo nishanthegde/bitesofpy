@@ -13,8 +13,8 @@ S3 = "https://bites-data.s3.us-east-2.amazonaws.com"
 data_zipfile = 'bite328_test_data.zip'
 
 DATA_FILE_NAME = "test1.json"
-# TMP = Path(os.getenv("TMP", "/tmp"))
-TMP = Path(os.getenv("TMP", os.getcwd()))
+TMP = Path(os.getenv("TMP", "/tmp"))
+# TMP = Path(os.getenv("TMP", os.getcwd()))
 DATA_PATH = TMP / DATA_FILE_NAME
 MY_TZ = gettz("America/New York")
 UTC = gettz("UTC")
@@ -53,36 +53,28 @@ def longest_streak(
 
     passes = sorted([datetime.strptime(b['date'], '%Y-%m-%d %H:%M:%S.%f%z') for b in data['commits'] if b['passed']])
     passes = [datetime.date(p.astimezone(my_tz)) for p in passes]
-    # print(passes)
 
     if not passes:
         return None
+    elif len(passes) == 1:
+        return (passes[0], passes[0])
+    else:
+        streaks = []
 
-    streaks = []
+        start_date = passes[0]
+        end_date = None
+        for idx in range(1, len(passes)):
+            if (passes[idx] - passes[idx - 1]).days > 1:
+                start_date = passes[idx]
+            else:
+                end_date = passes[idx]
+                streaks.append((start_date, end_date, (end_date - start_date).days))
 
-    start_date = passes[0]
-    end_date = None
-    for idx in range(1, len(passes)):
-        if (passes[idx] - passes[idx - 1]).days > 1:
-            start_date = passes[idx]
-        else:
-            end_date = passes[idx]
-            streaks.append((start_date, end_date, (end_date - start_date).days))
-
-    return sorted(streaks, key=lambda x: (x[2], x[1]), reverse=True)[0][0], \
-           sorted(streaks, key=lambda x: (x[2], x[1]), reverse=True)[0][1]
-
-
-def main():
-    print("thank you for looking after mama and Nai'a!")
-
-    PATHS = [TMP / f"test{x}.json" for x in range(2, 3)]
-    for p in PATHS:
-        print(longest_streak(data_file=p))
+        return sorted(streaks, key=lambda x: (x[2], x[1]), reverse=True)[0][0], \
+               sorted(streaks, key=lambda x: (x[2], x[1]), reverse=True)[0][1]
 
 
 if __name__ == "__main__":
-    main()
-    # streak = longest_streak()
-    # print(f"My longest streak went from {streak[0]} through {streak[1]}")
-    # print(f"The streak lasted {(streak[1]-streak[0]   ).days + 1} days")
+    streak = longest_streak()
+    print(f"My longest streak went from {streak[0]} through {streak[1]}")
+    print(f"The streak lasted {(streak[1]-streak[0]   ).days + 1} days")
