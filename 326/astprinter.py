@@ -78,6 +78,39 @@ if __name__ == "__main__":
 one_plus_two = 1+2
 one_plus_two+10
 """
-    tree = ast.parse(code)
-    vst = AstPrinter(show_empty=False)
+    CODE_ONE_LINE = """
+one_plus_two = 1+2
+"""
+
+    CODE_ONE_LINE_AST = """
+    Module()
+       .type_ignores: []
+       .body:
+          Assign()
+             .type_comment: None
+             .targets:
+                Name()
+                   .id: 'one_plus_two'
+                   .ctx:
+                      Store()
+             .value:
+                BinOp()
+                   .left:
+                      Constant()
+                         .kind: None
+                         .value: 1
+                   .op:
+                      Add()
+                   .right:
+                      Constant()
+                         .kind: None
+                         .value: 2
+    """
+
+    tree = ast.parse(CODE_ONE_LINE)
+    print(ast.dump(tree))
+    for node in ast.walk(tree):
+        print(node.__class__.__name__)
+    vst = AstPrinter()
     vst.visit(tree)
+
