@@ -64,8 +64,13 @@ class AstPrinter(ast.NodeVisitor):
         #
         # you can use self._get_attrs() and self._get_children() to
         # separate the attributes in the two required types
+        ws_count = 0
+        print('{0}{1}'.format(self._get_name(node),'()'))
 
-        pass
+        attr_dict = self._get_attrs(node)
+        for k, v in attr_dict.items():
+            ws_count += 3
+            print('{0}{1}{2}{3} {4}'.format(ws_count * ' ', '.', k, ':', v))
 
 
 def main():
@@ -109,8 +114,5 @@ one_plus_two = 1+2
 
     tree = ast.parse(CODE_ONE_LINE)
     print(ast.dump(tree))
-    for node in ast.walk(tree):
-        print(node.__class__.__name__)
     vst = AstPrinter()
     vst.visit(tree)
-
