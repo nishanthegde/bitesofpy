@@ -59,9 +59,7 @@ class AstPrinter(ast.NodeVisitor):
 
     def visit(self, node, ws_count=0):
         """trigger visit"""
-
         # define your logic to print the content of the tree
-        #
         # you can use self._get_attrs() and self._get_children() to
         # separate the attributes in the two required types
 
@@ -81,16 +79,20 @@ class AstPrinter(ast.NodeVisitor):
 
         # print(self._get_children(node))
         child_dict = self._get_children(node)
+        j = 0
         for k in child_dict:
+            # if j == 0:
+                # ws_count += 3
             print('{0}{1}{2}{3}'.format(ws_count * ' ', '.', k, ':'))
             if self._is_list_of_nodes(child_dict[k]):
                 for n in child_dict[k]:
                     ws_count += 3
                     self.visit(n, ws_count)
             elif self._is_node(child_dict[k]):
+                # print('here')
                 ws_count += 3
                 self.visit(child_dict[k], ws_count)
-            # print(k, v, self._is_node(k), self._get_name(v),self._is_list_of_nodes(v))
+            j += 1
 
 
 def main():
@@ -108,7 +110,7 @@ one_plus_two = 1+2
 """
 
     CODE_ONE_LINE_AST = """
-    Module()
+Module()
        .type_ignores: []
        .body:
           Assign()
@@ -136,4 +138,3 @@ one_plus_two = 1+2
     print(ast.dump(tree))
     vst = AstPrinter()
     vst.visit(tree)
-    print(CODE_ONE_LINE_AST)
