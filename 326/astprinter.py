@@ -64,32 +64,29 @@ class AstPrinter(ast.NodeVisitor):
         # separate the attributes in the two required types
 
         print('{0}{1}{2}'.format(ws_count * ' ', self._get_name(node), '()'))
+        ws_count += 3
         attr_dict = self._get_attrs(node)
         i = 0
         for k in sorted(attr_dict):
-            # print(k)
-            if i == 0:
-                ws_count += 3
             if isinstance(attr_dict[k], str):
                 print('{0}{1}{2}{3} \'{4}\''.format(ws_count * ' ', '.', k, ':', attr_dict[k]))
             else:
                 print('{0}{1}{2}{3} {4}'.format(ws_count * ' ', '.', k, ':', attr_dict[k]))
             i += 1
 
-        # print(self._get_children(node))
         child_dict = self._get_children(node)
         j = 0
         for k in child_dict:
             if j == 0:
-                # print(k)
                 ws_current = ws_count
             print('{0}{1}{2}{3}'.format(ws_current * ' ', '.', k, ':'))
             if self._is_list_of_nodes(child_dict[k]):
-                for n in child_dict[k]:
+                for l, n in enumerate(child_dict[k]):
                     ws_count += 3
-                    self.visit(n, ws_count)
+                    if l == 0:
+                        ws_current_node = ws_count
+                    self.visit(n, ws_current_node)
             elif self._is_node(child_dict[k]):
-                # print('here')
                 ws_count = ws_current + 3
                 self.visit(child_dict[k], ws_count)
             j += 1
@@ -100,41 +97,18 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
     code = """
 one_plus_two = 1+2
 one_plus_two+10
 """
-    CODE_ONE_LINE = """
+
+    CODE_TWO_LINES = """
 one_plus_two = 1+2
+one_plus_two+10
 """
 
-    CODE_ONE_LINE_AST = """
-Module()
-       .type_ignores: []
-       .body:
-          Assign()
-             .type_comment: None
-             .targets:
-                Name()
-                   .id: 'one_plus_two'
-                   .ctx:
-                      Store()
-             .value:
-                BinOp()
-                   .left:
-                      Constant()
-                         .kind: None
-                         .value: 1
-                   .op:
-                      Add()
-                   .right:
-                      Constant()
-                         .kind: None
-                         .value: 2
-    """
-
-    tree = ast.parse(CODE_ONE_LINE)
+    tree = ast.parse(CODE_TWO_LINES)
     print(ast.dump(tree))
     vst = AstPrinter()
     vst.visit(tree)
