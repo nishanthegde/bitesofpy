@@ -77,19 +77,18 @@ class AstPrinter(ast.NodeVisitor):
         child_dict = self._get_children(node)
         j = 0
 
+        ws_current = 0
         for k in sorted(child_dict):
             if j == 0:
                 ws_current = ws_count
             print('{0}{1}{2}{3}'.format(ws_current * ' ', '.', k, ':'))
             if self._is_list_of_nodes(child_dict[k]):
                 for l, n in enumerate(child_dict[k]):
-                    ws_count += 3
+                    ws_count = ws_current + 3
                     if l == 0:
-                        # print(self._get_name(n))
                         ws_current_node = ws_count
                     self.visit(n, ws_current_node)
             elif self._is_node(child_dict[k]):
-
                 ws_count = ws_current + 3
                 self.visit(child_dict[k], ws_count)
             j += 1
@@ -113,9 +112,15 @@ one_plus_two+10
     CODE_MULTI_LINE = """
 a = 0
 print(a)
+
+a = a+2
+print(a)
+
+b = [1,2,3,4,5]
+print(len(b))
 """
 
     tree = ast.parse(CODE_MULTI_LINE)
-    print(ast.dump(tree))
+    # print(ast.dump(tree))
     vst = AstPrinter()
     vst.visit(tree)
