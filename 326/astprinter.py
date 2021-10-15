@@ -68,15 +68,18 @@ class AstPrinter(ast.NodeVisitor):
         attr_dict = self._get_attrs(node)
         i = 0
         for k in sorted(attr_dict):
-            if isinstance(attr_dict[k], str):
-                print('{0}{1}{2}{3} \'{4}\''.format(ws_count * ' ', '.', k, ':', attr_dict[k]))
+            # print(k, not attr_dict[k])
+            if self.SHOW_EMTPY == False and not attr_dict[k] and attr_dict[k] != 0:
+                pass
             else:
-                print('{0}{1}{2}{3} {4}'.format(ws_count * ' ', '.', k, ':', attr_dict[k]))
+                if isinstance(attr_dict[k], str):
+                    print('{0}{1}{2}{3} \'{4}\''.format(ws_count * ' ', '.', k, ':', attr_dict[k]))
+                else:
+                    print('{0}{1}{2}{3} {4}'.format(ws_count * ' ', '.', k, ':', attr_dict[k]))
             i += 1
 
         child_dict = self._get_children(node)
         j = 0
-
         ws_current = 0
         for k in sorted(child_dict):
             if j == 0:
@@ -94,33 +97,11 @@ class AstPrinter(ast.NodeVisitor):
             j += 1
 
 
-def main():
-    print("thank you for looking after Mama and Nai'a!")
-
-
 if __name__ == "__main__":
-    # main()
     code = """
 one_plus_two = 1+2
 one_plus_two+10
 """
-
-    CODE_TWO_LINES = """
-one_plus_two = 1+2
-one_plus_two+10
-"""
-    CODE_MULTI_LINE = """
-a = 0
-print(a)
-
-a = a+2
-print(a)
-
-b = [1,2,3,4,5]
-print(len(b))
-"""
-
-    tree = ast.parse(CODE_MULTI_LINE)
-    # print(ast.dump(tree))
-    vst = AstPrinter()
+    tree = ast.parse(code)
+    vst = AstPrinter(show_empty=False)
     vst.visit(tree)
