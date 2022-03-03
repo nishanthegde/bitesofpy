@@ -1,10 +1,5 @@
 from typing import List
 
-sentence1 = ['To', 'be', 'or', 'not', 'to', 'be',
-             'that', 'is', 'a', 'question']
-sentence2 = ['To', 'strive', 'to', 'seek', 'to',
-             'find', 'and', 'not', 'to', 'yield']
-
 
 def common_words(sentence1: List[str], sentence2: List[str]) -> List[str]:
     """
@@ -15,9 +10,9 @@ def common_words(sentence1: List[str], sentence2: List[str]) -> List[str]:
             If there are duplicate words in the results, just choose one word. 
             Returned words should be sorted by word's length.
     """
-    s1 = set([word.lower() for word in sentence1])
-    s2 = set([word.lower() for word in sentence2])
+    sentence1_set = set([w.lower() for w in sentence1])
+    sentence2_set = set([w.lower() for w in sentence2])
 
-    both = list(s1.intersection(s2))
+    common = list(sentence1_set.intersection(sentence2_set))
 
-    return sorted(both, key=len)
+    return sorted(common, key=len)
