@@ -86,15 +86,30 @@ def authenticate_user(username: str, password: str):
     TODO: complete this function, use:
     https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/
     """
+    user = get_user(username)
+
+    if not user:
+        return False
+
+    if not verify_password(password, user.password):
+        return False
+
+    return user
 
 
 def create_access_token(data: dict, expires_delta: timedelta):
     """TODO: complete this function"""
+    to_encode = data.copy()
+    # to_encode.update({"exp": expires_delta})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+    return encoded_jwt
 
 def fake_decode_token(token):
     return User(
-        id=-1 , username=token + "fakedecoded", password=""
+        id=-1, username=token + "fakedecoded", password=""
     )
+
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
     """TODO: complete this function"""
@@ -111,11 +126,25 @@ async def create_user(user: User):
 
 @app.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    """TODO: complete this endpoint"""
+    user = authenticate_user(form_data.username, form_data.password)
 
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password"
+        )
 
-# TODO: use fastapi.Depends (already imported) to add authentication to the following endpoints ...
+    access_token_expires = ACCESS_TOKEN_EXPIRE_MINUTES
+    # timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
+    access_token = create_access_token(
+        data={  "user_id": user.id,
+                "username": user.username
+              }
+        , expires_delta=access_token_expires
+    )
+
+    return {"access_token": access_token, "token_type": "bearer"}
 
 @app.post("/", status_code=201)
 async def create_food_entry(entry: FoodEntry = Depends(oauth2_scheme)):
@@ -188,13 +217,20 @@ def main():
 
     print(users_db)
 
-    resp = client.get("/")
+    # resp = client.get("/")
+    # print(resp.json())
+    #
+    # payload = dict(id=1, user=user1, food=food1, number_servings=1.5)
+    # resp = client.post("/", json=payload)
+    # print(food_log)
+    # print(resp.status_code)
+
+    payload = {"username": user1["username"], "password": LAME_PASSWORD}
+    print(payload)
+    resp = client.post("/token", data=payload)
+    print(resp.status_code)
     print(resp.json())
 
-    payload = dict(id=1, user=user1, food=food1, number_servings=1.5)
-    resp = client.post("/", json=payload)
-    print(food_log)
-    print(resp.status_code)
 
 if __name__ == '__main__':
     main()
