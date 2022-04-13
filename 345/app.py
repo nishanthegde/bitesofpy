@@ -105,6 +105,7 @@ def create_access_token(data: dict, expires_delta: timedelta):
 
     return encoded_jwt
 
+
 def fake_decode_token(token):
     return User(
         id=-1, username=token + "fakedecoded", password=""
@@ -135,20 +136,37 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         )
 
     access_token_expires = ACCESS_TOKEN_EXPIRE_MINUTES
-    # timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
     access_token = create_access_token(
-        data={  "user_id": user.id,
-                "username": user.username
+        data={"user_id": user.id,
+              "username": user.username
               }
         , expires_delta=access_token_expires
     )
 
     return {"access_token": access_token, "token_type": "bearer"}
 
+
 @app.post("/", status_code=201)
-async def create_food_entry(entry: FoodEntry = Depends(oauth2_scheme)):
+async def create_food_entry(entry: FoodEntry, token=Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("username")
+
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials"
+        )
+
+    if username is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials"
+        )
+
     food_log[entry.id] = entry
+
     return entry
 
 
@@ -215,7 +233,7 @@ def main():
         fibre_grams=10.1,
     )
 
-    print(users_db)
+    # print(users_db)
 
     # resp = client.get("/")
     # print(resp.json())
@@ -225,11 +243,26 @@ def main():
     # print(food_log)
     # print(resp.status_code)
 
-    payload = {"username": user1["username"], "password": LAME_PASSWORD}
-    print(payload)
-    resp = client.post("/token", data=payload)
+    # payload = {"username": user1["username"], "password": LAME_PASSWORD}
+    # # print(payload)
+    # resp = client.post("/token", data=payload)
+    # # print(resp.status_code)
+    # # print(resp.json())
+    # data = resp.json()
+    # token = data["access_token"]
+    # headers = {"Authorization": f"Bearer {token}"}
+    # payload = dict(id=1, user=user1, food=food1, number_servings=1.5)
+    # resp = client.post("/", json=payload, headers=headers)
+    # print(resp.json())
+    # print(resp.status_code)
+    # print(food_log)
+
+    headers = {"Authorization": "Bearer fake_token"}
+    payload = dict(id=1, user=user1, food=food1, number_servings=1.5)
+    resp = client.post("/", json=payload, headers=headers)
     print(resp.status_code)
     print(resp.json())
+
 
 
 if __name__ == '__main__':
