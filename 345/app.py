@@ -106,12 +106,6 @@ def create_access_token(data: dict, expires_delta: timedelta):
     return encoded_jwt
 
 
-# def fake_decode_token(token):
-#     return User(
-#         id=-1, username=token + "fakedecoded", password=""
-#     )
-
-
 def get_current_user(token: str = Depends(oauth2_scheme)):
     user = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     return user
@@ -182,8 +176,6 @@ async def get_foods_for_user(current_user: User = Depends(get_current_user)):
     food entries are filtered on logged in user.
     """
 
-    print(current_user)
-
     return [
         food_entry
         for food_entry in food_log.values()
@@ -192,9 +184,15 @@ async def get_foods_for_user(current_user: User = Depends(get_current_user)):
 
 
 @app.put("/{entry_id}", response_model=FoodEntry)
-async def update_food_entry(entry_id: int, new_entry: FoodEntry):
+async def update_food_entry(entry_id: int, new_entry: FoodEntry, token=Depends(oauth2_scheme)):
     if entry_id not in food_log:
         raise HTTPException(status_code=404, detail="Food entry not found")
+
+    if entry_id not in food_log:
+        raise HTTPException(status_code=404, detail="Food entry not found")
+
+    if food_log[entry_id].user.id != get_current_user(token)['user_id']:
+        raise HTTPException(status_code=400, detail="Food entry not owned by you")
 
     food_log[entry_id] = new_entry
 
@@ -202,9 +200,15 @@ async def update_food_entry(entry_id: int, new_entry: FoodEntry):
 
 
 @app.delete("/{entry_id}", response_model=Dict[str, bool])
-async def delete_food_entry(entry_id: int):
+async def delete_food_entry(entry_id: int, token=Depends(oauth2_scheme)):
     if entry_id not in food_log:
         raise HTTPException(status_code=404, detail="Food entry not found")
+
+    if entry_id not in food_log:
+        raise HTTPException(status_code=404, detail="Food entry not found")
+
+    if food_log[entry_id].user.id != get_current_user(token)['user_id']:
+        raise HTTPException(status_code=400, detail="Food entry not owned by you")
 
     del food_log[entry_id]
 
@@ -227,35 +231,45 @@ def _create_food_as_user(client, payload, username):
     return headers
 
 
-def main():
-    print('thank you for looking after Mama and Naia')
-
-    client = TestClient(app)
-
-    user1 = dict(id=1, username="tim", password=LAME_PASSWORD)
-    user2 = dict(id=2, username="sara", password=LAME_PASSWORD)
-
-    for usr in (user1, user2):
-        client.post("/create_user", json=usr)
-
-    food1 = dict(
-        id=1,
-        name="egg",
-        serving_size="piece",
-        kcal_per_serving=78,
-        protein_grams=6.2,
-        fibre_grams=0,
-    )
-
-    food2 = dict(
-        id=2,
-        name="oatmeal",
-        serving_size="100 grams",
-        kcal_per_serving=336,
-        protein_grams=13.2,
-        fibre_grams=10.1,
-    )
-
-
-if __name__ == '__main__':
-    main()
+# def main():
+#     print('thank you for looking after Mama and Naia')
+#
+#     client = TestClient(app)
+#
+#     user1 = dict(id=1, username="tim", password=LAME_PASSWORD)
+#     user2 = dict(id=2, username="sara", password=LAME_PASSWORD)
+#
+#     for usr in (user1, user2):
+#         client.post("/create_user", json=usr)
+#
+#     food1 = dict(
+#         id=1,
+#         name="egg",
+#         serving_size="piece",
+#         kcal_per_serving=78,
+#         protein_grams=6.2,
+#         fibre_grams=0,
+#     )
+#
+#     food2 = dict(
+#         id=2,
+#         name="oatmeal",
+#         serving_size="100 grams",
+#         kcal_per_serving=336,
+#         protein_grams=13.2,
+#         fibre_grams=10.1,
+#     )
+#
+#     payload = dict(id=1, user=user1, food=food1, number_servings=1.5)
+#     _create_food_as_user(client, payload, user1["username"])
+#     payload = dict(id=2, user=user2, food=food2, number_servings=2)
+#     headers = _create_food_as_user(client, payload, user2["username"])
+#     # cannot delete user1 food as user2
+#     resp = client.delete("/1", headers=headers)
+#     print(resp.status_code)
+#     print(resp.json())
+#
+#
+#
+# if __name__ == '__main__':
+#     main()
