@@ -12,6 +12,7 @@ __all__ = [
 
 import pandas as pd
 from sklearn.datasets import load_iris
+import numpy as np
 
 # you can set as_frame to False, but this will complicate the solution
 # because you have to work with numpyand arrays
@@ -46,7 +47,15 @@ def get_nr_samples(data: tuple) -> int:
     Returns:
         int: Number of samples (instances) in the data set.
     """
-    raise NotImplementedError("You have to implement this function first!")
+
+    if data:
+        if isinstance(data[1], pd.Series):
+            nr_samples = data[1].size
+            return nr_samples
+        else:
+            raise ValueError("Data passed is invalid!")
+    else:
+        raise ValueError("Data passed is invalid!")
 
 
 def get_dim(data: tuple) -> int:
@@ -64,7 +73,14 @@ def get_dim(data: tuple) -> int:
     Returns:
         int: Number of dimensions (features) in the data set.
     """
-    raise NotImplementedError("You have to implement this function first!")
+    if data:
+        if isinstance(data[0], pd.DataFrame):
+            dim = list(data[0].columns)
+            return len(dim)
+        else:
+            raise ValueError("Data passed is invalid!")
+    else:
+        raise ValueError("Data passed is invalid!")
 
 
 def get_nr_samples_per_class(data: tuple) -> pd.Series:
@@ -76,7 +92,13 @@ def get_nr_samples_per_class(data: tuple) -> pd.Series:
     Returns:
         pd.Series: Series with number of samples for each class.
     """
-    raise NotImplementedError("You have to implement this function first!")
+    if data:
+        if isinstance(data[1], pd.Series):
+            return data[1].value_counts()
+        else:
+            raise ValueError("Data passed is invalid!")
+    else:
+        raise ValueError("Data passed is invalid!")
 
 
 def get_rel_nr_samples_per_class(data: tuple) -> pd.Series:
@@ -90,7 +112,13 @@ def get_rel_nr_samples_per_class(data: tuple) -> pd.Series:
     Returns:
         pd.Series: Series with percentage (between 0 and 1) of samples for each class.
     """
-    raise NotImplementedError("You have to implement this function first!")
+    if data:
+        if isinstance(data[1], pd.Series):
+            return get_nr_samples_per_class(data) / get_nr_samples(data)
+        else:
+            raise ValueError("Data passed is invalid!")
+    else:
+        raise ValueError("Data passed is invalid!")
 
 
 def get_nr_missing_values(data: tuple) -> int:
@@ -105,7 +133,16 @@ def get_nr_missing_values(data: tuple) -> int:
         int: Number of missing values in the data set.
     """
     # sum can only sum along axis 0 (indices) or 1 (columns), so we need to call it twice
-    raise NotImplementedError("You have to implement this function first!")
+    if data:
+        if isinstance(data[0], pd.DataFrame):
+            sum1 = data[0].isna().sum(axis=0).sum()
+            sum2 = data[1].isna().sum()
+
+            return sum1 + sum2
+        else:
+            raise ValueError("Data passed is invalid!")
+    else:
+        raise ValueError("Data passed is invalid!")
 
 
 def get_stats_per_feature(
@@ -125,7 +162,32 @@ def get_stats_per_feature(
     Returns:
         pd.DataFrame: A data frame with the requested summary statistics for each feature.
     """
-    raise NotImplementedError("You have to implement this function first!")
+    stats_dict = {}
+    # stats_dict['feature'] = features
+    if data:
+        if isinstance(data[0], pd.DataFrame):
+            for stat in stats:
+                stat_list = []
+                if stat == 'mean':
+                    for f in features:
+                        stat_list.append(round(data[0][f].mean(), 2))
+                elif stat == 'min':
+                    for f in features:
+                        stat_list.append(round(data[0][f].min(), 2))
+                elif stat == 'max':
+                    for f in features:
+                        stat_list.append(round(data[0][f].max(), 2))
+                elif stat == 'std':
+                    for f in features:
+                        stat_list.append(round(data[0][f].std(), 2))
+
+                stats_dict[stat] = stat_list
+
+            return pd.DataFrame(stats_dict).T
+        else:
+            raise ValueError("Data passed is invalid!")
+    else:
+        raise ValueError("Data passed is invalid!")
 
 
 def get_correlation_per_feature(
@@ -144,17 +206,12 @@ def get_correlation_per_feature(
     Returns:
         pd.Series: Value of feature correlation with target.
     """
-    raise NotImplementedError("You have to implement this function first!")
+    if data:
+        if isinstance(data[0], pd.DataFrame):
+            new_data = data[0].assign(target=data[1])
+            return new_data.corr(method='pearson').loc[features, 'target']
+        else:
+            raise ValueError("Data passed is invalid!")
+    else:
+        raise ValueError("Data passed is invalid!")
 
-
-def main():
-    print("thank you for looking after mama and naia")
-    # here you can try out your functions!
-    # only called when directly run so no problem when imported from the test file
-    # print(IRIS_DATA[0].head())  # show the first 5 lines.
-    # print(IRIS_DATA[1])
-    print(get_nr_classes(IRIS_DATA))  # pass the data to the function and return nr classes.
-
-
-if __name__ == "__main__":
-    main()
