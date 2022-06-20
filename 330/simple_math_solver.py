@@ -6,44 +6,36 @@ from typing import List, Union, Iterable
 def find_all_solutions(
         operator_path: List[str], expected_result: int
 ) -> Union[List[List[int]], Iterable[List[int]]]:
-    solutions = []
-    # check for valid input parameters
-    for op in operator_path:
-        if op not in ['+', '-', '*']:
-            raise ValueError('Operator not supported')
-
     if not isinstance(expected_result, int):
-        raise ValueError('Result type not supported')
+        raise ValueError("Result must be an integer type!")
 
-    priority = {'*': 0, '+': 1, '-': 2}
-    operator_path.sort(key=priority.get)
-    operations_map = {
-        "+": add,
-        "-": sub,
-        "*": mul
-    }
-    operands = [i for i in range(1, 10)]
+    if len([o for o in operator_path if o not in ('+', '-', '*')]) >= 1:
+        raise ValueError("Operators can only be one of +, -, *")
 
-    for i in permutations(operands, len(operator_path) + 1):
-        combined = [None] * (len(list(i)) + len(operator_path))
-        combined[::2] = list(i)
-        combined[1::2] = operator_path
+    digits = [d for d in range(1, 10)]
+    solutions = []
 
-        result = combined[0]
-        for j in range(1, len(combined)):
-            if combined[j - 1] in operations_map:
-                result = operations_map[combined[j - 1]](result, combined[j])
-        if result == expected_result:
-            solutions.append(list(i))
-            # print(combined, result, list(i))
+    for op in operator_path:
+        if op == '+':
+            for values in permutations(digits, 2):
+                if values[0] + values[1] == expected_result:
+                    solutions.append(list(values))
+        elif op == '-':
+            for values in permutations(digits, 2):
+                if values[0] - values[1] == expected_result:
+                    solutions.append(list(values))
+        elif op == '*':
+            for values in permutations(digits, 2):
+                if values[0] * values[1] == expected_result:
+                    solutions.append(list(values))
 
     return solutions
 
 
 def main():
-    print('thank you for looking after Naia and Mama')
-    print(find_all_solutions(['*', '-'], 16))
+    print("thank you for looking after mama and naia!")
+    print(find_all_solutions(["*"], 6))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
