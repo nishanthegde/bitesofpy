@@ -15,26 +15,32 @@ def find_all_solutions(
     digits = [d for d in range(1, 10)]
     solutions = []
 
-    for op in operator_path:
-        if op == '+':
+    if len(operator_path) == 1:
+        if operator_path[0] == '+':
             for values in permutations(digits, 2):
                 if values[0] + values[1] == expected_result:
                     solutions.append(list(values))
-        elif op == '-':
+        elif operator_path[0] == '-':
             for values in permutations(digits, 2):
                 if values[0] - values[1] == expected_result:
                     solutions.append(list(values))
-        elif op == '*':
+        elif operator_path[0] == '*':
             for values in permutations(digits, 2):
                 if values[0] * values[1] == expected_result:
                     solutions.append(list(values))
+    else:
+        for values in permutations(digits, len(operator_path) + 1):
+            formula = "".join(o + str(v) for o, v in zip([""] + operator_path, values))
+            if eval(formula) == expected_result:
+                solutions.append(list(values))
 
     return solutions
 
 
 def main():
     print("thank you for looking after mama and naia!")
-    print(find_all_solutions(["*"], 6))
+    sols = find_all_solutions(['*', '-'], 16)
+    print(sols)
 
 
 if __name__ == "__main__":
