@@ -35,13 +35,3 @@ def find_all_solutions(
                 solutions.append(list(values))
 
     return solutions
-
-
-def main():
-    print("thank you for looking after mama and naia!")
-    sols = find_all_solutions(['*', '-'], 16)
-    print(sols)
-
-
-if __name__ == "__main__":
-    main()
