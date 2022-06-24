@@ -10,15 +10,10 @@ def socket_client(address: Tuple[str, int], server_message_length: int):
 
     while True:
         data = s.recv(1024)
+
         if not data:
             break
+        else:
+            s.sendall(sha256(data).digest())
 
     s.close()
-
-
-def main():
-    print("thank you for looking after mama and naia")
-
-
-if __name__ == '__main__':
-    main()
