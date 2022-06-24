@@ -5,8 +5,15 @@ from typing import Tuple
 
 
 def socket_client(address: Tuple[str, int], server_message_length: int):
-    with socket(AF_INET, SOCK_STREAM) as s:
-        s.connect(address)
+    s = socket(AF_INET, SOCK_STREAM)
+    s.connect(address)
+
+    while True:
+        data = s.recv(1024)
+        if not data:
+            break
+
+    s.close()
 
 
 def main():
