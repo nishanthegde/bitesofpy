@@ -6,7 +6,11 @@ VALUE_ERROR_MSG = "Unsupported input value: citations cannot be neither empty no
 
 def h_index(citations: Sequence[int]) -> int:
     """Return the highest number of papers h having at least h citations"""
-    pass
+    if not isinstance(citations, (list, tuple)) and citations is not None:
+        raise TypeError(TYPE_ERROR_MSG)
+    else:
+        if not citations or len(citations) == 0 or sum(1 for i in citations if i < 0) > 0:
+            raise ValueError(VALUE_ERROR_MSG)
 
 
 def i10_index(citations: Sequence[int]) -> int:
