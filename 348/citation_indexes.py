@@ -11,6 +11,13 @@ def h_index(citations: Sequence[int]) -> int:
     else:
         if not citations or len(citations) == 0 or sum(1 for i in citations if i < 0) > 0:
             raise ValueError(VALUE_ERROR_MSG)
+    h = 1
+    while 1:
+        if not sum(1 for i in citations if i >= h) >= h:
+            break
+        h += 1
+
+    return h - 1
 
 
 def i10_index(citations: Sequence[int]) -> int:
@@ -23,11 +30,3 @@ def i10_index(citations: Sequence[int]) -> int:
             raise ValueError(VALUE_ERROR_MSG)
 
     return sum(1 for i in citations if i >= 10)
-
-
-def main():
-    print('thank you for looking after mama and naia')
-
-
-if __name__ == '__main__':
-    main()
