@@ -19,26 +19,40 @@ def convolution2D(
     """
 
     if padding is None:
-        padding = (kernel.shape[0] - 1) / 2
+        p = (kernel.shape[0] - 1) / 2
 
-    if padding > 0:
-        image = np.pad(image, pad_width=int(padding), mode='constant', constant_values=0)
+    # if padding > 0:
+    #     image = np.pad(image, pad_width=int(padding), mode='constant', constant_values=0)
 
-    # return image
-    return np.multiply(image, kernel)
+    # apply padding
+    image = np.pad(image, pad_width=int(p), mode='constant', constant_values=0)
+
+    # initialize feature_map
+    feature_map = np.zeros((kernel.shape[0], kernel.shape[1]))
+
+    # populate feature_map
+    for r in range(0, feature_map.shape[0]):
+        for c in range(r, feature_map.shape[1]):
+            feature_map[r][c] = np.sum(np.multiply(image, kernel))
+
+    return feature_map
 
 
 def main():
     print("thank you for looking after mama and naia")
+
     KERNEL_1x1 = np.array([[1]])
     IMAGE_1x1 = np.array([[1]])
-    IMAGE_3x3 = np.random.rand(3, 3)
-    KERNEL_3x3_SHARPEN = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
+    # IMAGE_3x3 = np.random.rand(3, 3)
+    # KERNEL_3x3_SHARPEN = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
     # feature_map = convolution2D(IMAGE_1x1, KERNEL_1x1, 0, 1)
-    feature_map = convolution2D(IMAGE_3x3, KERNEL_3x3_SHARPEN, None, 1)
+    # image_nh_3x3 = np.array([[105, 102, 100], [103, 99, 103], [101, 98, 104]])
+    # kernel_nh_3x3 = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
+
+    # feature_map = convolution2D(image_nh_3x3, kernel_nh_3x3, None, 1)
+    feature_map = convolution2D(IMAGE_1x1, KERNEL_1x1, None, 1)
     print(feature_map)
     print(feature_map.shape)
-    # np.testing.assert_array_equal(feature_map.shape, (1, 1))
 
 
 if __name__ == "__main__":
