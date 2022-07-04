@@ -37,24 +37,28 @@ def convolution2D(
     image = np.pad(image, pad_width=int(p), mode='constant', constant_values=0)
     # print(image)
 
+    j = 0
     # populate feature_map
     # move feature map from top to bottom over image
-    for row in range(0, n_out, stride):
+    for row in range(0, image.shape[1] + 1, stride):
         # column-wise population for each row
         # move feature map from left to right over image
         i = 0
+        if j == n_out:
+            break
         row_elements = []
-
-        for col in range(kernel.shape[1], image.shape[1] + 1, stride):
-            if i > n_out:
+        for col in range(kernel.shape[1], image.shape[1] + stride, stride):
+            if i > n_out + stride:
                 break
             # print(image[row:n_out+row, i:col])
             image_subset = image[row:kernel.shape[1] + row, i:col]
+            # print(i)
             # print(image_subset)
             row_elements.append(np.sum(np.multiply(image_subset, kernel)))
-            i += 1
-
-        feature_map[row, :] = row_elements
+            i += stride
+        print(j)
+        feature_map[j, :] = row_elements
+        j += 1
 
     return feature_map
 
@@ -73,9 +77,11 @@ def main():
 
     # feature_map = convolution2D(IMAGE_3x3, KERNEL_3x3_SHARPEN, 0, 1)
     # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, 0, 1)
-    feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, None, 1)
+    # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, None, 1)
+    feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, 0, 2)
+
     print(feature_map)
-    print(feature_map.shape)
+    # print(feature_map.shape)
 
 
 if __name__ == "__main__":
