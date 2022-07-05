@@ -48,15 +48,17 @@ def convolution2D(
             break
         row_elements = []
         for col in range(kernel.shape[1], image.shape[1] + stride, stride):
-            if i > n_out + stride:
+            if i > image.shape[1]:
                 break
             # print(image[row:n_out+row, i:col])
             image_subset = image[row:kernel.shape[1] + row, i:col]
+            if image_subset.shape != kernel.shape:
+                break
             # print(i)
             # print(image_subset)
             row_elements.append(np.sum(np.multiply(image_subset, kernel)))
             i += stride
-        print(j)
+        # print(j)
         feature_map[j, :] = row_elements
         j += 1
 
@@ -74,14 +76,18 @@ def main():
     kernel_nh_3x3 = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
     IMAGE_9x9 = np.random.rand(9, 9)
     KERNEL_3x3_SHARPEN = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
+    IMAGE_256x256 = np.random.rand(256, 256)
+    KERNEL_5x5 = np.random.rand(5, 5)
 
     # feature_map = convolution2D(IMAGE_3x3, KERNEL_3x3_SHARPEN, 0, 1)
     # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, 0, 1)
     # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, None, 1)
-    feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, 0, 2)
-
+    # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, 0, 2)
+    # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, None, 2)
+    # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, 0, 3)
+    # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, 2, 3)
+    feature_map = convolution2D(IMAGE_256x256, KERNEL_5x5, None, 3)
     print(feature_map)
-    # print(feature_map.shape)
 
 
 if __name__ == "__main__":
