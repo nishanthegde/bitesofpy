@@ -19,6 +19,9 @@ def convolution2D(
         np.array: the feature map constructed from the image and the kernel.
     """
 
+    if not isinstance(image, np.ndarray) or not isinstance(kernel, np.ndarray):
+        raise TypeError
+
     if padding is None:
         p = (kernel.shape[0] - 1) / 2
     else:
@@ -79,16 +82,20 @@ def main():
     IMAGE_256x256 = np.random.rand(256, 256)
     KERNEL_5x5 = np.random.rand(5, 5)
 
-    # feature_map = convolution2D(IMAGE_3x3, KERNEL_3x3_SHARPEN, 0, 1)
-    # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, 0, 1)
-    # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, None, 1)
-    # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, 0, 2)
-    # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, None, 2)
-    # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, 0, 3)
-    # feature_map = convolution2D(IMAGE_9x9, KERNEL_3x3_SHARPEN, 2, 3)
-    feature_map = convolution2D(IMAGE_256x256, KERNEL_5x5, None, 3)
-    print(feature_map)
+    KERNEL_3x3_BLUR = np.ones((3, 3)) * 1 / 9
+    IMAGE_5x5_OUTER_SQUARE = np.array(
+        [
+            [1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1],
+        ]
+    )
 
+    feature_map = convolution2D(IMAGE_5x5_OUTER_SQUARE, KERNEL_3x3_BLUR, 0, 1)
+    print(feature_map)
+    print(np.array([[5 / 9, 3 / 9, 5 / 9], [3 / 9, 0, 3 / 9], [5 / 9, 3 / 9, 5 / 9]]))
 
 if __name__ == "__main__":
     main()
