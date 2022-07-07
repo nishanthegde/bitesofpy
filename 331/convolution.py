@@ -22,13 +22,40 @@ def convolution2D(
     if not isinstance(image, np.ndarray) or not isinstance(kernel, np.ndarray):
         raise TypeError
 
+    if image.ndim != 2 or kernel.ndim != 2:
+        raise ValueError
+
+    row, col = image.shape
+    if row != col:
+        raise ValueError
+
+    row, col = kernel.shape
+    if row != col:
+        raise ValueError
+
+    if not np.issubdtype(image.dtype, np.number) or not np.issubdtype(kernel.dtype, np.number):
+        raise TypeError
+
+    if (kernel.size % 2) == 0:
+        raise ValueError
+
+    if kernel.size > image.size:
+        raise ValueError
+
     if padding is None:
         p = (kernel.shape[0] - 1) / 2
     else:
+        if not isinstance(padding, int):
+            raise TypeError
+        if padding < 0:
+            raise ValueError
         p = padding
 
-    # if padding > 0:
-    #     image = np.pad(image, pad_width=int(padding), mode='constant', constant_values=0)
+    if stride <= 0:
+        raise ValueError
+
+    if not isinstance(stride, int):
+        raise TypeError
 
     # calculate feature map dimension
     n_out = math.floor(((image.shape[0] + (2 * p) - kernel.shape[0]) / stride) + 1)
@@ -66,36 +93,3 @@ def convolution2D(
         j += 1
 
     return feature_map
-
-
-def main():
-    print("thank you for looking after mama and naia")
-
-    KERNEL_1x1 = np.array([[1]])
-    IMAGE_1x1 = np.array([[1]])
-    IMAGE_3x3 = np.random.rand(3, 3)
-    KERNEL_3x3_SHARPEN = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
-    image_nh_3x3 = np.array([[105, 102, 100], [103, 99, 103], [101, 98, 104]])
-    kernel_nh_3x3 = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
-    IMAGE_9x9 = np.random.rand(9, 9)
-    KERNEL_3x3_SHARPEN = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
-    IMAGE_256x256 = np.random.rand(256, 256)
-    KERNEL_5x5 = np.random.rand(5, 5)
-
-    KERNEL_3x3_BLUR = np.ones((3, 3)) * 1 / 9
-    IMAGE_5x5_OUTER_SQUARE = np.array(
-        [
-            [1, 1, 1, 1, 1],
-            [1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1],
-            [1, 1, 1, 1, 1],
-        ]
-    )
-
-    feature_map = convolution2D(IMAGE_5x5_OUTER_SQUARE, KERNEL_3x3_BLUR, 0, 1)
-    print(feature_map)
-    print(np.array([[5 / 9, 3 / 9, 5 / 9], [3 / 9, 0, 3 / 9], [5 / 9, 3 / 9, 5 / 9]]))
-
-if __name__ == "__main__":
-    main()
