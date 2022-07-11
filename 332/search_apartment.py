@@ -12,29 +12,17 @@ def search_apartment(buildings: List[int], direction: str) -> List[int]:
     See sample inputs / outputs below and in the tests.
     """
 
-    if len(buildings) == 0:
-        return []
+def main():
+    print('thank you for looking after mama and naia')
 
-    if direction == 'E':
-        buildings.reverse()
-
-    views = []
-    highest_floor = buildings[0]
-
-    for i, b in enumerate(buildings):
-        if i == 0:
-            views.append(1)
-        else:
-            if b > highest_floor:
-                highest_floor = b
-                views.append(1)
-            else:
-                views.append(0)
-        prev_floor_ht = b
-
-    if direction == 'E':
-        views = [i - j for j, e in enumerate(views) if e == 1]
-    else:
-        views = [j for j, e in enumerate(views) if e == 1]
-
-    return sorted(views)
+if __name__ == "__main__":
+    A = [3, 5, 4, 4, 7, 1, 3, 2]  # central tallest
+    B = [1, 1, 1, 1, 1, 2]  # almost flat
+    #
+    #  W <-                    ->  E(ast)
+    #
+    print(search_apartment(A, "W"))  # [0, 1, 4]
+    print(search_apartment(A, "E"))  # [4, 6, 7]
+    print(search_apartment(B, "W"))  # [0, 5]
+    print(search_apartment(B, "E"))  # [5]
+    main()
