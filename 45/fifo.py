@@ -2,7 +2,7 @@ from collections import deque
 
 
 def my_queue(n=5):
-    mq = deque()
+    mq = deque(maxlen=n)
     return mq
 
 
