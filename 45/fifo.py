@@ -2,8 +2,8 @@ from collections import deque
 
 
 def my_queue(n=5):
-    q = deque(maxlen=n)
-    return q
+    mq = deque()
+    return mq
 
 
 if __name__ == '__main__':
