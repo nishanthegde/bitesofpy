@@ -5,9 +5,6 @@ from textblob import Word
 MIN_CONFIDENCE = 0.5
 
 
-# define SuggestedWord NamedTuple with attributes
-# word (str) and confidence (float)
-
 class SuggestedWord(NamedTuple):
     word: str
     confidence: float
@@ -20,14 +17,13 @@ def get_spelling_suggestions(
     Find spelling suggestions with at least minimum confidence score
     Use textblob.Word (check out the docs)
     """
+    suggestions = []
     w = Word(word)
 
-    return w.spellcheck()
+    for s in w.spellcheck():
+        if s[1] >= min_confidence:
+            word = s[0]
+            confidence = s[1]
+            suggestions.append(SuggestedWord(word, confidence))
 
-
-def main():
-    print('thank you for everything!')
-    print(get_spelling_suggestions('falibility'))
-
-if __name__ == '__main__':
-    main()
+    return suggestions
