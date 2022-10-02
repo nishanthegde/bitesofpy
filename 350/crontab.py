@@ -31,6 +31,9 @@ class CrontabScheduler:
 
         if parts[0] == '*':
             return self.now + timedelta(minutes=1)
+        else:
+            delta_minutes = 60 - self.now.minute + int(parts[0].strip())
+            return self.now + timedelta(minutes=delta_minutes)
 
         return self.now
 
@@ -42,6 +45,10 @@ def main():
     it = CrontabScheduler(cron_expr, ref_date)
     print(next(it))
 
+    cron_expr = "10 * * *"
+    ref_date = datetime(2022, 6, 1, 12, 12)
+    it = CrontabScheduler(cron_expr, ref_date)
+    print(next(it))
 
 if __name__ == '__main__':
     main()
