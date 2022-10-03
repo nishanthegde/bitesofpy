@@ -28,14 +28,22 @@ class CrontabScheduler:
         # However, you are supposed to implement your own logic here to return the next
         # datetime according to the bite description.
         parts = self.expr.split()
+        every_min_flag = 0
 
         if parts[0] == '*':
-            return self.now + timedelta(minutes=1)
+            every_min_flag = 1
+            next_at = self.now + timedelta(minutes=1)
         else:
             delta_minutes = 60 - self.now.minute + int(parts[0].strip())
-            return self.now + timedelta(minutes=delta_minutes)
+            next_at = self.now + timedelta(minutes=delta_minutes)
 
-        return self.now
+        if parts[1] == '*':
+            pass
+        else:
+            delta_minutes = 60 - self.now.minute + int(parts[0].strip())
+            next_at = self.now + timedelta(minutes=delta_minutes)
+
+        return next_at
 
 
 def main():
@@ -49,6 +57,7 @@ def main():
     ref_date = datetime(2022, 6, 1, 12, 12)
     it = CrontabScheduler(cron_expr, ref_date)
     print(next(it))
+
 
 if __name__ == '__main__':
     main()
