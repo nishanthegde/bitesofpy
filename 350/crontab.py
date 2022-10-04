@@ -40,8 +40,11 @@ class CrontabScheduler:
         if parts[1] == '*':
             pass
         else:
-            delta_minutes = 60 - self.now.minute + int(parts[0].strip())
-            next_at = self.now + timedelta(minutes=delta_minutes)
+            # check if hour of reference is the same as hour in cron expression
+            if int(parts[1].strip()) == self.now.hour:
+                print('hour is the same increment to what is specified for min in cron expression')
+            else:
+                print('hour is the not the same go to hour in the cron expression')
 
         return next_at
 
@@ -58,6 +61,10 @@ def main():
     it = CrontabScheduler(cron_expr, ref_date)
     print(next(it))
 
+    cron_expr = "* 1 * *"
+    ref_date = datetime(2022, 6, 1, 12, 12)
+    it = CrontabScheduler(cron_expr, ref_date)
+    print(next(it))
 
 if __name__ == '__main__':
     main()
