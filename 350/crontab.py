@@ -42,29 +42,35 @@ class CrontabScheduler:
         else:
             # check if hour of reference is the same as hour in cron expression
             if int(parts[1].strip()) == self.now.hour:
-                print('hour is the same increment to what is specified for min in cron expression')
+                # hour is the same increment to what is specified for min in cron expression
+                pass
             else:
-                print('hour is the not the same go to hour in the cron expression')
+                # hour is the not the same go to hour in the cron expression
+                # delta_hours = 24 - self.now.hour + int(parts[1].strip())
+                delta_minutes = ((23 - self.now.hour) * 60) + (60 - self.now.minute) + (int(parts[1].strip()) * 60)
+                print(delta_minutes)
+                next_at = self.now + timedelta(minutes=delta_minutes)
 
         return next_at
 
-
 def main():
     print("thank you for everything!")
-    cron_expr = "* * * *"
+
+    # cron_expr = "* * * *"
+    # ref_date = datetime(2022, 6, 1, 12, 12)
+    # it = CrontabScheduler(cron_expr, ref_date)
+    # print(next(it))
+    #
+    # cron_expr = "10 * * *"
+    # ref_date = datetime(2022, 6, 1, 12, 12)
+    # it = CrontabScheduler(cron_expr, ref_date)
+    # print(next(it))
+
+    cron_expr = "* 5 * *"
     ref_date = datetime(2022, 6, 1, 12, 12)
     it = CrontabScheduler(cron_expr, ref_date)
     print(next(it))
 
-    cron_expr = "10 * * *"
-    ref_date = datetime(2022, 6, 1, 12, 12)
-    it = CrontabScheduler(cron_expr, ref_date)
-    print(next(it))
-
-    cron_expr = "* 1 * *"
-    ref_date = datetime(2022, 6, 1, 12, 12)
-    it = CrontabScheduler(cron_expr, ref_date)
-    print(next(it))
 
 if __name__ == '__main__':
     main()
