@@ -43,15 +43,27 @@ class CrontabScheduler:
             # check if hour of reference is the same as hour in cron expression
             if int(parts[1].strip()) == self.now.hour:
                 # hour is the same increment to what is specified for min in cron expression
-                pass
+                if every_min_flag == 1:  # if every_min_flag is set then go to the next minute
+                    delta_minutes = 1
+                    next_at = self.now + timedelta(minutes=delta_minutes)
+                else: # otherwise check if current minute is less than minute specified in the first part
+                    if self.now.minute < int(parts[0].strip()):
+                        delta_minutes = int(parts[0].strip()) - self.now.minute
+                        next_at = self.now + timedelta(minutes=delta_minutes)
+                    else: #otherwise go to next day to the minute specified in the first part
+                        delta_minutes = ((23 - self.now.hour) * 60) + (60 - self.now.minute) + (int(parts[1].strip()) * 60) + int(parts[0].strip())
+                        next_at = self.now + timedelta(minutes=delta_minutes)
             else:
                 # hour is the not the same go to hour in the cron expression
-                # delta_hours = 24 - self.now.hour + int(parts[1].strip())
-                delta_minutes = ((23 - self.now.hour) * 60) + (60 - self.now.minute) + (int(parts[1].strip()) * 60)
-                print(delta_minutes)
-                next_at = self.now + timedelta(minutes=delta_minutes)
+                if every_min_flag == 1:  # if every_min_flag is set then go to minute 0
+                    delta_minutes = ((23 - self.now.hour) * 60) + (60 - self.now.minute) + (int(parts[1].strip()) * 60)
+                    next_at = self.now + timedelta(minutes=delta_minutes)
+                else: # otherwise go to minute specified in the first part
+                    delta_minutes = ((23 - self.now.hour) * 60) + (60 - self.now.minute) + (int(parts[1].strip()) * 60) + int(parts[0].strip())
+                    next_at = self.now + timedelta(minutes=delta_minutes)
 
         return next_at
+
 
 def main():
     print("thank you for everything!")
@@ -67,6 +79,21 @@ def main():
     # print(next(it))
 
     cron_expr = "* 5 * *"
+    ref_date = datetime(2022, 6, 1, 12, 12)
+    it = CrontabScheduler(cron_expr, ref_date)
+    print(next(it))
+
+    cron_expr = "9 5 * *"
+    ref_date = datetime(2022, 6, 1, 12, 12)
+    it = CrontabScheduler(cron_expr, ref_date)
+    print(next(it))
+
+    cron_expr = "* 12 * *"
+    ref_date = datetime(2022, 6, 1, 12, 12)
+    it = CrontabScheduler(cron_expr, ref_date)
+    print(next(it))
+
+    cron_expr = "14 12 * *"
     ref_date = datetime(2022, 6, 1, 12, 12)
     it = CrontabScheduler(cron_expr, ref_date)
     print(next(it))
