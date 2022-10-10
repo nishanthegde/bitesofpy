@@ -158,7 +158,7 @@ def main():
     # print(next(it))
 
     cron_expr = "* * 4 *"
-    ref_date = datetime(2022, 6, 3, 13, 12)
+    ref_date = datetime(2022, 6, 3, 12, 12)
     it = CrontabScheduler(cron_expr, ref_date)
     print(next(it))
 
