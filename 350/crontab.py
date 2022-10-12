@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
+
 @dataclass
 class CrontabScheduler:
     """A scheduler based on cron expressions.
@@ -31,6 +32,7 @@ class CrontabScheduler:
         every_min_flag = 0
         every_hour_flag = 0
         every_day_flag = 0
+        every_month_flag = 0
 
         if parts[0] == '*':
             every_min_flag = 1
@@ -96,7 +98,7 @@ class CrontabScheduler:
             else:
                 # day is not the same
 
-                # check what was specified in the hour and month parts of the expression
+                # check what was specified in the hour and minute parts of the expression
 
                 if every_hour_flag == 1:  # if every_hour_flag is set then go to hour 0
                     if every_min_flag == 1:  # if every_min_flag is set then go to minute 0
@@ -109,7 +111,7 @@ class CrontabScheduler:
                         elif self.now.day == int(parts[2].strip()):  # if ref day is same as cron day
                             delta_minutes = 1
                             next_at = self.now + timedelta(minutes=1)
-                        else: # ref day is less than cron day
+                        else:  # ref day is less than cron day
                             # go to cron day in next month
                             delta_months = 1
                             next_at = self.now + relativedelta(months=delta_months)
@@ -119,6 +121,65 @@ class CrontabScheduler:
                         pass
                         return None
                 else:  # a number is specified in hour part of cron
+                    pass
+
+        # check month part of cron expression
+
+        if parts[3] == '*':  # if star than set monthly flag
+            every_month_flag_flag = 1
+            pass
+        else:  # a number is specified in month part of cron
+            # check if month in reference datetime is the same as month in mont part of expression
+
+            if int(parts[3].strip()) == self.now.month:  # if month is the same
+                # check what was specified in the day, hour and min parts of the expression
+
+                if every_day_flag == 1:
+                    if every_hour_flag == 1:  # if every_hour_flag is set then go to the next minute
+                        if every_min_flag == 1:  # if every_min_flag is set then go to the next minute
+                            delta_minutes = 1
+                            next_at = self.now + timedelta(minutes=delta_minutes)
+                        else:  # a number is specified in the minute part
+                            # check if minute in reference datetime is less than minute in cron expression
+
+                            if self.now.minute < int(parts[0].strip()):  # if ref min is less than cron min
+                                delta_minutes = int(parts[0].strip()) - self.now.minute
+                                next_at = self.now + timedelta(minutes=delta_minutes)
+                            else:  # otherwise go to next day to the minute specified in the first part
+                                pass
+                                return None
+                    else:  # a number is specified in hour part of cron
+                        pass
+                else: # a number is specified in day part of cron
+                    pass
+            else:
+                # month is not the same
+
+                # check what was specified in the day, hour and min parts of the expression
+                if every_day_flag == 1:
+                    if every_hour_flag == 1:  # if every_hour_flag is set then go to hour 0
+                        if every_min_flag == 1:  # if every_min_flag is set then go to minute 0
+                            # check if month in reference datetime is less than month in cron expression
+
+                            if self.now.month < int(parts[3].strip()):  # if ref month is less than cron month
+                                delta_months =  int(parts[3].strip()) - self.now.month
+                                next_at = self.now + relativedelta(months=delta_months)
+                                next_at = datetime(next_at.year, next_at.month, 1, 0, 0)
+                            elif self.now.month == int(parts[3].strip()):  # if ref month is same as month
+                                delta_minutes = 1
+                                next_at = self.now + timedelta(minutes=1)
+                            else:  # ref month is more than cron month
+                                # go to cron month in next year
+                                delta_years = 1
+                                next_at = self.now + relativedelta(years=delta_years)
+                                next_at = datetime(next_at.year, int(parts[3].strip()), 1, 0, 0)
+                        else:  # a number is specified in the minute part
+                            # check if minute in reference datetime is less than minute in cron expression
+                            pass
+                            return None
+                    else:  # a number is specified in hour part of cron
+                        pass
+                else:  # a number is specified in day part of cron
                     pass
 
         return next_at
@@ -157,11 +218,15 @@ def main():
     # it = CrontabScheduler(cron_expr, ref_date)
     # print(next(it))
 
-    cron_expr = "* * 4 *"
-    ref_date = datetime(2022, 6, 3, 12, 12)
+    cron_expr = "* * * 1"
+    ref_date = datetime(2022, 6, 1, 12, 12)
     it = CrontabScheduler(cron_expr, ref_date)
     print(next(it))
 
+    cron_expr = "* * * 12"
+    ref_date = datetime(2022, 6, 1, 12, 12)
+    it = CrontabScheduler(cron_expr, ref_date)
+    print(next(it))
 
 if __name__ == '__main__':
     main()
