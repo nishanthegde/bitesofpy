@@ -218,13 +218,18 @@ def main():
     # it = CrontabScheduler(cron_expr, ref_date)
     # print(next(it))
 
-    cron_expr = "* * * 1"
-    ref_date = datetime(2022, 6, 1, 12, 12)
-    it = CrontabScheduler(cron_expr, ref_date)
-    print(next(it))
+    # cron_expr = "* * * 1"
+    # ref_date = datetime(2022, 6, 1, 12, 12)
+    # it = CrontabScheduler(cron_expr, ref_date)
+    # print(next(it))
+    #
+    # cron_expr = "* * * 12"
+    # ref_date = datetime(2022, 6, 1, 12, 12)
+    # it = CrontabScheduler(cron_expr, ref_date)
+    # print(next(it))
 
-    cron_expr = "* * * 12"
-    ref_date = datetime(2022, 6, 1, 12, 12)
+    cron_expr = "5 0 * 8"
+    ref_date = datetime(2022, 6, 28, 19, 49)
     it = CrontabScheduler(cron_expr, ref_date)
     print(next(it))
 
