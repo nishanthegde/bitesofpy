@@ -174,9 +174,20 @@ class CrontabScheduler:
                                 next_at = self.now + relativedelta(years=delta_years)
                                 next_at = datetime(next_at.year, int(parts[3].strip()), 1, 0, 0)
                         else:  # a number is specified in the minute part
-                            # check if minute in reference datetime is less than minute in cron expression
-                            pass
-                            return None
+
+                            print('here')
+                            if self.now.month < int(parts[3].strip()):  # if ref month is less than cron month
+                                delta_months = int(parts[3].strip()) - self.now.month
+                                next_at = self.now + relativedelta(months=delta_months)
+                                next_at = datetime(next_at.year, next_at.month, 1, 0, int(parts[0].strip()))
+                            elif self.now.month == int(parts[3].strip()):  # if ref month is same as month
+                                delta_minutes = 1
+                                next_at = self.now + timedelta(minutes=1)
+                            else:  # ref month is more than cron month
+                                # go to cron month in next year
+                                delta_years = 1
+                                next_at = self.now + relativedelta(years=delta_years)
+                                next_at = datetime(next_at.year, int(parts[3].strip()), 1, 0, int(parts[0].strip()))
                     else:  # a number is specified in hour part of cron
                         pass
                 else:  # a number is specified in day part of cron
@@ -228,7 +239,7 @@ def main():
     # it = CrontabScheduler(cron_expr, ref_date)
     # print(next(it))
 
-    cron_expr = "5 0 * 8"
+    cron_expr = "5 * * 8"
     ref_date = datetime(2022, 6, 28, 19, 49)
     it = CrontabScheduler(cron_expr, ref_date)
     print(next(it))

@@ -24,42 +24,40 @@ def day_in_june():
             "10 * * *", datetime(2022, 6, 1, 13, 10), id="10th minute every hour"
         ),
         pytest.param("* 1 * *", datetime(2022, 6, 2, 1, 0), id="every first hour"),
-        # pytest.param("* 5 * *", datetime(2022, 6, 2, 5, 0), id="every fifth hour"),
-        # pytest.param("* * 1 *", datetime(2022, 6, 1, 12, 13), id="every first day"),
-        # pytest.param("* * 21 *", datetime(2022, 6, 21, 0, 0), id="every 21th day"),
-        # pytest.param("* * * 1", datetime(2023, 1, 1, 0, 0), id="every first month"),
-        # pytest.param("* * * 12", datetime(2022, 12, 1, 0, 0), id="every 12th month"),
+        pytest.param("* 5 * *", datetime(2022, 6, 2, 5, 0), id="every fifth hour"),
+        pytest.param("* * 1 *", datetime(2022, 6, 1, 12, 13), id="every first day"),
+        pytest.param("* * 21 *", datetime(2022, 6, 21, 0, 0), id="every 21th day"),
+        pytest.param("* * * 1", datetime(2023, 1, 1, 0, 0), id="every first month"),
+        pytest.param("* * * 12", datetime(2022, 12, 1, 0, 0), id="every 12th month"),
     ],
 )
 def test_next_datetime_with_single_value(cron_expr, first_of_june, expected):
     it = CrontabScheduler(cron_expr, first_of_june)
     assert next(it) == expected
-#
-#
-# @pytest.mark.parametrize(
-#     "cron_expr, expected",
-#     [
-#         pytest.param("5 0 * 8", datetime(2022, 8, 1, 0, 5), id="At 00:05 in August."),
-#         pytest.param(
-#             "15 14 1 *", datetime(2022, 7, 1, 14, 15), id="At 14:15 on day-of-month 1."
-#         ),
-#         pytest.param(
-#             "1 1 1 1",
-#             datetime(2023, 1, 1, 1, 1),
-#             id="At 01:01 on day-of-month 1 in January.",
-#         ),
-#         pytest.param(
-#             "59 23 31 7",
-#             datetime(2022, 7, 31, 23, 59),
-#             id="At 23:59 on day-of-month 31 in July.",
-#         ),
-#     ],
-# )
-# def test_next_datetime_with_multiple_single_values(cron_expr, day_in_june, expected):
-#     it = CrontabScheduler(cron_expr, day_in_june)
-#     assert next(it) == expected
-#
-#
+
+@pytest.mark.parametrize(
+    "cron_expr, expected",
+    [
+        pytest.param("5 * * 8", datetime(2022, 8, 1, 0, 5), id="At 00:05 in August."),
+        # pytest.param(
+        #     "15 14 1 *", datetime(2022, 7, 1, 14, 15), id="At 14:15 on day-of-month 1."
+        # ),
+        # pytest.param(
+        #     "1 1 1 1",
+        #     datetime(2023, 1, 1, 1, 1),
+        #     id="At 01:01 on day-of-month 1 in January.",
+        # ),
+        # pytest.param(
+        #     "59 23 31 7",
+        #     datetime(2022, 7, 31, 23, 59),
+        #     id="At 23:59 on day-of-month 31 in July.",
+        # ),
+    ],
+)
+def test_next_datetime_with_multiple_single_values(cron_expr, day_in_june, expected):
+    it = CrontabScheduler(cron_expr, day_in_june)
+    assert next(it) == expected
+
 # @pytest.mark.parametrize(
 #     "cron_expr, expected",
 #     [
