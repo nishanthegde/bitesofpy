@@ -127,11 +127,35 @@ class CrontabScheduler:
 
         if parts[3] == '*':  # if star than set monthly flag
             every_month_flag_flag = 1
-            pass
+            delta_months = 1
+            next_at = self.now + relativedelta(months=delta_months)
+            next_at = datetime(next_at.year, next_at.month, 1, 0, int(parts[0].strip()))
+
+            if every_day_flag == 1:
+                if every_hour_flag == 1:  # if every_hour_flag is set then go to the next minute
+                    if every_min_flag == 1:  # if every_min_flag is set then go to the next minute
+                        pass
+                    else:  # a number is specified in the minute part
+                        # check if minute in reference datetime is less than minute in cron expression
+
+                        if self.now.minute < int(parts[0].strip()):  # if ref min is less than cron min
+                            delta_minutes = int(parts[0].strip()) - self.now.minute
+                            next_at = self.now + timedelta(minutes=delta_minutes)
+                        else:  # otherwise go to next day to the minute specified in the first part
+                            pass
+                            return None
+                else:  # a number is specified in hour part of cron
+                    pass
+            else:  # a number is specified in day part of cron
+                pass
+
+
         else:  # a number is specified in month part of cron
             # check if month in reference datetime is the same as month in mont part of expression
 
-            if int(parts[3].strip()) == self.now.month:  # if month is the same
+            if int(parts[3].strip()) == self.now.month:
+
+                # if month is the same
                 # check what was specified in the day, hour and min parts of the expression
 
                 if every_day_flag == 1:
@@ -159,6 +183,7 @@ class CrontabScheduler:
                 if every_day_flag == 1:
                     if every_hour_flag == 1:  # if every_hour_flag is set then go to hour 0
                         if every_min_flag == 1:  # if every_min_flag is set then go to minute 0
+
                             # check if month in reference datetime is less than month in cron expression
 
                             if self.now.month < int(parts[3].strip()):  # if ref month is less than cron month
@@ -173,9 +198,10 @@ class CrontabScheduler:
                                 delta_years = 1
                                 next_at = self.now + relativedelta(years=delta_years)
                                 next_at = datetime(next_at.year, int(parts[3].strip()), 1, 0, 0)
-                        else:  # a number is specified in the minute part
+                        else:
 
-                            print('here')
+                            # a number is specified in the minute part
+
                             if self.now.month < int(parts[3].strip()):  # if ref month is less than cron month
                                 delta_months = int(parts[3].strip()) - self.now.month
                                 next_at = self.now + relativedelta(months=delta_months)
@@ -199,47 +225,7 @@ class CrontabScheduler:
 def main():
     print("thank you for everything!")
 
-    # cron_expr = "* * * *"
-    # ref_date = datetime(2022, 6, 1, 12, 12)
-    # it = CrontabScheduler(cron_expr, ref_date)
-    # print(next(it))
-    #
-    # cron_expr = "10 * * *"
-    # ref_date = datetime(2022, 6, 1, 12, 12)
-    # it = CrontabScheduler(cron_expr, ref_date)
-    # print(next(it))
-
-    # cron_expr = "* 5 * *"
-    # ref_date = datetime(2022, 6, 1, 12, 12)
-    # it = CrontabScheduler(cron_expr, ref_date)
-    # print(next(it))
-    #
-    # cron_expr = "9 5 * *"
-    # ref_date = datetime(2022, 6, 1, 12, 12)
-    # it = CrontabScheduler(cron_expr, ref_date)
-    # print(next(it))
-    #
-    # cron_expr = "* 12 * *"
-    # ref_date = datetime(2022, 6, 1, 12, 12)
-    # it = CrontabScheduler(cron_expr, ref_date)
-    # print(next(it))
-    #
-    # cron_expr = "14 12 * *"
-    # ref_date = datetime(2022, 6, 1, 12, 12)
-    # it = CrontabScheduler(cron_expr, ref_date)
-    # print(next(it))
-
-    # cron_expr = "* * * 1"
-    # ref_date = datetime(2022, 6, 1, 12, 12)
-    # it = CrontabScheduler(cron_expr, ref_date)
-    # print(next(it))
-    #
-    # cron_expr = "* * * 12"
-    # ref_date = datetime(2022, 6, 1, 12, 12)
-    # it = CrontabScheduler(cron_expr, ref_date)
-    # print(next(it))
-
-    cron_expr = "5 * * 8"
+    cron_expr = "15 14 1 *"
     ref_date = datetime(2022, 6, 28, 19, 49)
     it = CrontabScheduler(cron_expr, ref_date)
     print(next(it))
