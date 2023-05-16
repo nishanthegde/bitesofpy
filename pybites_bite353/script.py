@@ -8,8 +8,12 @@ def sum_numbers(a: int, b: int):
 
 
 def main(
-    a: Annotated[int, typer.Argument(help="The value of the first summand")],
-    b: Annotated[int, typer.Argument(help="The value of the second summand")],
+    a: Annotated[
+        int, typer.Argument(help="The value of the first summand", show_default=False)
+    ],
+    b: Annotated[
+        int, typer.Argument(help="The value of the second summand", show_default=False)
+    ],
 ):
     """
     CLI that allows you to add two numbers
