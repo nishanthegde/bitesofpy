@@ -7,8 +7,8 @@ def sum_numbers(a: int, b: int):
 
 
 def main(
-    a: int = typer.Argument(help="The value of the first summand"),
-    b: int = typer.Argument(help="The value of the second summand"),
+    a: int = typer.Argument(1, help="The value of the first summand"),
+    b: int = typer.Argument(2, help="The value of the second summand"),
 ):
     """
     CLI that allows you to add two numbers
