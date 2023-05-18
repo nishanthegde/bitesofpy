@@ -1,4 +1,5 @@
 import hashlib
+from random import shuffle
 
 query = """select Candidate, Election_year, sum(Total_$), count(*)
     from combined_party_data
@@ -23,24 +24,25 @@ def hash_query(query: str, length: int = 32) -> str:
     Returns:
         str: String representation of the hashed value.
     """
+
+    if length < 1:
+        raise (ValueError)
+
+    if not isinstance(length, int):
+        raise (TypeError)
+
     query = query.replace(";", "")
     query = query.strip()
     query = query.lower()
     query = query.replace('"', "")
 
-    query_bytes = str.encode(query)
+    query_split = query.split()
+    query_split.sort()
+    query_split = " ".join(query_split)
 
+    query_bytes = str.encode(query_split)
     sha512 = hashlib.sha512()
     sha512.update(query_bytes)
     query_hash = sha512.hexdigest()
 
-    return query_hash
-
-
-def main():
-    print(hash_query(query))
-    print(hash_query(query.replace("combined_party_data", '"combined_party_data"')))
-
-
-if __name__ == "__main__":
-    main()
+    return query_hash[:length]
