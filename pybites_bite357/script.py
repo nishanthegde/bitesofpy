@@ -6,13 +6,23 @@ from zipfile import ZipFile
 
 import typer
 
-current_directory = os.getcwd()
-final_directory = os.path.join(current_directory, r"tmp")
+# current_directory = os.getcwd()
+# final_directory = os.path.join(current_directory, r"tmp")
 
-if not os.path.exists(final_directory):
-    os.makedirs(final_directory)
+# if not os.path.exists(final_directory):
+#     os.makedirs(final_directory)
 
-TMP = Path(final_directory)
+# TMP = Path(final_directory)
+# S3 = "https://bites-data.s3.us-east-2.amazonaws.com"
+
+
+# def _setup():
+#     data_zipfile = "357-data.zip"
+#     urlretrieve(f"{S3}/{data_zipfile}", TMP / data_zipfile)
+#     ZipFile(TMP / data_zipfile).extractall(TMP)
+#     sys.path.append(TMP)
+
+TMP = Path(os.getenv("TMP", "/tmp"))
 S3 = "https://bites-data.s3.us-east-2.amazonaws.com"
 
 
