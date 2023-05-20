@@ -35,8 +35,8 @@ def _setup():
 
 _setup()
 
-from tmp.algorithms import app as algo_app  # noqa E402
-from tmp.comparisons import app as compare_app  # noqa E402
+from algorithms import app as algo_app  # noqa E402
+from comparisons import app as compare_app  # noqa E402
 
 app = typer.Typer()
 app.add_typer(algo_app, name="algorithms")
