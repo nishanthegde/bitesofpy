@@ -1,4 +1,5 @@
 import calendar
+from datetime import date
 from typing import List, Tuple
 
 PI_DAY_DESC = 'π Day'
@@ -68,13 +69,34 @@ def create_calendar(year: int, dates: List[Tuple[int, int, str]]) -> None:
     :type dates: list of tuples, each of which has a month(int), day(int) and description (str)
     :return: None
     """
+    calendar.setfirstweekday(calendar.SUNDAY)
+
     if not isinstance(year, int) or year < 1 or year > 9999:
         raise InvalidYear("Year param is invalid")
+    else:
+        cal_year = year
+
+    dates.append(PI_DAY_DEFAULT_DATE_LIST[0])
+
+    months = []
+
+    for t in dates:
+        months.append(t[0])
+
+    months = sorted(set(months))
+
+    for month in months:
+        print(calendar.month(cal_year, month), end="")
+        holidays = [h for h in dates if h[0] == month]
+        for h in holidays:
+            print(calendar.day_name[date(cal_year, t[0], t[1]).weekday()]+": "+h[2],end="")
+        print("\n")
 
 
 def main():
-    print("thank you for everything!")
-    create_calendar(None, [])
+    # create_calendar(2000, [(2, 27, 'No Brainer Day')])
+    create_calendar(2000, [])
+
 
 if __name__ == "__main__":
     main()
