@@ -88,15 +88,24 @@ def create_calendar(year: int, dates: List[Tuple[int, int, str]]) -> None:
     for month in months:
         print(calendar.month(cal_year, month), end="")
         holidays = [h for h in dates if h[0] == month]
+        holidays_str = list()
+
         for h in holidays:
-            print(calendar.day_name[date(cal_year, t[0], t[1]).weekday()]+": "+h[2],end="")
-        print("\n")
+            holidays_str.append((calendar.weekday(cal_year, h[0], h[1]), calendar.day_name[date(cal_year, h[0], h[1]).weekday()]+": "+h[2], h[2]))
+        holidays_str = sorted(holidays_str, key=lambda e: (e[0], e[2]))
+
+        for h in holidays_str:
+            print(h[1])
+
+        print("\n", end="")
 
 
-def main():
-    # create_calendar(2000, [(2, 27, 'No Brainer Day')])
-    create_calendar(2000, [])
+# def main():
+#     # create_calendar(2000, [(2, 27, 'No Brainer Day')])
+#     # create_calendar(2015, [(1, 25, "My birthday"), (1, 27, "e-Day"), (1, 8, "Earth Rotation Day"), (4, 12, "Grilled Cheese Day"), (1, 20, "Penguin Awareness Day"),],)
+#     # create_calendar(2000, [])
+#     assert '   February 2000\nSu Mo Tu We Th Fr Sa\n       1  2  3  4  5\n 6  7  8  9 10 11 12\n13 14 15 16 17 18 19\n20 21 22 23 24 25 26\n27 28 29\nSunday: No Brainer Day\n\n     March 2000\nSu Mo Tu We Th Fr Sa\n          1  2  3  4\n 5  6  7  8  9 10 11\n12 13 14 15 16 17 18\n19 20 21 22 23 24 25\n26 27 28 29 30 31\nTuesday: π Day\n\n' == '   February 2000\nSu Mo Tu We Th Fr Sa\n       1  2  3  4  5\n 6  7  8  9 10 11 12\n13 14 15 16 17 18 19\n20 21 22 23 24 25 26\n27 28 29\nSunday: No Brainer Day\n\n     March 2000\nSu Mo Tu We Th Fr Sa\n          1  2  3  4\n 5  6  7  8  9 10 11\n12 13 14 15 16 17 18\n19 20 21 22 23 24 25\n26 27 28 29 30 31\nTuesday: π Day\n\n# '
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
