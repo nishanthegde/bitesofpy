@@ -27,28 +27,15 @@ def goal_tracker(
     days_delta = (sd - date(score_date[0], 1, 1)).days + 1
 
     # target daily rate
-    tgt_daily_rate = annual_target / 365
+    if score_date[0] % 4 == 0:
+        tgt_daily_rate = annual_target / 366
+    else:
+        tgt_daily_rate = annual_target / 365
 
     # target score
     tgt_score = int(tgt_daily_rate * days_delta)
 
     if current_score >= tgt_score:
-        return f"Congratulations! You are on track with your {desc} goal. The target for {sd} is {format(tgt_score,',')} steps and you are {format(current_score-tgt_score,',')} ahead."
+        return f"Congratulations! You are on track with your {desc} goal. The target for {sd} is {format(tgt_score,',')} {desc} and you are {format(current_score-tgt_score,',')} ahead."
     else:
-        return f"test"
-
-
-def main():
-    #     print("thank you for everything!")
-    print(
-        goal_tracker(
-            "steps",
-            5000000,
-            164394,
-            (2023, 1, 12),
-        )
-    )
-
-
-if __name__ == "__main__":
-    main()
+        return f"You have some catching up to do! The target for {sd} is {format(tgt_score,',')} {desc} and you are {format(tgt_score-current_score,',')} behind."
