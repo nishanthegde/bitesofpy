@@ -1,4 +1,5 @@
 import re
+import string
 from random import choice, randint
 
 import requests
@@ -17,19 +18,37 @@ def wiki_lorem_ipsum(article: str = CONTENT, number_of_sentences: int = 5):
     :return: lorem ipsum text (Lorem ipsum is nonsense text used to test layouts for documents or websites)
     rtype: str
     """
+    ret = ""
+
     if number_of_sentences < 1:
         raise ValueError("Function must be called with at least 1 sentence")
 
     soup = BeautifulSoup(article, "html.parser")
-    soup = str(soup)
+
+    # This will get the div
+    div_container = soup.find("div", class_="mw-body-content mw-content-ltr")
+
+    ptag_vals = ""
+
+    # Then search in that div_container for all p tags with class "hello"
+    for ptag in div_container.find_all("p"):
+        # prints the p tag content
+        ptag_vals += ptag.text + " "
+
+    soup = ptag_vals
     soup_words = soup.replace("-", " ").split()
-    print(soup_words)
+    soup_words = [re.sub(r"[^\w|_]", "", w) for w in soup_words]
+    soup_words = [w.lower() for w in soup_words if w]
 
+    # print(soup_words)
 
-def main():
-    print("thank you for everything you have given me")
-    wiki_lorem_ipsum(number_of_sentences=1)
+    for i in range(number_of_sentences):
+        random_num_words = randint(5, 15)
+        sentence = ""
+        for i in range(random_num_words):
+            sentence = sentence + choice(soup_words) + " "
+        sentence = sentence[:-1] + ". "
+        sentence = sentence.capitalize()
+        ret += sentence
 
-
-if __name__ == "__main__":
-    main()
+    return ret.strip()
