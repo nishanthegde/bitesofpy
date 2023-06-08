@@ -20,10 +20,15 @@ def wiki_lorem_ipsum(article: str = CONTENT, number_of_sentences: int = 5):
     if number_of_sentences < 1:
         raise ValueError("Function must be called with at least 1 sentence")
 
+    soup = BeautifulSoup(article, "html.parser")
+    soup = str(soup)
+    soup_words = soup.replace("-", " ").split()
+    print(soup_words)
+
 
 def main():
     print("thank you for everything you have given me")
-    wiki_lorem_ipsum("test", 0)
+    wiki_lorem_ipsum(number_of_sentences=1)
 
 
 if __name__ == "__main__":
