@@ -1,3 +1,18 @@
+import itertools
+from collections import defaultdict
+
+digits_dict = defaultdict(list)
+
+digits_dict["2"] = ["a", "b", "c"]
+digits_dict["3"] = ["d", "e", "f"]
+digits_dict["4"] = ["g", "h", "i"]
+digits_dict["5"] = ["j", "k", "l"]
+digits_dict["6"] = ["m", "n", "o"]
+digits_dict["7"] = ["p", "q", "r", "s"]
+digits_dict["8"] = ["t", "u", "v"]
+digits_dict["9"] = ["w", "x", "y", "z"]
+
+
 def generate_letter_combinations(digits: str) -> list[str]:
     """
     Calculate all possible letter combinations of a very short phone number.
@@ -8,16 +23,20 @@ def generate_letter_combinations(digits: str) -> list[str]:
     Raises: `ValueError`: If the input `digits` string contains non-digit characters or
         has more than four digits.
     """
+    all_digits = []
+    output = []
+
     if len(digits) > 4 or not digits.isnumeric():
         raise ValueError
     else:
-        print(digits)
+        for d in digits:
+            all_digits.append(digits_dict[d])
 
+    for comb in list(itertools.product(*all_digits)):
+        output.append("".join([ele for ele in comb]))
 
-def main():
-    print("thank you for everything")
+    return sorted(output)
 
 
 if __name__ == "__main__":
-    # main()
-    generate_letter_combinations("97s9")
+    generate_letter_combinations()
