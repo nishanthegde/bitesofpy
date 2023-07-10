@@ -39,4 +39,4 @@ def generate_letter_combinations(digits: str) -> list[str]:
 
 
 if __name__ == "__main__":
-    generate_letter_combinations()
+    generate_letter_combinations("2")
