@@ -10,16 +10,16 @@ def fizzbuzz(num: int) -> Union[str, int]:
     if num % 5 == 0:
         ret.append("Buzz")
 
-    if num % 3 != 0 and num % 5 != 0:
-        ret.append(num)
-
-    return " ".join(map(str, ret))
-
-
-def main():
-    for i in range(1, 17):
-        print(fizzbuzz(i))
+    if ret:
+        return " ".join(ret)
+    else:
+        return num
 
 
-if __name__ == "__main__":
-    main()
+# def main():
+#     for i in range(1, 17):
+#         print(fizzbuzz(i))
+
+
+# if __name__ == "__main__":
+#     main()
