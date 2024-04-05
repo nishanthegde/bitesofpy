@@ -13,24 +13,19 @@ class Promo:
     @property
     def expired(self):
         """Get the current voltage."""
-        return self.expires < NOW
+        return True if self.expires < NOW else False
 
 
-# def main():
-#     print('thank you for everything ...')
-#     past_time = NOW - timedelta(seconds=3)
-#     # print(past_time)
-#     # print(type(past_time))
+def main():
+    past_time = NOW - timedelta(seconds=3)
+    twitter_promo = Promo('twitter', past_time)
+    print(twitter_promo.expired)
 
-#     twitter_promo = Promo('twitter', past_time)
-#     assert twitter_promo.expired
+    future_date = NOW + timedelta(days=1)
+    newsletter_promo = Promo('newsletter', future_date)
+    print(newsletter_promo.expired)
 
-#     future_date = NOW + timedelta(days=1)
-#     newsletter_promo = Promo('newsletter', future_date)
-#     assert not newsletter_promo.expired
+    print('property' in inspect.getsource(Promo))
 
-#     assert 'property' in inspect.getsource(Promo)
-
-
-# if __name__ == '__main__':
-#     main()
+if __name__ == "__main__":
+    main()

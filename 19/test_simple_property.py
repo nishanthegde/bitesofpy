@@ -1,7 +1,7 @@
-from datetime import timedelta
 import inspect
+from datetime import timedelta
 
-from simple_property import Promo, NOW
+from simple_property import NOW, Promo
 
 
 def test_promo_expired():
